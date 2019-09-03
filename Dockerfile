@@ -109,6 +109,9 @@ archiving/wave_serverV \
 archiving/tankplayer \
 data_exchange/ew2file \
 data_exchange/scn_convert \
+diagnostic_tools/sniffwave \
+diagnostic_tools/sniffring \
+diagnostic_tools/sniffrings \
 "
 
 # Compile other modules
