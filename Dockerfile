@@ -31,6 +31,7 @@ RUN apt-get clean \
 			less \
 			vim \
 			subversion \
+			git \
 			make \
 			gcc \
 			gfortran \
@@ -103,15 +104,22 @@ seismic_processing/eqassemble \
 seismic_processing/hyp2000 \
 seismic_processing/hyp2000_mgr \
 seismic_processing/localmag \
+seismic_processing/gmew \
 seismic_processing/carlstatrig \
 seismic_processing/carlsubtrig \
+seismic_processing/wftimefilter \
+seismic_processing/pkfilter \
 archiving/wave_serverV \
 archiving/tankplayer \
+archiving/trig2disk \
 data_exchange/ew2file \
 data_exchange/scn_convert \
+data_exchange/slink2ew \
+data_sources/nmxptool \
 diagnostic_tools/sniffwave \
 diagnostic_tools/sniffring \
 diagnostic_tools/sniffrings \
+diagnostic_tools/gaplist \
 "
 
 # Compile other modules
@@ -128,6 +136,15 @@ RUN \
 			cd ${BASENAME_MODULE} && \
 			make -f makefile.unix; \
 		done;
+
+# Compile third modules
+RUN \
+		. ${EW_RUN_DIR}/environment/ew_linux.bash \
+		&& cd ${EW_RUN_DIR}/src \
+		&& cd archiving \
+		&& git clone https://gitlab.rm.ingv.it/earthworm/arcto3g.git \
+		&& cd arcto3g \
+		&& make -f makefile.unix
 
 # Create EW_LOG
 RUN \
