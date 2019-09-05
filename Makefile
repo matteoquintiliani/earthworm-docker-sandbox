@@ -45,6 +45,21 @@ shell:
 run:
 	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
+screen:
+	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
+
+CARRIAGE_RETURN=""
+
+screen_complex:
+	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	bash -c "( \
+		screen -d -m -S ew -s /bin/bash \
+		&& screen -S ew -X screen \
+		&& screen -p 0 -S ew -X stuff \"startstop $(CARRIAGE_RETURN)\" \
+		&& screen -p 1 -S ew -X stuff \"cd log && sniffrings HYPO_RING,PICK_RING,TRIG_RING,GMEW_RING verbose 2>&1 | tee sniffrings.log $(CARRIAGE_RETURN)\" \
+		&& screen -r \
+	)"
+
 start:
 	docker run -d --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
