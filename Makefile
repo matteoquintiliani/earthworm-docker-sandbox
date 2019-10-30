@@ -79,6 +79,12 @@ release: build
 test:
 	./test_docker.sh
 
+memphis_data:
+	mkdir -p ../data
+	cd ../data
+	wget -N http://www.isti2.com/ew/distribution/memphis_test.zip
+	unzip memphis_test.zip
+
 default: build
 
 clean:
