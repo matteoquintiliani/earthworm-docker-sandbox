@@ -112,6 +112,7 @@ seismic_processing/pkfilter \
 archiving/wave_serverV \
 archiving/tankplayer \
 archiving/trig2disk \
+archiving/tankplayer_tools \
 data_exchange/ew2file \
 data_exchange/scn_convert \
 data_exchange/slink2ew \
