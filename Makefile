@@ -82,6 +82,9 @@ test:
 memphis_data:
 	mkdir -p ../data && cd ../data && wget -N http://www.isti2.com/ew/distribution/memphis_test.zip && unzip memphis_test.zip && rm -f memphis_test.zip
 
+ingv_data:
+	mkdir -p ../data && cd ../data && wget -N http://ads.int.ingv.it/~ads/earthworm/data/tankplayer_ew_maindir.zip && unzip tankplayer_ew_maindir.zip && rm -f tankplayer_ew_maindir.zip && mkdir -p tankplayer_ew_testdir && rsync -av --delete tankplayer_ew_maindir/* tankplayer_ew_testdir/
+
 default: build
 
 clean:
