@@ -222,9 +222,13 @@ RUN mkdir ${HOMEDIR_USER}
 RUN cp /root/.bashrc ${HOMEDIR_USER}/
 RUN cp /root/.screenrc ${HOMEDIR_USER}/
 
-RUN mkdir -p /opt/OUTPUT
-RUN chown -R ${USER_NAME}:${GROUP_NAME} /opt/OUTPUT
-RUN chown -R ${USER_NAME}:${GROUP_NAME} /opt/earthworm
+RUN mkdir -p ${EW_RUN_DIR}/OUTPUT
+RUN mkdir -p ${EW_RUN_DIR}/scripts
+
+COPY ./scripts/ew_get_rings_list.sh ${EW_RUN_DIR}/scripts
+COPY ./scripts/ew_check_process_status.sh ${EW_RUN_DIR}/scripts
+
+RUN chown -R ${USER_NAME}:${GROUP_NAME} ${EW_RUN_DIR}
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 
 USER ${USER_NAME}:${GROUP_NAME}
