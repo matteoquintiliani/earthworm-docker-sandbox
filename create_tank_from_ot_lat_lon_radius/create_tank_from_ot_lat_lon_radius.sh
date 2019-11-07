@@ -87,7 +87,7 @@ if [ "${FLAG_ALREADY_EXISTS}" != "yes" ]; then
 		|| exit
 fi
 
-docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandbox/earthworm_docker_sandbox:buster-slim /bin/bash -x -c "\
+docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandbox/earthworm_docker_sandbox:buster-slim /bin/bash -c "\
 	. ~/.bashrc \
 	&& cd /opt/OUTPUT/ \
 	&& rm -f miniseed.tmp.tank miniseed.remux_tbuf.tank \
