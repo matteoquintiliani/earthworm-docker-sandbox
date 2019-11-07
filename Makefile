@@ -28,9 +28,13 @@ BUILD_SOURCES = \
 
 help:
 	@echo ""
-	@echo "Syntax: make <command>"
+	@echo "Earthworm Docker Sandbox 0.1.9"
+	@echo "Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy"
+	@echo "Mail bug reports and suggestions to <matteo.quintiliani@ingv.it>."
 	@echo ""
-	@echo "Available commands:"
+	@echo "  Syntax: make <command>"
+	@echo ""
+	@echo "  Available commands:"
 	@echo ""
 	@echo "          help:   display this help"
 	@echo "          build:  build Dockerfile"
