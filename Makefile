@@ -28,7 +28,7 @@ BUILD_SOURCES = \
 
 build: $(BUILD_SOURCES)
 	# Build docker image
-	docker build -t $(NS_IMAGE_NAME_VERSION) --build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) --build-arg UID=$(shell id -u) --build-arg GID=$(shell id -g) -f Dockerfile .
+	docker build -t $(NS_IMAGE_NAME_VERSION) --build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) --build-arg ENV_UID=$(ENV_UID) --build-arg ENV_GID=$(ENV_GID) -f Dockerfile .
 
 push:
 	docker push $(NS_IMAGE_NAME_VERSION)

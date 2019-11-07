@@ -161,3 +161,70 @@ RUN \
 	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc
 
+# Set User and Group variabls
+ENV GROUP_NAME=ew
+ENV USER_NAME=ew
+ENV HOMEDIR_USER=/home/${USER_NAME}
+
+# Set default User and Group id from arguments
+# If UID and/or GID are equal to zero then new user and/or group are created
+ARG ENV_UID=0
+ARG ENV_GID=0
+
+RUN echo ENV_UID=${ENV_UID}
+RUN echo ENV_GID=${ENV_GID}
+
+RUN \
+		if [ ${ENV_UID} -eq 0 ] || [ ${ENV_GID} -eq 0 ]; \
+		then \
+			echo ""; \
+			echo "WARNING: when passing UID or GID equal to zero, new user and/or group are created."; \
+			echo "         On Linux, if you run docker image by different UID or GID you could not able to write in docker mount data directory."; \
+			echo ""; \
+		fi
+
+# Check if GID already exists
+RUN cat /etc/group
+RUN \
+		if [ ${ENV_GID} -eq 0 ]; \
+		then \
+			addgroup --system ${GROUP_NAME}; \
+		elif grep -q -e "[^:][^:]*:[^:][^:]*:${ENV_GID}:.*$" /etc/group; \
+		then \
+			GROUP_NAME_ALREADY_EXISTS=$(grep  -e "[^:][^:]*:[^:][^:]*:${ENV_GID}:.*$" /etc/group | cut -f 1 -d':'); \
+			echo "GID ${ENV_GID} already exists with group name ${GROUP_NAME_ALREADY_EXISTS}"; \
+			groupmod -n ${GROUP_NAME} ${GROUP_NAME_ALREADY_EXISTS}; \
+		else \
+			echo "GID ${ENV_GID} does not exist"; \
+			addgroup -g ${ENV_GID} -S ${GROUP_NAME}; \
+		fi
+
+# Check if UID already exists
+RUN cat /etc/passwd
+RUN \
+		if [ ${ENV_UID} -eq 0 ]; \
+		then \
+			useradd --system -d ${HOMEDIR_USER} -g ${GROUP_NAME} -s /bin/bash ${USER_NAME}; \
+		elif grep -q -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:.*$" /etc/passwd; \
+		then \
+			USER_NAME_ALREADY_EXISTS=$(grep  -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:.*$" /etc/passwd | cut -f 1 -d':'); \
+			echo "UID ${ENV_UID} already exists with user name ${USER_NAME_ALREADY_EXISTS}"; \
+			usermod -d ${HOMEDIR_USER} -g ${ENV_GID} -l ${USER_NAME} ${USER_NAME_ALREADY_EXISTS}; \
+		else \
+			echo "UID ${ENV_UID} does not exist"; \
+			useradd --system -u ${ENV_UID} -d ${HOMEDIR_USER} -g ${ENV_GID} -G ${GROUP_NAME} -s /bin/bash ${USER_NAME}; \
+		fi
+			# adduser -S -h ${HOMEDIR_USER} -G ${GROUP_NAME} -s /bin/bash ${USER_NAME}; \
+			# adduser --uid ${ENV_UID} --home ${HOMEDIR_USER} --gid ${ENV_GID} --shell /bin/bash ${USER_NAME}; \
+
+RUN mkdir ${HOMEDIR_USER}
+
+RUN cp /root/.bashrc ${HOMEDIR_USER}/
+RUN cp /root/.screenrc ${HOMEDIR_USER}/
+
+RUN mkdir -p /opt/OUTPUT
+RUN chown -R ${USER_NAME}:${GROUP_NAME} /opt/OUTPUT
+RUN chown -R ${USER_NAME}:${GROUP_NAME} /opt/earthworm
+RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
+
+USER ${USER_NAME}:${GROUP_NAME}
