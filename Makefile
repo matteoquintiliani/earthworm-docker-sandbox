@@ -68,6 +68,10 @@ help:
 	@echo "          data_create_memphis_test:   download and prepare data for Memphis Test"
 	@echo "          data_create_ingv_test:      download and prepare data for INGV Test"
 	@echo ""
+	@echo "          create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh"
+	@echo "                        Pass arguments by ARGS variable "
+	@echo "                        Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ../data\""
+	@echo ""
 
 build: $(BUILD_SOURCES)
 	# Build docker image
@@ -147,5 +151,9 @@ data_create_memphis_test:
 
 data_create_ingv_test:
 	mkdir -p ../data && cd ../data && wget -N http://ads.int.ingv.it/~ads/earthworm/data/tankplayer_ew_maindir.zip && unzip tankplayer_ew_maindir.zip && rm -f tankplayer_ew_maindir.zip && mkdir -p tankplayer_ew_testdir && rsync -av --delete tankplayer_ew_maindir/* tankplayer_ew_testdir/
+
+create_tank:
+	@echo $(ARGS)
+	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(ARGS)
 
 clean:
