@@ -40,18 +40,18 @@ logtail:
 	docker exec -it $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) /bin/bash -c 'tail -f `find /usr/local/tomcat -name "*.log"`'
 
 shell:
-	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash
+	docker run $(DOCKER_USER) --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash
 
 run:
-	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
+	docker run $(DOCKER_USER) --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
 screen:
-	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
+	docker run $(DOCKER_USER) --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
 CARRIAGE_RETURN=""
 
 screen_complex:
-	docker run --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -S ew -X screen \
@@ -61,7 +61,7 @@ screen_complex:
 	)"
 
 start:
-	docker run -d --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
+	docker run $(DOCKER_USER) -d --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
 stop:
 	docker stop $(CONTAINER_NAME)-$(CONTAINER_INSTANCE)
