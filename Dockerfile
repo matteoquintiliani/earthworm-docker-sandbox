@@ -196,7 +196,7 @@ RUN \
 			groupmod -n ${GROUP_NAME} ${GROUP_NAME_ALREADY_EXISTS}; \
 		else \
 			echo "GID ${ENV_GID} does not exist"; \
-			addgroup -g ${ENV_GID} -S ${GROUP_NAME}; \
+			addgroup --gid ${ENV_GID} --system ${GROUP_NAME}; \
 		fi
 
 # Check if UID already exists
