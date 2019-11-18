@@ -47,10 +47,10 @@ if [ -z "$7" ]; then
 	exit
 fi
 
-# Compute STARTTIME and ENDTIME from OT and interval before and after
-# based on GNU date (gdate on MAC OS X)
-STARTTIME=$(TZ=UTC date -d "${OT}Z - ${SECS_BEFORE_OT} seconds" +%Y-%m-%dT%H:%M:%S)
-ENDTIME=$(TZ=UTC date -d "${OT}Z + ${SECS_AFTER_OT} seconds"  +%Y-%m-%dT%H:%M:%S)
+# Compute STARTTIME and ENDTIME from OT and interval before and after based on GNU date installed in Docker
+GNUDATECMD="docker run --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandbox/earthworm_docker_sandbox:buster-slim /bin/bash -c"
+STARTTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z - ${SECS_BEFORE_OT} seconds' +%Y-%m-%dT%H:%M:%S")
+ENDTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z + ${SECS_AFTER_OT} seconds'  +%Y-%m-%dT%H:%M:%S")
 
 DIRNAME="`dirname $0`"
 cd "${DIRNAME}"
