@@ -91,7 +91,7 @@ docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandb
 	. ~/.bashrc \
 	&& cd /opt/OUTPUT/ \
 	&& rm -f miniseed.tmp.tank miniseed.remux_tbuf.tank \
-	&& (find . -iname \"*.???.miniseed\" | while read f; do echo \$f; ms2tb \$f >> miniseed.tmp.tank; done) \
+	&& (find . -iname \"*.[HES][HN][ZNE].miniseed\" | while read f; do echo \$f; ms2tb \$f >> miniseed.tmp.tank; done) \
 	&& remux_tbuf miniseed.tmp.tank miniseed.remux_tbuf.tank \
 	&& rm -f miniseed.tmp.tank \
 	&& mv miniseed.remux_tbuf.tank ${FILENAMEBASE}.tank \
