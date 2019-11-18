@@ -26,6 +26,9 @@ BUILD_SOURCES = \
 				./Dockerfile 
 				# ./entrypoint.sh
 
+MAINDIR_LOGDIR = $(MAINDIR_TEST)/log
+MAINDIR_WSDIR = $(MAINDIR_TEST)/data/waveservers
+
 help:
 	@echo ""
 	@echo "Earthworm Docker Sandbox 0.1.9"
@@ -71,6 +74,11 @@ help:
 	@echo "          create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh"
 	@echo "                        Pass arguments by ARGS variable "
 	@echo "                        Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ../data\""
+	@echo ""
+	@echo "      --- Commands for deleting files: (VERY DANGEROUS)"
+	@echo ""
+	@echo "          clean_ew_log:               delete all files within log directory ($(MAINDIR_LOGDIR))"
+	@echo "          clean_ew_ws:                delete all files within waveserver directories ($(MAINDIR_WSDIR))"
 	@echo ""
 
 build: $(BUILD_SOURCES)
@@ -161,9 +169,6 @@ data_create_ingv_test:
 create_tank:
 	@echo $(ARGS)
 	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(ARGS)
-
-MAINDIR_LOGDIR = $(MAINDIR_TEST)/log
-MAINDIR_WSDIR = $(MAINDIR_TEST)/data/waveservers
 
 clean_ew_log:
 	@echo
