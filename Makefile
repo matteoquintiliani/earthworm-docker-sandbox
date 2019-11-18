@@ -172,20 +172,22 @@ create_tank:
 
 clean_ew_log:
 	@echo
+	@find $(MAINDIR_LOGDIR) -type f
 	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_LOGDIR)? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
-			echo find $(MAINDIR_LOGDIR) -type f -exec rm {} \\; \
+			find $(MAINDIR_LOGDIR) -type f -exec rm {} \; ; \
 		else \
 			echo "Nothing has been deleted."; \
 		fi
 
 clean_ew_ws:
 	@echo
+	@find $(MAINDIR_WSDIR) -type f
 	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_WSDIR)? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
-			echo find $(MAINDIR_WSDIR) -type f -exec rm {} \\; \
+			find $(MAINDIR_WSDIR) -type f -exec rm {} \; ; \
 		else \
 			echo "Nothing has been deleted."; \
 		fi
