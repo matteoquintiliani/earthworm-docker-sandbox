@@ -110,8 +110,14 @@ status:
 		bash -c ". ~/.bashrc && status"
 
 pau:
-	docker exec -it $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) \
-		bash -c ". ~/.bashrc && pau"
+	@echo
+	@read -p "WARNING: Are you sure you stop Earthworm ? [Y/n] " -n 1 -r \
+		&& echo "" \
+		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
+		docker exec -it $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) bash -c ". ~/.bashrc && pau"; \
+		else \
+		echo "Nothing has been done."; \
+		fi
 
 status_tankplayer:
 	docker exec -it $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) \
