@@ -156,4 +156,27 @@ create_tank:
 	@echo $(ARGS)
 	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(ARGS)
 
+MAINDIR_LOGDIR = $(MAINDIR_TEST)/log
+MAINDIR_WSDIR = $(MAINDIR_TEST)/data/waveservers
+
+clean_ew_log:
+	@echo
+	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_LOGDIR)? [Y/n] " -n 1 -r \
+		&& echo "" \
+		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
+			echo find $(MAINDIR_LOGDIR) -type f -exec rm {} \\; \
+		else \
+			echo "Nothing has been deleted."; \
+		fi
+
+clean_ew_ws:
+	@echo
+	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_WSDIR)? [Y/n] " -n 1 -r \
+		&& echo "" \
+		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
+			echo find $(MAINDIR_WSDIR) -type f -exec rm {} \\; \
+		else \
+			echo "Nothing has been deleted."; \
+		fi
+
 clean:
