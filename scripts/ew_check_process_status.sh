@@ -3,6 +3,7 @@
 
 MODULEFILECONFIGD_DEFAULT=tankplayer.d
 FLAG_PAU_DEFAULT=nopau
+SLEEP_SECS=15
 
 SYNTAX="
 Syntax: `basename $0` [  <modulefileconfig.d>  [  <action>  ]  ]
@@ -28,7 +29,7 @@ TMPFILE_OUTPUTSTATUS=/tmp/status.output.log
 # while /bin/true; do [ "`status 2>/dev/null | grep -w ${MODULEFILECONFIGD} | awk '{print $3;}'`" != "Alive" ] && echo End; done
 
 while /bin/true; do
-	echo "Check ${MODULEFILECONFIGD} status..."
+	printf "Checking ${MODULEFILECONFIGD} status... "
 	status 2>/dev/null > ${TMPFILE_OUTPUTSTATUS}
 	RET_STATUS=$?
 	cat ${TMPFILE_OUTPUTSTATUS} | grep -q "Earthworm may be hung; no response"
@@ -64,6 +65,7 @@ while /bin/true; do
 			fi
 		fi
 	fi
-	sleep 5
+	echo "Waiting ${SLEEP_SECS} seconds ..."
+	sleep ${SLEEP_SECS}
 done
 
