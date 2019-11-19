@@ -31,7 +31,7 @@ MAINDIR_WSDIR = $(MAINDIR_TEST)/data/waveservers
 
 help:
 	@echo ""
-	@echo "Earthworm Docker Sandbox 0.1.9"
+	@echo "Earthworm Docker Sandbox 0.2.0"
 	@echo "Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy"
 	@echo "Mail bug reports and suggestions to <matteo.quintiliani@ingv.it>."
 	@echo ""
