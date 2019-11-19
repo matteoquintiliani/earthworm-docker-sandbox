@@ -63,6 +63,9 @@ help:
 	@echo ""
 	@echo "          run_ew_in_bash:   run Earthworm by bash in a new docker container"
 	@echo "          run_ew_in_screen: run Earthworm by screen in a new docker container"
+	@echo "                            Pass arguments by ARGS variable to ew_check_process_status.sh"
+	@echo "                            Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\""
+	@echo "                                      make run_ew_in_screen ARGS=\"tankplayer.d pau\""
 	@echo "          status:           run 'status' in the Earthworm running docker container"
 	@echo "          pau:              run 'pau' in the Earthworm running docker container"
 	@echo ""
@@ -104,12 +107,15 @@ run_ew_in_bash:
 	bash -c ". ~/.bashrc && startstop"
 
 run_ew_in_screen:
+	@echo $(ARGS)
 	docker run $(DOCKER_USER) --rm -it --name $(CONTAINER_NAME)-$(CONTAINER_INSTANCE) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -S ew -X screen \
+		&& screen -S ew -X screen \
 		&& screen -p 0 -S ew -X stuff \"startstop $(CARRIAGE_RETURN)\" \
 		&& screen -p 1 -S ew -X stuff \"cd log && sniffrings HYPO_RING,PICK_RING,TRIG_RING,GMEW_RING verbose 2>&1 | tee sniffrings.log $(CARRIAGE_RETURN)\" \
+		&& screen -p 2 -S ew -X stuff \"/opt/earthworm/scripts/ew_check_process_status.sh $(ARGS) $(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
 
