@@ -226,6 +226,7 @@ RUN mkdir -p ${EW_RUN_DIR}/OUTPUT
 RUN mkdir -p ${EW_RUN_DIR}/scripts
 
 COPY ./scripts/ew_get_rings_list.sh ${EW_RUN_DIR}/scripts
+COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_RUN_DIR}/scripts
 COPY ./scripts/ew_check_process_status.sh ${EW_RUN_DIR}/scripts
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${EW_RUN_DIR}

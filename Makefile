@@ -114,7 +114,7 @@ run_ew_in_screen:
 		&& screen -S ew -X screen \
 		&& screen -S ew -X screen \
 		&& screen -p 0 -S ew -X stuff \"startstop $(CARRIAGE_RETURN)\" \
-		&& screen -p 1 -S ew -X stuff \"cd log && sniffrings HYPO_RING,PICK_RING,TRIG_RING,GMEW_RING verbose 2>&1 | tee sniffrings.log $(CARRIAGE_RETURN)\" \
+		&& screen -p 1 -S ew -X stuff \"sleep 2 && cd log && /opt/earthworm/scripts/ew_sniff_all_rings_except_tracebuf_message.sh | tee sniffrings.log $(CARRIAGE_RETURN)\" \
 		&& screen -p 2 -S ew -X stuff \"/opt/earthworm/scripts/ew_check_process_status.sh $(ARGS) $(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
