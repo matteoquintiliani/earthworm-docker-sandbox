@@ -26,8 +26,8 @@ BUILD_SOURCES = \
 				./Dockerfile 
 				# ./entrypoint.sh
 
-MAINDIR_LOGDIR = $(MAINDIR_TEST)/log
-MAINDIR_WSDIR = $(MAINDIR_TEST)/data/waveservers
+EW_ENVS_DIR_LOG = $(EW_ENVS_DIR)/log
+EW_ENVS_DIR_WS = $(EW_ENVS_DIR)/data/waveservers
 
 help:
 	@echo ""
@@ -80,8 +80,8 @@ help:
 	@echo ""
 	@echo "      --- Commands for deleting files: (VERY DANGEROUS)"
 	@echo ""
-	@echo "          clean_ew_log:               delete all files within log directory ($(MAINDIR_LOGDIR))"
-	@echo "          clean_ew_ws:                delete all files within waveserver directories ($(MAINDIR_WSDIR))"
+	@echo "          clean_ew_log:               delete all files within log directory ($(EW_ENVS_DIR_LOG))"
+	@echo "          clean_ew_ws:                delete all files within waveserver directories ($(EW_ENVS_DIR_WS))"
 	@echo ""
 
 build: $(BUILD_SOURCES)
@@ -167,10 +167,10 @@ release: build
 	make push -e VERSION=$(VERSION)
 
 data_create_memphis_test:
-	mkdir -p ../data && cd ../data && wget -N http://www.isti2.com/ew/distribution/memphis_test.zip && unzip memphis_test.zip && rm -f memphis_test.zip
+	mkdir -p $(EW_ENVS_MAINDIR) && cd $(EW_ENVS_MAINDIR) && wget -N http://www.isti2.com/ew/distribution/memphis_test.zip && unzip memphis_test.zip && rm -f memphis_test.zip
 
 data_create_ingv_test:
-	mkdir -p ../data && cd ../data && wget -N http://ads.int.ingv.it/~ads/earthworm/data/tankplayer_ew_maindir.zip && unzip tankplayer_ew_maindir.zip && rm -f tankplayer_ew_maindir.zip && mkdir -p tankplayer_ew_testdir && rsync -av --delete tankplayer_ew_maindir/* tankplayer_ew_testdir/
+	mkdir -p $(EW_ENVS_MAINDIR) && cd $(EW_ENVS_MAINDIR) && wget -N http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip && unzip tankplayer_ew_maindir.zip && rm -f tankplayer_ew_maindir.zip && mkdir -p tankplayer_ew_testdir && rsync -av --delete tankplayer_ew_maindir/* tankplayer_ew_testdir/
 
 create_tank:
 	@echo $(ARGS)
@@ -178,22 +178,22 @@ create_tank:
 
 clean_ew_log:
 	@echo
-	@find $(MAINDIR_LOGDIR) -type f
-	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_LOGDIR)? [Y/n] " -n 1 -r \
+	@find $(EW_ENVS_DIR_LOG) -type f
+	@read -p "WARNING: Are you sure you want to delete all files in $(EW_ENVS_DIR_LOG)? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
-			find $(MAINDIR_LOGDIR) -type f -exec rm {} \; ; \
+			find $(EW_ENVS_DIR_LOG) -type f -exec rm {} \; ; \
 		else \
 			echo "Nothing has been deleted."; \
 		fi
 
 clean_ew_ws:
 	@echo
-	@find $(MAINDIR_WSDIR) -type f
-	@read -p "WARNING: Are you sure you want to delete all files in $(MAINDIR_WSDIR)? [Y/n] " -n 1 -r \
+	@find $(EW_ENVS_DIR_WS) -type f
+	@read -p "WARNING: Are you sure you want to delete all files in $(EW_ENVS_DIR_WS)? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
-			find $(MAINDIR_WSDIR) -type f -exec rm {} \; ; \
+			find $(EW_ENVS_DIR_WS) -type f -exec rm {} \; ; \
 		else \
 			echo "Nothing has been deleted."; \
 		fi
