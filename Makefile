@@ -34,7 +34,7 @@ help:
 	@echo "Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy"
 	@echo "Mail bug reports and suggestions to <matteo.quintiliani@ingv.it>."
 	@echo ""
-	@echo "  Syntax: make <command>  [ EW_ENV=<ew_env_subdir_name> ] "
+	@echo "  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>"
 	@echo ""
 	@echo "  Current main variable values:"
 	@echo "          EW_ENV=$(EW_ENV)"
