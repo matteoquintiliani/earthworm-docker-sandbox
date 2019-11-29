@@ -233,23 +233,21 @@ release: build
 create_ew_env_memphis_test: check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
 		&& cd $(EW_ENV_MAINDIR) \
-		&& wget -N http://www.isti2.com/ew/distribution/memphis_test.zip \
+		&& if [ ! -f memphis_test.zip ]; then wget -N http://www.isti2.com/ew/distribution/memphis_test.zip; fi \
 		&& unzip memphis_test.zip -d $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
 		&& mv memphis/* . \
 		&& rmdir memphis \
-		&& rm -f memphis_test.zip \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on Memphis Test has been successfully created."
 
 create_ew_env_ingv_test: check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
 		&& cd $(EW_ENV_MAINDIR) \
-		&& wget -N http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip \
+		&& if [ ! -f tankplayer_ew_maindir.zip ]; then wget -N http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip; fi \
 		&& unzip tankplayer_ew_maindir.zip -d $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
 		&& mv tankplayer_ew_maindir/* . \
 		&& rmdir tankplayer_ew_maindir \
-		&& rm -f tankplayer_ew_maindir.zip \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on INGV Test has been successfully created."
 
 create_ew_env_from_git_repository: check_for_creating
