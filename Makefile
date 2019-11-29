@@ -164,6 +164,9 @@ run: check_for_running
 exec: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash
 
+bash_args: check_for_running
+	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash -c ". ~/.bashrc && $(ARGS)"
+
 CARRIAGE_RETURN=""
 
 run_ew_in_bash: check_for_running
