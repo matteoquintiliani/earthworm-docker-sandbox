@@ -245,10 +245,11 @@ create_ew_env_ingv_test: check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
 		&& cd $(EW_ENV_MAINDIR) \
 		&& wget -N http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip \
-		&& unzip tankplayer_ew_maindir.zip \
+		&& unzip tankplayer_ew_maindir.zip -d $(EW_ENV_DIR) \
+		&& cd $(EW_ENV_DIR) \
+		&& mv tankplayer_ew_maindir/* . \
+		&& rmdir tankplayer_ew_maindir \
 		&& rm -f tankplayer_ew_maindir.zip \
-		&& mkdir -p tankplayer_ew_testdir \
-		&& rsync -av --delete tankplayer_ew_maindir/* tankplayer_ew_testdir/ \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on INGV Test has been successfully created."
 
 create_ew_env_from_git_repository: check_for_creating
