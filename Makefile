@@ -153,29 +153,29 @@ build: $(BUILD_SOURCES) check_for_building
 	docker build -t $(NS_IMAGE_NAME_VERSION) --build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) --build-arg ENV_UID=$(ENV_UID) --build-arg ENV_GID=$(ENV_GID) -f Dockerfile .
 
 bash: check_for_running
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash
 
 screen: check_for_running
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
 run: check_for_running
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
 exec: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash
 
 bash_args: check_for_running
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash -c ". ~/.bashrc && $(ARGS)"
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash -c ". ~/.bashrc && $(ARGS)"
 
 CARRIAGE_RETURN=""
 
 run_ew_in_bash: check_for_running
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c ". ~/.bashrc && startstop"
 
 run_ew_in_screen: check_for_running
 	@echo $(ARGS)
-	docker run $(DOCKER_USER) --rm -it --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -S ew -X screen \
@@ -205,7 +205,7 @@ status_tankplayer: check_for_running
 		bash -c ". ~/.bashrc && /opt/earthworm/scripts/ew_check_process_status.sh"
 
 start: check_for_running
-	docker run $(DOCKER_USER) -d --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
+	docker run $(DOCKER_USER) -d $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
 
 stop: check_for_running
 	docker stop $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME)
