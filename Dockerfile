@@ -75,20 +75,27 @@ RUN \
 RUN \
 		sed -i'.bak' -e 's/COSMOSLINELEN/5000/g' ${EW_RUN_DIR}/src/libsrc/util/cosmos0putaway.c
 
-# Compile Earthworm libraries
-RUN \
-		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& cd ${EW_RUN_DIR}/src/libsrc \
-		&& make -f makefile.unix
+# Require compiling at least 'libsrc' and 'system_control'
+ENV GROUP_MODULE_LIST=" \
+libsrc \
+aystem_control \
+diagnostic_tools \
+"
 
-# Compile system_control
+# Compile group modules
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& cd ${EW_RUN_DIR} \
-		&& cd src \
-		&& svn up system_control \
-		&& cd system_control \
-		&& make unix
+		&& for GROUP_MODULE in ${GROUP_MODULE_LIST}; do \
+			echo "Compiling group modules ${GROUP_MODULE} ..." && \
+			DIRNAME_GROUP_MODULE="`dirname ${GROUP_MODULE}`" && \
+			BASENAME_GROUP_MODULE="`basename ${GROUP_MODULE}`" && \
+			cd ${EW_RUN_DIR}/src && \
+			if [ ! -d ${DIRNAME_GROUP_MODULE} ]; then svn up --set-depth empty ${DIRNAME_GROUP_MODULE} else echo "NOTICE: ${DIRNAME_GROUP_MODULE} already exists."; fi && \
+			cd ${DIRNAME_GROUP_MODULE} && \
+			svn up ${BASENAME_GROUP_MODULE} && \
+			cd ${BASENAME_GROUP_MODULE} && \
+			if [ -f makefile.unix ]; then make -f makefile.unix; else make unix; fi \
+		done;
 
 ENV MODULE_LIST=" \
 reporting/statmgr \
@@ -117,6 +124,7 @@ data_exchange/ew2file \
 data_exchange/scn_convert \
 data_exchange/slink2ew \
 data_sources/nmxptool \
+diagnostic_tools/getmenu \
 diagnostic_tools/sniffwave \
 diagnostic_tools/sniffring \
 diagnostic_tools/sniffrings \
@@ -138,7 +146,11 @@ RUN \
 			make -f makefile.unix; \
 		done;
 
+##########################################################
 # Compile third modules
+##########################################################
+
+### Compile arcto3g ######################
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
 		&& cd ${EW_RUN_DIR}/src \
@@ -146,6 +158,43 @@ RUN \
 		&& git clone https://gitlab.rm.ingv.it/earthworm/arcto3g.git \
 		&& cd arcto3g \
 		&& make -f makefile.unix
+
+### Compile ew2openapi ##################
+RUN apt-get clean \
+		&& apt-get update \
+		&& apt-get install -y \
+			libcurl4-openssl-dev \
+			cmake \
+			dh-autoreconf \
+		&& apt-get clean
+
+RUN \
+		cd ${EW_RUN_DIR} \
+		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git
+
+COPY ./random_seed.patch ${EW_RUN_DIR}/ew2openapi/json-c/
+COPY ./ew2openapi.patch ${EW_RUN_DIR}/ew2openapi/
+
+RUN \
+		. ${EW_RUN_DIR}/environment/ew_linux.bash \
+		&& cd ${EW_RUN_DIR}/ew2openapi \
+		&& cd ./rabbitmq-c \
+		&& mkdir build \
+		&& cd build \
+		&& cmake -DENABLE_SSL_SUPPORT=OFF .. \
+		&& cmake --build . \
+		&& cd ${EW_RUN_DIR}/ew2openapi \
+		&& cd ./json-c \
+		&& patch < random_seed.patch \
+		&& sh autogen.sh \
+		&& ./configure --prefix=`pwd`/build \
+		&& make \
+		&& make install \
+		&& cd ${EW_RUN_DIR}/ew2openapi \
+		&& patch -p1 < ew2openapi.patch \
+		&& make -f makefile.unix static
+##########################################################
+
 
 # Create EW_LOG
 RUN \
@@ -228,6 +277,13 @@ RUN mkdir -p ${EW_RUN_DIR}/scripts
 COPY ./scripts/ew_get_rings_list.sh ${EW_RUN_DIR}/scripts
 COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_RUN_DIR}/scripts
 COPY ./scripts/ew_check_process_status.sh ${EW_RUN_DIR}/scripts
+
+##########################################################
+# RUN apt-get clean \
+#		&& apt-get update \
+#		&& apt-get install -y \
+#			mariadb-client-10.3
+##########################################################
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${EW_RUN_DIR}
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
