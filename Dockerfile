@@ -78,7 +78,7 @@ RUN \
 # Require compiling at least 'libsrc' and 'system_control'
 ENV GROUP_MODULE_LIST=" \
 libsrc \
-aystem_control \
+system_control \
 diagnostic_tools \
 "
 
