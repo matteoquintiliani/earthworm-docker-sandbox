@@ -1,0 +1,27 @@
+diff --git a/random_seed.c b/random_seed.c
+index 3232777..24ca74d 100644
+--- a/random_seed.c
++++ b/random_seed.c
+@@ -150,16 +150,19 @@ static int has_dev_urandom()
+
+ static int get_dev_random_seed()
+ {
++    int fd = 0;
++    int r = 0;
++    ssize_t nread = 0;
++
+     DEBUG_SEED("get_dev_random_seed");
+
+-    int fd = open(dev_random_file, O_RDONLY);
++    fd = open(dev_random_file, O_RDONLY);
+     if (fd < 0) {
+         fprintf(stderr, "error opening %s: %s", dev_random_file, strerror(errno));
+         exit(1);
+     }
+
+-    int r;
+-    ssize_t nread = read(fd, &r, sizeof(r));
++    nread = read(fd, &r, sizeof(r));
+     if (nread != sizeof(r)) {
+         fprintf(stderr, "error short read %s: %s", dev_random_file, strerror(errno));
+         exit(1);

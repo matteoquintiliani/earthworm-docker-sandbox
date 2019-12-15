@@ -1,0 +1,14 @@
+diff --git a/src/ew2openapi_curl.c b/src/ew2openapi_curl.c
+index 45d3f18..b5de9ea 100644
+--- a/src/ew2openapi_curl.c
++++ b/src/ew2openapi_curl.c
+@@ -107,7 +107,8 @@ long ew2openapi_curl_sendstring(char *ApiBaseUrl, char *buf, size_t len, MSG_LOG
+ 	}
+ 	api_type_ew_msg[i] = '\0';
+ 
+-	snprintf(apiurl, MAX_API_URL, "ew/%s/1/", api_type_ew_msg);
++	// snprintf(apiurl, MAX_API_URL, "ew/%s/1/", api_type_ew_msg);
++	snprintf(apiurl, MAX_API_URL, "%s/", api_type_ew_msg);
+ 	snprintf(url, MAX_API_URL, "%s/%s", ApiBaseUrl, apiurl);
+ 
+ 	ew2openapi_logit("et", "URL-DATA: %s\n", url);
