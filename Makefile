@@ -145,7 +145,7 @@ ew_env_list:
 	@cd $(EW_ENV_MAINDIR) \
 		&& echo "Available Earthworm Environments: " \
 		&& echo "" \
-		&& find . -depth 1 -type d | sed -e "s/^[./]*/  - /" \
+		&& find . -depth 1 -type d | sed -e "s/^[./]*/  - /" | sort \
 		&& echo ""
 
 build: $(BUILD_SOURCES) check_for_building
