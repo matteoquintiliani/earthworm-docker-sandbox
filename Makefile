@@ -256,6 +256,7 @@ create_ew_env_memphis_test: check_for_creating
 		&& cd $(EW_ENV_DIR) \
 		&& mv memphis/* . \
 		&& rmdir memphis \
+		&& docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash -c "cd params && sed -i'.bak' -e "s/EW_INST_ID/EW_INSTALLATION/g" *.desc" \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on Memphis Test has been successfully created."
 
 create_ew_env_ingv_test: check_for_creating
@@ -285,7 +286,7 @@ create_ew_env_from_ingv_runconfig_branch: create_ew_env_from_git_repository
 
 create_tank:
 	@echo $(ARGS)
-	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(ARGS)
+	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(NS_IMAGE_NAME_VERSION) $(ARGS)
 
 clean_ew_log: check_for_running
 	@echo

@@ -29,13 +29,14 @@ Syntax: `basename $0`  <origin_time> <secs_before_ot> <secs_after_ot> <latitude>
         <output_directory>: output directory.
 "
 
-OT="$1"
-SECS_BEFORE_OT="$2"
-SECS_AFTER_OT="$3"
-LAT="$4"
-LON="$5"
-RADIUS="$6"
-ROOTDIROUT="$7"
+NS_IMAGE_NAME_VERSION="$1"
+OT="$2"
+SECS_BEFORE_OT="$3"
+SECS_AFTER_OT="$4"
+LAT="$5"
+LON="$6"
+RADIUS="$7"
+ROOTDIROUT="$8"
 
 # OT=2019-06-23T20:43:47
 # LAT=41.86
@@ -48,7 +49,7 @@ if [ -z "$7" ]; then
 fi
 
 # Compute STARTTIME and ENDTIME from OT and interval before and after based on GNU date installed in Docker
-GNUDATECMD="docker run --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandbox/earthworm_docker_sandbox:buster-slim /bin/bash -c"
+GNUDATECMD="docker run --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT ${NS_IMAGE_NAME_VERSION} /bin/bash -c"
 STARTTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z - ${SECS_BEFORE_OT} seconds' +%Y-%m-%dT%H:%M:%S")
 ENDTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z + ${SECS_AFTER_OT} seconds'  +%Y-%m-%dT%H:%M:%S")
 
@@ -87,7 +88,7 @@ if [ "${FLAG_ALREADY_EXISTS}" != "yes" ]; then
 		|| exit
 fi
 
-docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT earthworm_docker_sandbox/earthworm_docker_sandbox:buster-slim /bin/bash -c "\
+docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT ${NS_IMAGE_NAME_VERSION} /bin/bash -c "\
 	. ~/.bashrc \
 	&& cd /opt/OUTPUT/ \
 	&& rm -f miniseed.tmp.tank miniseed.remux_tbuf.tank \
