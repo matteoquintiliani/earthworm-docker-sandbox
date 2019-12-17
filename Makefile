@@ -31,7 +31,8 @@ NS_IMAGE_NAME_VERSION = $(NS_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 .PHONY: build push shell run start stop rm release test
 
 BUILD_SOURCES = \
-				./Dockerfile 
+				./Dockerfile \
+				./Makefile.env
 				# ./entrypoint.sh
 
 EW_ENV_LOG = $(EW_ENV_DIR)/log
