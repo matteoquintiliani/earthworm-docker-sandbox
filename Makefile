@@ -284,7 +284,7 @@ create_ew_env_from_ingv_runconfig_branch: create_ew_env_from_git_repository
 
 create_tank:
 	@echo $(ARGS)
-	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(ARGS)
+	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(NS_IMAGE_NAME_VERSION) $(ARGS)
 
 clean_ew_log: check_for_running
 	@echo
