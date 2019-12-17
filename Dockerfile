@@ -1,13 +1,16 @@
-# Dockerfile for running Earthworm on Memphis Test
-# http://www.isti2.com/ew/distribution/memphis_test.zip
+################################################################################
+# Earthworm Docker Sandbox: a Docker tool for learning, testing and running
+# Earthworm System within enclosed environments.
+################################################################################
+# Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
+# Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
+################################################################################
 
-# FROM ubuntu:14.04.1
 FROM debian:buster-slim
-
-# Authors: Matteo Quintiliani
 
 LABEL maintainer="Matteo Quintiliani <matteo.quintiliani@ingv.it>"
 
+# Main variables
 ENV INITRD No
 ENV FAKE_CHROOT 1
 ENV DEBIAN_FRONTEND=noninteractive
@@ -38,7 +41,7 @@ RUN apt-get clean \
 			screen \
 		&& apt-get clean
 
-# Set .bashrc
+# Set .bashrc for root user
 RUN echo "" >> /root/.bashrc \
      && echo "##################################" >> /root/.bashrc \
      && echo "alias ll='ls -l --color'" >> /root/.bashrc \
@@ -58,108 +61,65 @@ RUN echo "" >> /root/.bashrc \
 # Set default working directory
 WORKDIR ${EW_INSTALL_HOME}
 
+# Default Earthworm Subversion Branch is 'trunk'
+ARG EW_SVN_BRANCH=trunk
+# Default Earthworm Subversion Revision is empty, that stands for last revision of EW_SVN_BRANCH
+ARG EW_SVN_REVISION=
+
 # Checkout necessary Earthworm repository directories
 RUN \
-		svn checkout --depth empty svn://svn.isti.com/earthworm/trunk ${EW_RUN_DIR} \
-		&& cd ${EW_RUN_DIR} \
-		&& svn update --set-depth infinity include  \
-		&& svn update --set-depth infinity lib \
-		&& svn update --set-depth empty bin \
-		&& svn update --set-depth infinity environment \
-		&& svn update --set-depth infinity params \
-		&& svn update --set-depth empty src \
-		&& svn update --set-depth infinity src/libsrc \
+		if [ -z ${EW_SVN_REVISION} ]; \
+		then EW_CO_SVN_REVISION=; \
+		else EW_CO_SVN_REVISION=@${EW_SVN_REVISION}; \
+		fi \
+		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_RUN_DIR} \
 		&& cp ${EW_RUN_DIR}/environment/earthworm.d ${EW_RUN_DIR}/environment/earthworm_global.d ${EW_RUN_DIR}/params/
 
 # Temporary fix for cosmos0putaway.c
 RUN \
 		sed -i'.bak' -e 's/COSMOSLINELEN/5000/g' ${EW_RUN_DIR}/src/libsrc/util/cosmos0putaway.c
 
-# Require compiling at least 'libsrc' and 'system_control'
-ENV GROUP_MODULE_LIST=" \
+# Require compiling at least 'libsrc', 'system_control' and 'diagnostic_tools'
+ENV REQUIRED_GROUP_MODULE_LIST=" \
 libsrc \
 system_control \
 diagnostic_tools \
 "
 
-# Compile group modules
+# Compile required group modules
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& for GROUP_MODULE in ${GROUP_MODULE_LIST}; do \
-			echo "Compiling group modules ${GROUP_MODULE} ..." && \
-			DIRNAME_GROUP_MODULE="`dirname ${GROUP_MODULE}`" && \
-			BASENAME_GROUP_MODULE="`basename ${GROUP_MODULE}`" && \
+		&& for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
+			echo "=== Compiling required group module ${GROUP_MODULE} ..." && \
 			cd ${EW_RUN_DIR}/src && \
-			if [ ! -d ${DIRNAME_GROUP_MODULE} ]; then svn up --set-depth empty ${DIRNAME_GROUP_MODULE} else echo "NOTICE: ${DIRNAME_GROUP_MODULE} already exists."; fi && \
-			cd ${DIRNAME_GROUP_MODULE} && \
-			svn up ${BASENAME_GROUP_MODULE} && \
-			cd ${BASENAME_GROUP_MODULE} && \
+			if [ ! -d ${GROUP_MODULE} ]; then echo "ERROR: ${GROUP_MODULE} not found. Exit."; exit 1; fi && \
+			cd ${GROUP_MODULE} && \
 			if [ -f makefile.unix ]; then make -f makefile.unix; else make unix; fi \
 		done;
 
-ENV MODULE_LIST=" \
-reporting/statmgr \
-reporting/diskmgr \
-reporting/copystatus \
-seismic_processing/pick_ew \
-seismic_processing/binder_ew \
-seismic_processing/eqproc \
-seismic_processing/eqbuf \
-seismic_processing/eqcoda \
-seismic_processing/eqverify \
-seismic_processing/eqassemble \
-seismic_processing/hyp2000 \
-seismic_processing/hyp2000_mgr \
-seismic_processing/localmag \
-seismic_processing/gmew \
-seismic_processing/carlstatrig \
-seismic_processing/carlsubtrig \
-seismic_processing/wftimefilter \
-seismic_processing/pkfilter \
-archiving/wave_serverV \
-archiving/tankplayer \
-archiving/trig2disk \
-archiving/tankplayer_tools \
-data_exchange/ew2file \
-data_exchange/scn_convert \
-data_exchange/slink2ew \
-data_sources/nmxptool \
-diagnostic_tools/getmenu \
-diagnostic_tools/sniffwave \
-diagnostic_tools/sniffring \
-diagnostic_tools/sniffrings \
-diagnostic_tools/gaplist \
-"
+# Default ARG_SELECTED_MODULE_LIST is empty. Compile all Earthworm modules. Otherwise only in ARG_SELECTED_MODULE_LIST.
+ARG ARG_SELECTED_MODULE_LIST=
 
-# Compile other modules
+# Compile modules
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& for MODULE in ${MODULE_LIST}; do \
-			echo "Compiling ${MODULE} ..." && \
+		&& if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
+		then cd ${EW_RUN_DIR}/src &&  make unix; \
+		else for MODULE in ${ARG_SELECTED_MODULE_LIST}; do \
+			echo "=== Compiling ${MODULE} ..." && \
 			DIRNAME_MODULE="`dirname ${MODULE}`" && \
 			BASENAME_MODULE="`basename ${MODULE}`" && \
 			cd ${EW_RUN_DIR}/src && \
-			if [ ! -d ${DIRNAME_MODULE} ]; then svn up --set-depth empty ${DIRNAME_MODULE} else echo "NOTICE: ${DIRNAME_MODULE} already exists."; fi && \
+			if [ ! -d ${DIRNAME_MODULE} ]; then echo "ERROR: module directory ${DIRNAME_MODULE} not found. Exit."; exit 1; fi && \
 			cd ${DIRNAME_MODULE} && \
-			svn up ${BASENAME_MODULE} && \
 			cd ${BASENAME_MODULE} && \
 			make -f makefile.unix; \
-		done;
+		done; \
+		fi;
 
 ##########################################################
-# Compile third modules
+# Compile ew2openapi
 ##########################################################
-
-### Compile arcto3g ######################
-RUN \
-		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& cd ${EW_RUN_DIR}/src \
-		&& cd archiving \
-		&& git clone https://gitlab.rm.ingv.it/earthworm/arcto3g.git \
-		&& cd arcto3g \
-		&& make -f makefile.unix
-
-### Compile ew2openapi ##################
 RUN apt-get clean \
 		&& apt-get update \
 		&& apt-get install -y \
@@ -194,7 +154,6 @@ RUN \
 		&& patch -p1 < ew2openapi.patch \
 		&& make -f makefile.unix static
 ##########################################################
-
 
 # Create EW_LOG
 RUN \

@@ -1,3 +1,11 @@
+################################################################################
+# Earthworm Docker Sandbox: a Docker tool for learning, testing and running
+# Earthworm System within enclosed environments.
+################################################################################
+# Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
+# Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
+################################################################################
+
 # Include variables from file Makefile.env
 include Makefile.env
 
@@ -32,7 +40,7 @@ EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 help:
 	@echo "Earthworm Docker Sandbox 0.2.0"
 	@echo "Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy"
-	@echo "Mail bug reports and suggestions to <matteo.quintiliani@ingv.it>."
+	@echo "Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it"
 	@echo ""
 	@echo "  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>"
 	@echo ""
@@ -117,7 +125,6 @@ check_docker_variables:
 	@if [ -z "$(DOCKER_IMAGE_VERSION)" ]; then echo "ERROR: DOCKER_IMAGE_VERSION must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DOCKER_CONTAINER_NAME)" ]; then echo "ERROR: DOCKER_CONTAINER_NAME must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DOCKER_CONTAINER_INSTANCE)" ]; then echo "ERROR: DOCKER_CONTAINER_INSTANCE must be defined. Exit."; exit 1; fi
-	@if [ -z "$(DOCKER_NAMESPACE_EXT)" ]; then echo "ERROR: DOCKER_NAMESPACE_EXT must be defined. Exit."; exit 1; fi
 	@if [ -z "$(NS_IMAGE_NAME)" ]; then echo "ERROR: NS_IMAGE_NAME must be defined. Exit."; exit 1; fi
 	@if [ -z "$(NS_IMAGE_NAME_VERSION)" ]; then echo "ERROR: NS_IMAGE_NAME_VERSION must be defined. Exit."; exit 1; fi
 
@@ -138,7 +145,7 @@ check_for_building: check_docker_variables
 check_for_creating: check_docker_variables check_ew_env_variables
 	@if [ -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) already exists. Exit."; exit 9; fi
 
-check_for_running: check_docker_variables check_ew_env_variables check_ew_env_subdirs
+check_for_running: check_docker_variables check_ew_env_variables check_ew_env_subdirs build
 
 ew_env_list:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
@@ -150,7 +157,14 @@ ew_env_list:
 
 build: $(BUILD_SOURCES) check_for_building
 	# Build docker image
-	docker build -t $(NS_IMAGE_NAME_VERSION) --build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) --build-arg ENV_UID=$(ENV_UID) --build-arg ENV_GID=$(ENV_GID) -f Dockerfile .
+	docker build -t $(NS_IMAGE_NAME_VERSION) \
+		--build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) \
+		--build-arg ENV_UID=$(ENV_UID) \
+		--build-arg ENV_GID=$(ENV_GID) \
+		--build-arg EW_SVN_BRANCH=$(EW_SVN_BRANCH)  \
+		--build-arg EW_SVN_REVISION=$(EW_SVN_REVISION) \
+		--build-arg ARG_SELECTED_MODULE_LIST=$(ARG_SELECTED_MODULE_LIST) \
+		-f Dockerfile .
 
 bash: check_for_running
 	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash
