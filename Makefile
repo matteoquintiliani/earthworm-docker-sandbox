@@ -89,7 +89,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
      run_ew_in_bash:   run Earthworm by bash in a new docker container\n\
      run_ew_in_screen: run Earthworm by screen in a new docker container\n\
-                       Pass arguments by ARGS variable to ew_check_process_status.sh\n\
+                       Pass arguments to ew_check_process_status.sh by ARGS variable\n\
+\n\
                        Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\"\n\
                                  make run_ew_in_screen ARGS=\"tankplayer.d pau\"\n\
 \n\
@@ -105,7 +106,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
      create_ew_env_from_git_repository:\n\
                    create Earthworm Environment having main directory from a branch of a git repository\n\
-                   Pass arguments by ARGS variable \n\
+\n\
                    Example: make create_ew_env_from_git_repository \ \n\
                                  GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
                                  GIT_BRANCH=develop \ \n\
@@ -114,7 +115,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
      create_ew_env_from_ingv_runconfig_branch:\n\
                    Like command 'create_ew_env_from_git_repository' and moreover,\n\
                    set subdirectories params,log and data from ingv repository 'earthworm/run_configs'\n\
-                   Pass arguments by ARGS variable \n\
+\n\
                    Example: make create_ew_env_from_ingv_runconfig_branch \ \n\
                                  GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
                                  GIT_BRANCH=hew10 \ \n\
@@ -123,7 +124,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
   - Commands for creating tankfiles:\n\
 \n\
      create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh\n\
-                   Pass arguments by ARGS variable \n\
+                   Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable\n\
+\n\
                    Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\"\n\
 \n\
   - Commands for deleting files: (VERY DANGEROUS)\n\
