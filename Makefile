@@ -141,7 +141,7 @@ check_ew_env_subdirs:
 	@if [ ! -e $(EW_ENV_DIR)/log ]; then echo "ERROR: directory $(EW_ENV_DIR)/log not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR)/data ]; then echo "ERROR: directory $(EW_ENV_DIR)/data not found. Exit."; exit 9; fi
 
-check_for_building: check_docker_variables
+check_for_building: check_docker_variables $(BUILD_SOURCES)
 
 check_for_creating: check_docker_variables check_ew_env_variables
 	@if [ -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) already exists. Exit."; exit 9; fi
@@ -156,7 +156,7 @@ ew_env_list:
 		&& find . -depth 1 -type d | sed -e "s/^[./]*/  - /" | sort \
 		&& echo ""
 
-build: $(BUILD_SOURCES) check_for_building
+build: check_for_building
 	# Build docker image
 	docker build -t $(NS_IMAGE_NAME_VERSION) \
 		--build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) \
