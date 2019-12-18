@@ -39,87 +39,96 @@ EW_ENV_LOG = $(EW_ENV_DIR)/log
 EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
 help:
-	@echo "Earthworm Docker Sandbox 0.2.0"
-	@echo "Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy"
-	@echo "Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it"
-	@echo ""
-	@echo "  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>"
-	@echo ""
-	@echo "  Current main variable values:"
-	@echo "          EW_ENV=$(EW_ENV)"
-	@echo "          EW_ENV_MAINDIR=$(EW_ENV_MAINDIR)"
-	@echo "          EW_ENV_DIR=$(EW_ENV_DIR)"
-	@echo ""
-	@echo "  Earthworm Environment:"
-	@echo "          - name is defined by EW_ENV"
-	@echo "          - directory is in EW_ENV_MAINDIR with name EW_ENV"
-	@echo "          - directory path is EW_ENV_DIR"
-	@echo ""
-	@echo "  An Earthworm Environment Directory must contain the following directories:"
-	@echo "          - params: contains Earthworm configuration files (EW_PARAMS variable)"
-	@echo "          - log: where log file are written (EW_LOG variable)"
-	@echo "          - data: where additional files are read and written (EW_DATA_DIR variable)"
-	@echo ""
-	@echo "  Available commands:"
-	@echo ""
-	@echo "          help:         display this help"
-	@echo "          build:        build Dockerfile"
-	@echo ""
-	@echo "          ew_env_list:  list available Earthworm Environments"
-	@echo ""
-	@echo "      --- Commands for running/stopping a new docker container:"
-	@echo ""
-	@echo "          bash:   run bash shell in a new docker container"
-	@echo "          screen: run screen shell in a new docker container"
-	@echo ""
-	@echo "          start:  run new docker container as daemon"
-	@echo "          stop:   stop the running docker container [daemon]"
-	@echo ""
-	@echo "      --- Commands executed on running docker container:"
-	@echo ""
-	@echo "          exec:       run bash shell in the running docker container"
-	@echo "          ps:         output 'docker ps' of running docker container"
-	@echo "          sniffrings: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2"
-	@echo "          logtail:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)"
-	@echo ""
-	@echo "          status_tankplayer:   output tankplayer process status"
-	@echo ""
-	@echo "      --- Commands for running/stopping Earthworm in docker container:"
-	@echo ""
-	@echo "          run_ew_in_bash:   run Earthworm by bash in a new docker container"
-	@echo "          run_ew_in_screen: run Earthworm by screen in a new docker container"
-	@echo "                            Pass arguments by ARGS variable to ew_check_process_status.sh"
-	@echo "                            Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\""
-	@echo "                                      make run_ew_in_screen ARGS=\"tankplayer.d pau\""
-	@echo "          status:           run 'status' in the Earthworm running docker container"
-	@echo "          pau:              run 'pau' in the Earthworm running docker container"
-	@echo ""
-	@echo "      --- Commands for creating Earthworm Environment based on tankplayer configuration and data test:"
-	@echo ""
-	@echo "          create_ew_env_memphis_test:   download and prepare configuration and data for Memphis Test"
-	@echo "          create_ew_env_ingv_test:      download and prepare configuration and data for INGV Test"
-	@echo ""
-	@echo "      --- Commands for creating Earthworm Environment based on git repository:"
-	@echo ""
-	@echo "          create_ew_env_from_git_repository:   create Earthworm Environment having main directory from a branch of a git repository"
-	@echo "                        Pass arguments by ARGS variable "
-	@echo "                        Example: make create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=develop EW_ENV=my_test_env"
-	@echo "          create_ew_env_from_ingv_runconfig_branch:   like command 'create_ew_env_from_git_repository' and moreover,"
-	@echo "                                                      set subdirectories params,log and data from ingv repository 'earthworm/run_configs'"
-	@echo "                        Pass arguments by ARGS variable "
-	@echo "                        Example: make create_ew_env_from_ingv_runconfig_branch GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=hew10 EW_ENV=hew10_testdir"
-	@echo ""
-	@echo "      --- Commands for creating tankfiles:"
-	@echo ""
-	@echo "          create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh"
-	@echo "                        Pass arguments by ARGS variable "
-	@echo "                        Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\""
-	@echo ""
-	@echo "      --- Commands for deleting files: (VERY DANGEROUS)"
-	@echo ""
-	@echo "          clean_ew_log:               delete all files within log directory ($(EW_ENV_LOG))"
-	@echo "          clean_ew_ws:                delete all files within waveserver directories ($(EW_ENV_WS))"
-	@echo ""
+	@echo "\n\
+Earthworm Docker Sandbox 0.2.0\n\
+Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy\n\
+Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
+\n\
+ Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>\n\
+\n\
+ Current main variable values:\n\
+     EW_ENV=$(EW_ENV)\n\
+     EW_ENV_MAINDIR=$(EW_ENV_MAINDIR)\n\
+     EW_ENV_DIR=$(EW_ENV_DIR)\n\
+\n\
+ Earthworm Environment:\n\
+     - name is defined by EW_ENV\n\
+     - directory is in EW_ENV_MAINDIR with name EW_ENV\n\
+     - directory path is EW_ENV_DIR\n\
+\n\
+ An Earthworm Environment Directory must contain the following directories:\n\
+     - params: contains Earthworm configuration files (EW_PARAMS variable)\n\
+     - log: where log file are written (EW_LOG variable)\n\
+     - data: where additional files are read and written (EW_DATA_DIR variable)\n\
+\n\
+ Available commands:\n\
+\n\
+     help:         display this help\n\
+     build:        build Dockerfile\n\
+\n\
+     ew_env_list:  list available Earthworm Environments\n\
+\n\
+  - Commands for running/stopping a new docker container:\n\
+\n\
+     bash:   run bash shell in a new docker container\n\
+     screen: run screen shell in a new docker container\n\
+\n\
+     start:  run new docker container as daemon\n\
+     stop:   stop the running docker container [daemon]\n\
+\n\
+  - Commands executed on running docker container:\n\
+\n\
+     exec:       run bash shell in the running docker container\n\
+     ps:         output 'docker ps' of running docker container\n\
+     sniffrings: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2\n\
+     logtail:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)\n\
+\n\
+     status_tankplayer:   output tankplayer process status\n\
+\n\
+  - Commands for running/stopping Earthworm in docker container:\n\
+\n\
+     run_ew_in_bash:   run Earthworm by bash in a new docker container\n\
+     run_ew_in_screen: run Earthworm by screen in a new docker container\n\
+                       Pass arguments by ARGS variable to ew_check_process_status.sh\n\
+                       Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\"\n\
+                                 make run_ew_in_screen ARGS=\"tankplayer.d pau\"\n\
+     status:           run 'status' in the Earthworm running docker container\n\
+     pau:              run 'pau' in the Earthworm running docker container\n\
+\n\
+  - Commands for creating Earthworm Environment based on tankplayer configuration and data test:\n\
+\n\
+     create_ew_env_memphis_test:   download and prepare configuration and data for Memphis Test\n\
+     create_ew_env_ingv_test:      download and prepare configuration and data for INGV Test\n\
+\n\
+  - Commands for creating Earthworm Environment based on git repository:\n\
+\n\
+     create_ew_env_from_git_repository:\n\
+                   create Earthworm Environment having main directory from a branch of a git repository\n\
+                   Pass arguments by ARGS variable \n\
+                   Example: make create_ew_env_from_git_repository \ \n\
+                                 GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
+                                 GIT_BRANCH=develop \ \n\
+                                 EW_ENV=my_test_env\n\
+     create_ew_env_from_ingv_runconfig_branch:\n\
+                   Like command 'create_ew_env_from_git_repository' and moreover,\n\
+                   set subdirectories params,log and data from ingv repository 'earthworm/run_configs'\n\
+                   Pass arguments by ARGS variable \n\
+                   Example: make create_ew_env_from_ingv_runconfig_branch \ \n\
+                                 GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
+                                 GIT_BRANCH=hew10 \ \n\
+                                 EW_ENV=hew10_testdir\n\
+\n\
+  - Commands for creating tankfiles:\n\
+\n\
+     create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh\n\
+                   Pass arguments by ARGS variable \n\
+                   Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\"\n\
+\n\
+  - Commands for deleting files: (VERY DANGEROUS)\n\
+\n\
+     clean_ew_log: delete all files within log directory ($(EW_ENV_LOG))\n\
+     clean_ew_ws:  delete all files within waveserver directories ($(EW_ENV_WS))\n\
+"
 
 check_docker_variables:
 	@if [ -z "$(DOCKER_IMAGE_NAME)" ]; then echo "ERROR: DOCKER_IMAGE_NAME must be defined. Exit."; exit 1; fi
