@@ -92,6 +92,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
                        Pass arguments by ARGS variable to ew_check_process_status.sh\n\
                        Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\"\n\
                                  make run_ew_in_screen ARGS=\"tankplayer.d pau\"\n\
+\n\
      status:           run 'status' in the Earthworm running docker container\n\
      pau:              run 'pau' in the Earthworm running docker container\n\
 \n\
@@ -109,6 +110,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
                                  GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
                                  GIT_BRANCH=develop \ \n\
                                  EW_ENV=my_test_env\n\
+\n\
      create_ew_env_from_ingv_runconfig_branch:\n\
                    Like command 'create_ew_env_from_git_repository' and moreover,\n\
                    set subdirectories params,log and data from ingv repository 'earthworm/run_configs'\n\
