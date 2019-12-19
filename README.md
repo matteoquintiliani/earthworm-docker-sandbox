@@ -51,6 +51,14 @@ An **Earthworm Environment** is a directory that must contain the following subd
   - `log`: where Earthworm log files are written (`EW_LOG` variable)
   - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
 
+You can list all available Earthworm Environments on your machine by:
+
+```sh
+make ew_env_list
+```
+
+It depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
+
 
 ## Configuration
 
