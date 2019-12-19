@@ -48,8 +48,8 @@ make help
 An **Earthworm Environment** is a directory that must contain the following subdirectories:
 
   - `params`: contains Earthworm configuration files (`EW_PARAMS` variable)
-  - `log`: where log file are written (`EW_LOG` variable)
-  - `data`: where additional files are read and written (`EW_DATA_DIR` variable)
+  - `log`: where Earthworm log files are written (`EW_LOG` variable)
+  - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
 
 
 ## Configuration

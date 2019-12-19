@@ -58,8 +58,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
  An Earthworm Environment Directory must contain the following subdirectories:\n\
      - params: contains Earthworm configuration files (EW_PARAMS variable)\n\
-     - log: where log file are written (EW_LOG variable)\n\
-     - data: where additional files are read and written (EW_DATA_DIR variable)\n\
+     - log: where Earthworm log files are written (EW_LOG variable)\n\
+     - data: where additional files are read and written by Earthworm modules (EW_DATA_DIR variable)\n\
 \n\
  Available commands:\n\
 \n\
