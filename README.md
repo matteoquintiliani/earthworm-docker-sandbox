@@ -54,11 +54,17 @@ An **Earthworm Environment** is a directory that must contain the following subd
 
 ## Configuration
 
-All configuration variables can be set within file `Makefile.env` except for `EW_ENV` which defines the current Earthworm Environment and it is defined at run-time as argument to `make` command. Example:
+All configuration variables can be set within the file `Makefile.env` or passed as argument at run-time to command `make`.
+
+It is convenient to set all the variables, except for `EW_ENV`, within the `Makefile.env` file.
+
+Usually, the variabile `EW_ENV` is passed as an argument to the command `make`. Example:
 
 ```sh
 Syntax: make  EW_ENV=ew_default  <command>
 ```
+
+The variables passed as arguments override the values defined in the `Makefile.env` file.
 
 ## Build Docker Image
 
