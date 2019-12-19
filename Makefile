@@ -147,6 +147,10 @@ check_ew_env_variables:
 	@if [ -z "$(EW_ENV_MAINDIR)" ]; then echo "ERROR: EW_ENV_MAINDIR must be defined. Exit."; exit 1; fi
 	@if [ -z "$(EW_ENV_DIR)" ]; then echo "ERROR: EW_ENV_DIR must be defined. Exit."; exit 1; fi
 
+check_git_variables:
+	@if [ -z "$(GIT_REP)" ]; then echo "ERROR: GIT_REP must be defined. Exit."; exit 1; fi
+	@if [ -z "$(GIT_BRANCH)" ]; then echo "ERROR: GIT_BRANCH must be defined. Exit."; exit 1; fi
+
 check_ew_env_subdirs:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) not found. Exit."; exit 9; fi
@@ -282,10 +286,9 @@ create_ew_env_ingv_test: check_for_creating
 		&& rmdir tankplayer_ew_maindir \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on INGV Test has been successfully created."
 
-create_ew_env_from_git_repository: check_for_creating
-	@echo $(EW_ENV) $(GIT_REP) $(GIT_BRANCH)
+create_ew_env_from_git_repository: check_for_creating check_git_variables
+	@echo "Trying to create Earthworm Environment \"$(EW_ENV)\" from git repository $(GIT_REP) and branch $(GIT_BRANCH) ..."
 	@cd $(EW_ENV_MAINDIR) \
-		&& if [ -z $(GIT_BRANCH) ]; then echo "ERROR: branch name in GIT_BRANCH is missing. Exit."; exit 1; fi \
 		&& git clone --recursive --single-branch --branch $(GIT_BRANCH) $(GIT_REP) $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from branch $(GIT_BRANCH) in $(GIT_REP) has been successfully created."
