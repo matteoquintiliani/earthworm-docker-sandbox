@@ -56,7 +56,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
      - directory is in EW_ENV_MAINDIR with name EW_ENV\n\
      - directory path is EW_ENV_DIR\n\
 \n\
- An Earthworm Environment Directory must contain the following directories:\n\
+ An Earthworm Environment Directory must contain the following subdirectories:\n\
      - params: contains Earthworm configuration files (EW_PARAMS variable)\n\
      - log: where log file are written (EW_LOG variable)\n\
      - data: where additional files are read and written (EW_DATA_DIR variable)\n\
