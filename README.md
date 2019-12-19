@@ -84,7 +84,7 @@ reporting/copystatus \
 ...
 seismic_processing/pick_ew \
 seismic_processing/pick_FP \
-seismic_processing/binder_ew\
+seismic_processing/binder_ew \
 "
 ```
 
