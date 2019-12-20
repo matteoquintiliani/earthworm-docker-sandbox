@@ -160,16 +160,6 @@ RUN \
 # Set default working directory
 WORKDIR ${EW_RUN_DIR}
 
-# Set EW_INSTALL_INSTALLATION and EW_INST_ID
-ARG EW_INSTALL_INSTALLATION="INST_UNKNOWN"
-RUN \
-	 echo "export EW_INSTALL_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "" >> /root/.bashrc \
-	 && echo ". ${EW_RUN_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
-	 && echo "" >> /root/.bashrc
-
 # Set User and Group variabls
 ENV GROUP_NAME=ew
 ENV USER_NAME=ew
@@ -228,9 +218,6 @@ RUN \
 
 RUN mkdir ${HOMEDIR_USER}
 
-RUN cp /root/.bashrc ${HOMEDIR_USER}/
-RUN cp /root/.screenrc ${HOMEDIR_USER}/
-
 RUN mkdir -p ${EW_RUN_DIR}/OUTPUT
 RUN mkdir -p ${EW_RUN_DIR}/scripts
 
@@ -246,6 +233,20 @@ COPY ./scripts/ew_check_process_status.sh ${EW_RUN_DIR}/scripts
 ##########################################################
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${EW_RUN_DIR}
+
+# Set EW_INSTALL_INSTALLATION and EW_INST_ID
+ARG EW_INSTALL_INSTALLATION="INST_UNKNOWN"
+RUN \
+	 echo "export EW_INSTALL_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 && echo "" >> /root/.bashrc \
+	 && echo ". ${EW_RUN_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
+	 && echo "" >> /root/.bashrc
+
+RUN cp /root/.bashrc ${HOMEDIR_USER}/
+RUN cp /root/.screenrc ${HOMEDIR_USER}/
+
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 
 USER ${USER_NAME}:${GROUP_NAME}
