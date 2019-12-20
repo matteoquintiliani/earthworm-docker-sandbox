@@ -22,7 +22,7 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
 This tool works on all Unix-like operating system. It has not been tested on Windows yet. Any feedback will be very appreciated.
 
-## Help and Earthworm Environments
+## Help
 
 Very short help:
 
@@ -46,21 +46,6 @@ Detailed help information running:
 make help
 ```
 
-An **Earthworm Environment** is a directory that must contain the following subdirectories:
-
-  - `params`: contains Earthworm configuration files (`EW_PARAMS` variable)
-  - `log`: where Earthworm log files are written (`EW_LOG` variable)
-  - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
-
-This directory structure is the same used in Earthworm Memphis Test bundled zip file available at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
-
-You can list all available Earthworm Environments on your machine by:
-
-```sh
-make ew_env_list
-```
-
-It depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
 
 
 ## Configuration
@@ -122,9 +107,26 @@ EW_SVN_REVISION =
 
 ## Creating Earthworm Environments
 
-You can create Earthworm Environments from a zip file available from an URL or from a git repository directory.
 
-In both cases you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. In case you can create subdirectories declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
+An **Earthworm Environment** is a directory that must contain the following subdirectories:
+
+  - `params`: contains Earthworm configuration files (`EW_PARAMS` variable)
+  - `log`: where Earthworm log files are written (`EW_LOG` variable)
+  - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
+
+This directory structure is the same used in Earthworm Memphis Test bundled zip file available at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
+
+You can list all available Earthworm Environments on your machine by:
+
+```sh
+make ew_env_list
+```
+
+It depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
+
+You can create Earthworm Environments on your own by creating and managing file within subdirectories `params`, `log` and `params`. Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
+
+Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If they reside in different paths, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
 
 Example for zip file:
 
@@ -147,6 +149,8 @@ make create_ew_env_from_git_repository \
 ```
 
 Variable `GIT_BRANCH` is optional.
+
+Changing value for `EW_ENV` you can create 
 
 ## Running Earthworm Environments
 
