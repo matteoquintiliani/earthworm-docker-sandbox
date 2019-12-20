@@ -99,6 +99,13 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
   - Commands for creating Earthworm Environment based on tankplayer configuration and data test:\n\
 \n\
+     create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file\n\
+\n\
+                   Example: make create_ew_env_from_zip_url \ \n\
+                                 ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
+                                 MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
+                                 EW_ENV=my_test_env\n\
+\n\
      create_ew_env_memphis_test:   download and prepare configuration and data for Memphis Test\n\
      create_ew_env_ingv_test:      download and prepare configuration and data for INGV Test\n\
 \n\
@@ -280,26 +287,13 @@ create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
 		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on $(ZIP_URL) has been successfully created."
 
-create_ew_env_memphis_test: check_for_creating
-	@mkdir -p $(EW_ENV_MAINDIR) \
-		&& cd $(EW_ENV_MAINDIR) \
-		&& if [ ! -f memphis_test.zip ]; then wget -N http://www.isti2.com/ew/distribution/memphis_test.zip; fi \
-		&& unzip memphis_test.zip -d $(EW_ENV_DIR) \
-		&& cd $(EW_ENV_DIR) \
-		&& mv memphis/* . \
-		&& rmdir memphis \
-		&& docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash -c "cd params && sed -i'.bak' -e "s/EW_INST_ID/EW_INSTALLATION/g" *.desc" \
-		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on Memphis Test has been successfully created."
+# Short cut based on create_ew_env_from_zip_url for creating memphis_test Earthworm Environment
+create_ew_env_memphis_test:
+	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
 
-create_ew_env_ingv_test: check_for_creating
-	@mkdir -p $(EW_ENV_MAINDIR) \
-		&& cd $(EW_ENV_MAINDIR) \
-		&& if [ ! -f tankplayer_ew_maindir.zip ]; then wget -N http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip; fi \
-		&& unzip tankplayer_ew_maindir.zip -d $(EW_ENV_DIR) \
-		&& cd $(EW_ENV_DIR) \
-		&& mv tankplayer_ew_maindir/* . \
-		&& rmdir tankplayer_ew_maindir \
-		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on INGV Test has been successfully created."
+# Short cut based on create_ew_env_from_zip_url for creating INGV test Earthworm Environment
+create_ew_env_ingv_test:
+	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url ZIP_URL=http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip MAP_EW_ENV_SUBDIRS="tankplayer_ew_maindir/params tankplayer_ew_maindir/log tankplayer_ew_maindir/data"
 
 create_ew_env_from_git_repository: check_for_creating check_git_variables
 	@echo "Trying to create Earthworm Environment \"$(EW_ENV)\" from git repository $(GIT_REP) and branch $(GIT_BRANCH) ..."
