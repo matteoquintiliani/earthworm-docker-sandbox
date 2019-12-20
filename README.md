@@ -18,6 +18,7 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - sed
   - grep
   - find
+  - wget
 
 This tool works on all Unix-like operating system. It has not been tested on Windows yet. Any feedback will be very appreciated.
 
@@ -50,6 +51,8 @@ An **Earthworm Environment** is a directory that must contain the following subd
   - `params`: contains Earthworm configuration files (`EW_PARAMS` variable)
   - `log`: where Earthworm log files are written (`EW_LOG` variable)
   - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
+
+This directory structure is the same used in Earthworm Memphis Test bundled zip file available at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
 
 You can list all available Earthworm Environments on your machine by:
 

@@ -147,6 +147,10 @@ check_ew_env_variables:
 	@if [ -z "$(EW_ENV_MAINDIR)" ]; then echo "ERROR: EW_ENV_MAINDIR must be defined. Exit."; exit 1; fi
 	@if [ -z "$(EW_ENV_DIR)" ]; then echo "ERROR: EW_ENV_DIR must be defined. Exit."; exit 1; fi
 
+check_zip_url_variables:
+	@if [ -z "$(ZIP_URL)" ]; then echo "ERROR: ZIP_URL must be defined. Exit."; exit 1; fi
+	@if [ -z "$(MAP_EW_ENV_SUBDIRS)" ]; then echo "WARNING: MAP_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
+
 check_git_variables:
 	@if [ -z "$(GIT_REP)" ]; then echo "ERROR: GIT_REP must be defined. Exit."; exit 1; fi
 	@if [ -z "$(GIT_BRANCH)" ]; then echo "ERROR: GIT_BRANCH must be defined. Exit."; exit 1; fi
@@ -264,6 +268,17 @@ rm: check_for_building
 
 release: build
 	make push -e DOCKER_IMAGE_VERSION=$(DOCKER_IMAGE_VERSION)
+
+create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
+	@echo "Trying to get zip file from $(ZIP_URL) ..."
+	@mkdir -p $(EW_ENV_MAINDIR) \
+		&& BASENAME_ZIP_URL="`basename $(ZIP_URL)`" \
+		&& cd $(EW_ENV_MAINDIR) \
+		&& if [ ! -f "$${BASENAME_ZIP_URL}" ]; then wget -N $(ZIP_URL); fi \
+		&& unzip -q "$${BASENAME_ZIP_URL}" -d $(EW_ENV_DIR) \
+		&& cd $(EW_ENV_DIR) \
+		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
+		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on $(ZIP_URL) has been successfully created."
 
 create_ew_env_memphis_test: check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
