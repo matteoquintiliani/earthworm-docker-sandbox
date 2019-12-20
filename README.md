@@ -115,10 +115,49 @@ EW_SVN_BRANCH = trunk
 # You can set custom subversion revision 'NNN' where NNN is the revision number
 EW_SVN_REVISION =
 # EW_SVN_REVISION = 8104
-
 ```
 
-# Author
+## Creating Earthworm Environments
+
+TODO
+
+## Running Earthworm Environments
+
+Main `make` commands for running and/or stopping Earthworm Envinronments within a docker container are:
+
+  - `bash`:   run bash shell in a new docker container
+  - `screen`: run screen shell in a new docker container
+  - `start`:  run new docker container as daemon
+  - `stop`:   stop the running docker container [daemon]
+
+Command example for running bash within the `myew_envs` Earthworm Environment:
+
+```sh
+make EW_ENV=myew_envs bash
+```
+
+Default setting allows you to run a single docker container for each Earthworm Environments. It depends on variable `DOCKER_CONTAINER_NAME`: 
+
+```sh
+DOCKER_CONTAINER_NAME ?= ew-sandbox-$(DOCKER_IMAGE_VERSION)-$(EW_ENV)
+```
+
+Main `make` commands for executing processes within running Earthworm Environment docker containers:
+
+
+  - `exec`:       run bash shell in the running docker container
+  - `ps`:         output 'docker ps' of running docker container
+  - `sniffrings`: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2
+  - `logtail`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
+
+Command example for executing a `bash` shell within the `myew_envs` Earthworm Environment:
+
+```sh
+make EW_ENV=myew_envs exec
+```
+
+
+## Author
 
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
 
