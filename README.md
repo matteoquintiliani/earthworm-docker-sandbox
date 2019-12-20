@@ -13,14 +13,14 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 ## Dependencies
 
   - Docker
-  - GNU Make
-  - bash
+  - Make
+  - Bash
   - sed
   - grep
   - find
   - wget
 
-This tool works on all Unix-like operating system. It has not been tested on Windows yet. Any feedback will be very appreciated.
+This tool is designed to work on all Unix-like operating systems. It has not been tested on Windows yet. Any feedback will be very appreciated.
 
 ## Help
 
