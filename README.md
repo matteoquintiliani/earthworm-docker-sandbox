@@ -128,7 +128,7 @@ You can create Earthworm Environments on your own by creating and managing file 
 
 Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If they reside in different paths, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
 
-Example for zip file:
+Example for creating from a zip file an Earthwom Environment with name `my_test_env`:
 
 ```sh
 make create_ew_env_from_zip_url \
@@ -137,7 +137,7 @@ make create_ew_env_from_zip_url \
      EW_ENV=my_test_env
 ```
 
-Example for git repository:
+Example for creating from a git repository an Earthwom Environment with name `my_test_env`:
 
 ```sh
 make create_ew_env_from_git_repository \
