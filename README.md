@@ -122,7 +122,7 @@ EW_SVN_REVISION =
 
 ## Creating Earthworm Environments
 
-You can create Earthworm Environments from zip file available from an URL or git repositories.
+You can create Earthworm Environments from a zip file available from an URL or from a git repository directory.
 
 In both cases you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment.
 
