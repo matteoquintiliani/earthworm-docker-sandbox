@@ -52,7 +52,7 @@ make help
 
 All configuration variables can be set within the file `Makefile.env` or passed as argument at run-time to command `make`.
 
-It is convenient to set all the variables, except for `EW_ENV`, within the `Makefile.env` file.
+It is convenient to set all the variables, except for `EW_ENV` (or variables for creating the Earthworm Environments), within the `Makefile.env` file.
 
 Usually, the variabile `EW_ENV` is passed as an argument to the command `make`. Example:
 
@@ -159,10 +159,10 @@ Main `make` commands for running and/or stopping Earthworm Envinronments within 
   - `start`:  run new docker container as daemon
   - `stop`:   stop the running docker container [daemon]
 
-Command example for running bash within the `myew_envs` Earthworm Environment:
+Command example for running bash within the `myew_test1` Earthworm Environment:
 
 ```sh
-make EW_ENV=myew_envs bash
+make EW_ENV=myew_test1 bash
 ```
 
 Default setting allows you to run a single docker container for each Earthworm Environments. It depends on variable `DOCKER_CONTAINER_NAME`: 
@@ -179,10 +179,10 @@ Main `make` commands for executing processes within running Earthworm Environmen
   - `sniffrings`: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2
   - `logtail`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
 
-Command example for executing a `bash` shell within the `myew_envs` Earthworm Environment:
+Command example for executing a `bash` shell within the `myew_test1` Earthworm Environment:
 
 ```sh
-make EW_ENV=myew_envs exec
+make EW_ENV=myew_test1 exec
 ```
 
 There are two `make` commands to launch Earthworm automatically when the container starts:
@@ -199,6 +199,35 @@ Example for running Earthworm within an Earthworm Environment and quit docker co
 ```sh
 make run_ew_in_screen EW_ENV=myew_test ARGS="tankplayer.d nopau"
 ```
+
+### Running the Memphis test within an Earthworm Environments
+
+  - Create Earthworm Environment with Memphis test `params`, `log` and `data` directories:
+
+```sh
+make create_ew_env_from_zip_url \
+     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+     MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
+     EW_ENV=memphis_test1
+```
+
+  - Run `startstop` within the Earthworm Environment `memphis_test1` just created:
+
+```sh
+make EW_ENV=memphis_test1 \
+     EW_INSTALL_INSTALLATION=INST_MEMPHIS \
+     run_ew_in_bash
+```
+
+You will see the iteractive output from the Earthworm `startstop` process.
+
+  - Connect docker container and launch a bash shell:
+
+```sh
+make EW_ENV=memphis_test1 exec
+```
+
+From shell prompt within docker container you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
 
 ## Caveats
 
