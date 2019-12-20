@@ -150,8 +150,6 @@ make create_ew_env_from_git_repository \
 
 Variable `GIT_BRANCH` is optional.
 
-Changing value for `EW_ENV` you can create 
-
 ## Running Earthworm Environments
 
 Main `make` commands for running and/or stopping Earthworm Envinronments within a docker container are:
