@@ -122,7 +122,30 @@ EW_SVN_REVISION =
 
 ## Creating Earthworm Environments
 
-TODO
+You can create Earthworm Environments from zip file available from an URL or git repositories.
+
+In both cases you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment.
+
+Example for zip file:
+
+```sh
+make create_ew_env_from_zip_url \
+     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+     MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
+     EW_ENV=my_test_env
+```
+
+Example for git repository:
+
+```sh
+make create_ew_env_from_git_repository \
+     GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \
+     GIT_BRANCH=develop \
+     MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \
+     EW_ENV=my_test_env
+```
+
+Variable `GIT_BRANCH` is optional.
 
 ## Running Earthworm Environments
 
