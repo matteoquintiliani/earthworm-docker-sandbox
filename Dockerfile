@@ -53,8 +53,6 @@ RUN echo "" >> /root/.bashrc \
 	 && echo "export EW_INSTALL_BITS=${EW_INSTALL_BITS}" >> /root/.bashrc \
 	 && echo "export EW_RUN_DIR=\"${EW_INSTALL_HOME}/${EW_INSTALL_VERSION}\"" >> /root/.bashrc \
      && echo "" >> /root/.bashrc \
-	 && echo ". ${EW_RUN_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
-     && echo "" >> /root/.bashrc \
      && echo "caption always" >> /root/.screenrc \
 	 && echo "caption string '%{+b b}%H: %{= .W.} %{b}%D %d-%M %{r}%c %{k}%?%F%{.B.}%?%2n%? [%h]%? (%w)'" >> /root/.screenrc
 
@@ -167,7 +165,10 @@ ARG EW_INSTALL_INSTALLATION="INST_UNKNOWN"
 RUN \
 	 echo "export EW_INSTALL_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc
+	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 && echo "" >> /root/.bashrc \
+	 && echo ". ${EW_RUN_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
+	 && echo "" >> /root/.bashrc
 
 # Set User and Group variabls
 ENV GROUP_NAME=ew
