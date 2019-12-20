@@ -91,8 +91,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
      run_ew_in_screen: run Earthworm by screen in a new docker container\n\
                        Pass arguments to ew_check_process_status.sh by ARGS variable\n\
 \n\
-                       Examples: make run_ew_in_screen ARGS=\"tankplayer.d nopau\"\n\
-                                 make run_ew_in_screen ARGS=\"tankplayer.d pau\"\n\
+                       Examples: make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d nopau\"\n\
+                                 make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d pau\"\n\
 \n\
      status:           run 'status' in the Earthworm running docker container\n\
      pau:              run 'pau' in the Earthworm running docker container\n\

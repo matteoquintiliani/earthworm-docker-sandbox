@@ -185,6 +185,20 @@ Command example for executing a `bash` shell within the `myew_envs` Earthworm En
 make EW_ENV=myew_envs exec
 ```
 
+There are two `make` commands to launch Earthworm automatically when the container starts:
+
+  - `run_ew_in_bash`:   run Earthworm by bash in a new docker container
+  - `run_ew_in_screen`: run Earthworm by screen in a new docker container
+
+Both launch process `startstop`. Running in a `bash` you will have only one shell available for that container. You can still access a running container using the `make exec` command.
+
+Using `screen` you can create as many shell as you want inside the same container. Moreover, when running a container by `run_ew_in_screen` you can pass arguments to the script `ew_check_process_status.sh` which can monitor an Earthworm module that when it is no longer alive then it can stop all Earthworm and exit from docker container.
+
+Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
+
+```sh
+make run_ew_in_screen EW_ENV=myew_test ARGS="tankplayer.d nopau"
+```
 
 ## Author
 
