@@ -106,8 +106,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
                                  MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
                                  EW_ENV=my_test_env\n\
 \n\
-     create_ew_env_memphis_test:   download and prepare configuration and data for Memphis Test\n\
-     create_ew_env_ingv_test:      download and prepare configuration and data for INGV Test\n\
+     create_ew_env_memphis_test:   short cut based on create_ew_env_from_zip_url for Memphis Test\n\
+     create_ew_env_ingv_test:      short cut based on create_ew_env_from_zip_url for INGV Test\n\
 \n\
   - Commands for creating Earthworm Environment based on git repository:\n\
 \n\
@@ -117,16 +117,11 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
                    Example: make create_ew_env_from_git_repository \ \n\
                                  GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
                                  GIT_BRANCH=develop \ \n\
+                                 MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \ \n\
                                  EW_ENV=my_test_env\n\
 \n\
      create_ew_env_from_ingv_runconfig_branch:\n\
-                   Like command 'create_ew_env_from_git_repository' and moreover,\n\
-                   set subdirectories params,log and data from ingv repository 'earthworm/run_configs'\n\
-\n\
-                   Example: make create_ew_env_from_ingv_runconfig_branch \ \n\
-                                 GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
-                                 GIT_BRANCH=hew10 \ \n\
-                                 EW_ENV=hew10_testdir\n\
+                   short cut based on create_ew_env_from_git_repository for INGV Git Repository\n\
 \n\
   - Commands for creating tankfiles:\n\
 \n\
@@ -300,14 +295,12 @@ create_ew_env_from_git_repository: check_for_creating check_git_variables
 	@cd $(EW_ENV_MAINDIR) \
 		&& git clone --recursive --single-branch --branch $(GIT_BRANCH) $(GIT_REP) $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
+		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from branch $(GIT_BRANCH) in $(GIT_REP) has been successfully created."
 
-create_ew_env_from_ingv_runconfig_branch: create_ew_env_from_git_repository
-	@cd $(EW_ENV_MAINDIR) \
-		&& cd $(EW_ENV_DIR) \
-		&& ln -s run_realtime/params \
-		&& mkdir log \
-		&& mkdir data
+# Short cut based on create_ew_env_from_git_repository for creating Earthworm Environment from INGV Git Repositories
+create_ew_env_from_ingv_runconfig_branch:
+	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=hew10 MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
 
 create_tank:
 	@echo $(ARGS)
