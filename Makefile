@@ -103,6 +103,7 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
                    Example: make create_ew_env_from_zip_url \ \n\
                                  ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
+                                 CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
                                  MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
                                  EW_ENV=my_test_env\n\
 \n\
@@ -117,7 +118,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
                    Example: make create_ew_env_from_git_repository \ \n\
                                  GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
                                  GIT_BRANCH=develop \ \n\
-                                 MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \ \n\
+                                 CREATE_EW_ENV_SUBDIRS="log data" \ \n\
+                                 MAP_EW_ENV_SUBDIRS="run_realtime/params" \ \n\
                                  EW_ENV=my_test_env\n\
 \n\
      create_ew_env_from_ingv_runconfig_branch:\n\
@@ -151,6 +153,7 @@ check_ew_env_variables:
 
 check_zip_url_variables:
 	@if [ -z "$(ZIP_URL)" ]; then echo "ERROR: ZIP_URL must be defined. Exit."; exit 1; fi
+	@if [ -z "$(CREATE_EW_ENV_SUBDIRS)" ]; then echo "WARNING: CREATE_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 	@if [ -z "$(MAP_EW_ENV_SUBDIRS)" ]; then echo "WARNING: MAP_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 
 check_git_variables:
@@ -279,6 +282,7 @@ create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
 		&& if [ ! -f "$${BASENAME_ZIP_URL}" ]; then wget -N $(ZIP_URL); fi \
 		&& unzip -q "$${BASENAME_ZIP_URL}" -d $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
+		&& for CUR_DIR in $(CREATE_EW_ENV_SUBDIRS); do echo "Creating directory $${CUR_DIR} ..."; if [ ! -d "$${CUR_DIR}" ]; then mkdir -p "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} already exists."; fi; done \
 		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" based on $(ZIP_URL) has been successfully created."
 
@@ -295,6 +299,7 @@ create_ew_env_from_git_repository: check_for_creating check_git_variables
 	@cd $(EW_ENV_MAINDIR) \
 		&& git clone --recursive --single-branch --branch $(GIT_BRANCH) $(GIT_REP) $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
+		&& for CUR_DIR in $(CREATE_EW_ENV_SUBDIRS); do echo "Creating directory $${CUR_DIR} ..."; if [ ! -d "$${CUR_DIR}" ]; then mkdir -p "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} already exists."; fi; done \
 		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from branch $(GIT_BRANCH) in $(GIT_REP) has been successfully created."
 
