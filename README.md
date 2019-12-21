@@ -105,9 +105,6 @@ make EW_ENV=memphis_test1 exec
 From that shell prompt within docker container you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
 
 
-
-
-
 ## Configuration
 
 All configuration variables can be set within the file `Makefile.env` or passed as argument at run-time to command `make`.
@@ -170,13 +167,16 @@ EW_SVN_REVISION =
 ```
 Current Subversion revision at the time the author is writing is @8106 (see log here [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
 
-If you want to compile an old version of Earthworm defining different values for variables  `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`, you might need to change Doxyfile as well fixing properly the section where Earthworm is compiled and/or basing your build on an older docker linux image.
-
-With the current `Doxyfile`, the author has been able to compile `tags/ew_7.10_release` but not `EW_SVN_BRANCH=tags/ew_7.9_release` which was 3 years old.
+If you want to compile an old version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
 
 ```sh
 make EW_SVN_BRANCH=tags/ew_7.10_release build
 ```
+
+You might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
+
+With the current `Doxyfile`, the author has been able to compile `tags/ew_7.10_release` and, by a minor fix into `Doxyfile`, also the 32-bit version of `EW_SVN_BRANCH=tags/ew_7.9_release` which is was 3 years old.
+
 
 ## Creating Earthworm Environments
 
