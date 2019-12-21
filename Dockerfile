@@ -27,6 +27,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo root:toor | chpasswd
 
 # Install necessary packages
+# gcc-multilib is needed to compiling 32-bit Earthworm version
 RUN apt-get clean \
 		&& apt-get update \
 		&& apt-get install -y \
@@ -39,6 +40,7 @@ RUN apt-get clean \
 			gcc \
 			gfortran \
 			screen \
+			gcc-multilib \
 		&& apt-get clean
 
 # Set .bashrc for root user
@@ -81,10 +83,8 @@ diagnostic_tools \
 "
 
 # Fix for EW_SVN_BRANCH=tags/ew_7.9_release
-# For compiling 32bit intstall gcc-multilib
 RUN \
 		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
-			apt-get install -y gcc-multilib; \
 			sed -i'.bak' -e "s/-Werror=format//g" ${EW_RUN_DIR}/environment/ew_linux.bash; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
