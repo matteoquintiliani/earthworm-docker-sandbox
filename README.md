@@ -24,7 +24,11 @@ This tool is designed to work on all Unix-like operating systems. It has not bee
 
 ## Help
 
-Very short help:
+This tool is entirely based on `docker`, `make`, `bash` and other utilities like `sed`, `grep`, `find`, `wget`, etc.
+
+Before using it, make sure you have properly installed all those packages.
+
+A very short help is:
 
 ```
  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -40,11 +44,67 @@ Very short help:
      - directory path is EW_ENV_DIR
 ```
 
-Detailed help information running:
+A more detailed help information can be show by running:
 
 ```sh
 make help
 ```
+
+## Quick start
+
+Get ready to get your first Earthworm Environment running in a Docker container by this tool. We will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
+
+  - Changing directory to Earthworm Docker Sandbox by:
+
+```sh
+cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
+```
+
+  - Building the docker image
+
+```sh
+make build
+```
+
+If all went well you can see your docker image by:
+
+```sh
+$ docker images ew-sandbox
+```
+
+```
+REPOSITORY        TAG               IMAGE ID         CREATED            SIZE
+ew-sandbox        trunk             a9279221655d     7 minutes ago      532MB
+```
+
+  - Creating Earthworm Environment with Memphis test `params`, `log` and `data` directories by:
+
+```sh
+make create_ew_env_from_zip_url \
+     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+     MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
+     EW_ENV=memphis_test1
+```
+
+  - Running `startstop` within the Earthworm Environment `memphis_test1` just created by:
+
+```sh
+make EW_ENV=memphis_test1 \
+     EW_INSTALL_INSTALLATION=INST_MEMPHIS \
+     run_ew_in_bash
+```
+
+You will see the iteractive output from the Earthworm `startstop` process.
+
+  - Within another terminal, connecting docker container and launch a bash shell by:
+
+```sh
+make EW_ENV=memphis_test1 exec
+```
+
+From that shell prompt within docker container you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
+
+
 
 
 
@@ -62,7 +122,7 @@ Syntax: make  EW_ENV=ew_default  <command>
 
 The variables passed as arguments override the values defined in the `Makefile.env` file.
 
-## Build Docker Image
+## Building Docker Image
 
 Default:
 
@@ -70,7 +130,7 @@ Default:
 make build
 ```
 
-### Compile Earthworm modules
+### Compiling Earthworm modules
 
 Default settings compile all Earthworm modules from last revision in the main Subversion directory from `svn://svn.isti.com/earthworm/trunk`.
 
@@ -92,11 +152,11 @@ seismic_processing/binder_ew \
 
 **N.B.** In any case, `libsrc` and all modules in `system_control` and `diagnostic_tools` will be compiled.
 
-### Compile specific Earthworm versions
+### Compiling specific Earthworm versions
 
 You can also choose to compile a particolar Subversion directory or revision.
 
-Variables involved in the docker image building process are `EW_SVN_BRANCH` and `EW_SVN_REVISION`. Default for branch is `trunk` and last available revision.
+Variables involved in the docker image building process are `EW_SVN_BRANCH` and `EW_SVN_REVISION`. Default is last available subversion revision from main directory `trunk`.
 
 ```sh
 # You can set custom main directories (e.g. 'tags/ew_7.10_release', 'branches/cosmos', etc.)
@@ -106,9 +166,13 @@ EW_SVN_BRANCH = trunk
 # Set optional Earthworm Revision. If it is empty that stands for last revision of the EW_SVN_BRANCH
 # You can set custom subversion revision 'NNN' where NNN is the revision number
 EW_SVN_REVISION =
-# EW_SVN_REVISION = 8104
+# EW_SVN_REVISION = 8106
 ```
+Current Subversion revision at the time the author is writing is @8106 (see log here [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
 
+If you want to compile an old version of Earthworm defining different values for variables  `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`, you might need to change Doxyfile as well fixing properly the section where Earthworm is compiled and/or basing your build on an older docker linux image.
+
+With the current `Doxyfile`, the author has been able to compile `tags/ew_7.10_release` but not `EW_SVN_BRANCH=tags/ew_7.9_release` which was 3 years old.
 
 ```sh
 make EW_SVN_BRANCH=tags/ew_7.10_release build
@@ -209,40 +273,10 @@ Example for running Earthworm within an Earthworm Environment and quit docker co
 make run_ew_in_screen EW_ENV=myew_test ARGS="tankplayer.d nopau"
 ```
 
-### Running the Memphis test within an Earthworm Environments
-
-  - Create Earthworm Environment with Memphis test `params`, `log` and `data` directories:
-
-```sh
-make create_ew_env_from_zip_url \
-     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
-     MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-     EW_ENV=memphis_test1
-```
-
-  - Run `startstop` within the Earthworm Environment `memphis_test1` just created:
-
-```sh
-make EW_ENV=memphis_test1 \
-     EW_INSTALL_INSTALLATION=INST_MEMPHIS \
-     run_ew_in_bash
-```
-
-You will see the iteractive output from the Earthworm `startstop` process.
-
-  - Connect docker container and launch a bash shell:
-
-```sh
-make EW_ENV=memphis_test1 exec
-```
-
-From shell prompt within docker container you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
-
 ## Caveats
 
   - If you are running `wave_server` module within your Earthworm Environments which it is processing the same waveforms by `tankplayer` module, you will have to have delete all tank files generated by `wave_server` between one Earthworm Environment execution and the next one. For example, for a memphis test environment you may need to run `rm ~/ew_envs/memphis_test1/data/wave_serverV_tank/*`.
   - User and Group ID on Linux system. TODO.
-  - If you want to compile an old version of Earthworm defining different values for variables  `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`, you might need to change Doxyfile as well fixing properly the section where Earthworm is compiled and/or basing your build on an older docker linux image.
 
 ## Author
 
