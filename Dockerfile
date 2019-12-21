@@ -73,10 +73,6 @@ RUN \
 		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_RUN_DIR} \
 		&& cp ${EW_RUN_DIR}/environment/earthworm.d ${EW_RUN_DIR}/environment/earthworm_global.d ${EW_RUN_DIR}/params/
 
-# Temporary fix for cosmos0putaway.c
-RUN \
-		sed -i'.bak' -e 's/COSMOSLINELEN/5000/g' ${EW_RUN_DIR}/src/libsrc/util/cosmos0putaway.c
-
 # Require compiling at least 'libsrc', 'system_control' and 'diagnostic_tools'
 ENV REQUIRED_GROUP_MODULE_LIST=" \
 libsrc \
