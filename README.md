@@ -165,7 +165,8 @@ EW_SVN_BRANCH = trunk
 EW_SVN_REVISION =
 # EW_SVN_REVISION = 8106
 ```
-Current Subversion revision at the time the author is writing is @8106 (see log here [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
+
+Log of Subversion revisions are available from following url: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
 
 If you want to compile an old version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
 
@@ -175,7 +176,15 @@ make EW_SVN_BRANCH=tags/ew_7.10_release build
 
 You might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
 
-With the current `Doxyfile`, the author has been able to compile `tags/ew_7.10_release` and, by a minor fix into `Doxyfile`, also the 32-bit version of `EW_SVN_BRANCH=tags/ew_7.9_release` which is was 3 years old.
+With the current `Doxyfile` you can compile:
+
+  - from Subversion revision @8068 (*ew\_7.10\_relase*) to the current @8105, 64-bit version
+  - `tags/ew_7.10_release` (revision @8068), 64-bit version
+  - `EW_SVN_BRANCH=tags/ew_7.9_release` (revision @6859), 32-bit version (by a minor fix in `Dockerfile`)
+  - `EW_SVN_BRANCH=tags/ew_7.8_relase` (revision @6404), 32-bit version
+  - `EW_SVN_BRANCH=tags/ew_7.7_relase` (revision @5961), 32-bit version
+
+
 
 
 ## Creating Earthworm Environments
