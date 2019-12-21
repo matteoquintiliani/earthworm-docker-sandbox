@@ -80,6 +80,15 @@ system_control \
 diagnostic_tools \
 "
 
+# Fix for EW_SVN_BRANCH=tags/ew_7.9_release
+# For compiling 32bit intstall gcc-multilib
+RUN \
+		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
+			apt-get install -y gcc-multilib; \
+			sed -i'.bak' -e "s/-Werror=format//g" ${EW_RUN_DIR}/environment/ew_linux.bash; \
+			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
+		fi
+
 # Compile required group modules
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
