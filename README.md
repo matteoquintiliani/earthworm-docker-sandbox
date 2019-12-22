@@ -310,4 +310,3 @@ make run_ew_in_screen EW_ENV=myew_test ARGS="tankplayer.d nopau"
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
 
 Mail bug reports and suggestions to *matteo.quintiliani [at] ingv.it*
-
