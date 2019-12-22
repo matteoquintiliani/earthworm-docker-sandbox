@@ -185,6 +185,26 @@ With the current `Doxyfile` you can compile:
   - `EW_SVN_BRANCH=tags/ew_7.7_relase` (svn revision @5961), 32-bit version.
 
 
+When you build a docker image, default name is `ew-sandbox` and tag is built by the values of `EW_SVN_BRANCH` and `EW_SVN_REVISION` variables.
+
+For listing available earthworm docker sandbox images, use the following command:
+
+```sh
+$ docker images ew-sandbox
+```
+
+An example of the output is:
+
+```
+REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
+ew-sandbox          tags_ew_7_7_release    4f816b79adc4        18 hours ago        1.23GB
+ew-sandbox          tags_ew_7_8_release    4b4ecb3690da        18 hours ago        1.24GB
+ew-sandbox          tags_ew_7_9_release    b05a615596ca        19 hours ago        1.28GB
+ew-sandbox          tags_ew_7_10_release   a0a741e6f282        25 hours ago        1.31GB
+ew-sandbox          trunk                  99e08c4977c2        18 hours ago        1.32GB
+```
+
+
 ## Creating Earthworm Environments
 
 
