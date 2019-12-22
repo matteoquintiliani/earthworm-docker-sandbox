@@ -178,13 +178,11 @@ You might need to change `Doxyfile` in order to fix properly the section where E
 
 With the current `Doxyfile` you can compile:
 
-  - from Subversion revision @8068 (*ew\_7.10\_relase*) to the current @8105, 64-bit version
-  - `tags/ew_7.10_release` (revision @8068), 64-bit version
-  - `EW_SVN_BRANCH=tags/ew_7.9_release` (revision @6859), 32-bit version (by a minor fix in `Dockerfile`)
-  - `EW_SVN_BRANCH=tags/ew_7.8_relase` (revision @6404), 32-bit version
-  - `EW_SVN_BRANCH=tags/ew_7.7_relase` (revision @5961), 32-bit version
-
-
+  - Subversion revision @8105, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to @8105, all consistent revisions should be successfully compiled).
+  - `EW_SVN_BRANCH=tags/ew_7.10_release` (svn revision @8068), 64-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.9_release` (svn revision @6859), 32-bit version. (by a minor fix in `Dockerfile`)
+  - `EW_SVN_BRANCH=tags/ew_7.8_relase` (svn revision @6404), 32-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.7_relase` (svn revision @5961), 32-bit version.
 
 
 ## Creating Earthworm Environments
