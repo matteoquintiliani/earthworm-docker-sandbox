@@ -1,6 +1,6 @@
 # Earthworm Docker Sandbox
 
-A Docker tool for learning, testing and running Earthworm System within enclosed environments.
+A Docker tool for learning, testing, running and developing Earthworm System within enclosed environments.
 
 ## Earthworm System
 
