@@ -18,7 +18,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV EW_INSTALL_HOME="/opt"
 ENV EW_INSTALL_VERSION="earthworm"
 ENV EW_INSTALL_BITS=64
-ENV EW_RUN_DIR="${EW_INSTALL_HOME}/${EW_INSTALL_VERSION}"
+ENV EW_EARTHWORM_DIR="${EW_INSTALL_HOME}/${EW_INSTALL_VERSION}"
+ENV EW_RUN_DIR="${EW_INSTALL_HOME}/ew_env"
 
 # Set bash as shell
 SHELL ["/bin/bash", "-c"]
@@ -53,7 +54,7 @@ RUN echo "" >> /root/.bashrc \
 	 && echo "export EW_INSTALL_HOME=\"${EW_INSTALL_HOME}\"" >> /root/.bashrc \
 	 && echo "export EW_INSTALL_VERSION=\"${EW_INSTALL_VERSION}\"" >> /root/.bashrc \
 	 && echo "export EW_INSTALL_BITS=${EW_INSTALL_BITS}" >> /root/.bashrc \
-	 && echo "export EW_RUN_DIR=\"${EW_INSTALL_HOME}/${EW_INSTALL_VERSION}\"" >> /root/.bashrc \
+	 && echo "export EW_RUN_DIR=\"${EW_RUN_DIR}\"" >> /root/.bashrc \
      && echo "" >> /root/.bashrc \
      && echo "caption always" >> /root/.screenrc \
 	 && echo "caption string '%{+b b}%H: %{= .W.} %{b}%D %d-%M %{r}%c %{k}%?%F%{.B.}%?%2n%? [%h]%? (%w)'" >> /root/.screenrc
@@ -74,13 +75,13 @@ RUN \
 		else \
 			EW_CO_SVN_REVISION=@${EW_SVN_REVISION}; \
 		fi \
-		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_RUN_DIR} \
-		&& cp ${EW_RUN_DIR}/environment/earthworm.d ${EW_RUN_DIR}/environment/earthworm_global.d ${EW_RUN_DIR}/params/
+		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_EARTHWORM_DIR} \
+		&& cp ${EW_EARTHWORM_DIR}/environment/earthworm.d ${EW_EARTHWORM_DIR}/environment/earthworm_global.d ${EW_EARTHWORM_DIR}/params/
 
 # Fix for compiling when EW_SVN_BRANCH=tags/ew_7.9_release
 RUN \
 		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
-			sed -i'.bak' -e "s/-Werror=format//g" ${EW_RUN_DIR}/environment/ew_linux.bash; \
+			sed -i'.bak' -e "s/-Werror=format//g" ${EW_EARTHWORM_DIR}/environment/ew_linux.bash; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
 
@@ -92,15 +93,15 @@ ARG ARG_SELECTED_MODULE_LIST=
 # Required directories to compile 'libsrc', 'system_control' and 'diagnostic_tools'
 ENV REQUIRED_GROUP_MODULE_LIST="libsrc system_control diagnostic_tools"
 RUN \
-		. ${EW_RUN_DIR}/environment/ew_linux.bash \
+		. ${EW_EARTHWORM_DIR}/environment/ew_linux.bash \
 		&& \
 		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
 		then \
-			cd ${EW_RUN_DIR}/src && make clean_bin_unix && make clean_unix && make unix; \
+			cd ${EW_EARTHWORM_DIR}/src && make clean_bin_unix && make clean_unix && make unix; \
 		else \
 			for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
 				echo "=== Compiling required group module ${GROUP_MODULE} ..." && \
-				cd ${EW_RUN_DIR}/src && \
+				cd ${EW_EARTHWORM_DIR}/src && \
 				if [ ! -d ${GROUP_MODULE} ]; then echo "ERROR: ${GROUP_MODULE} not found. Exit."; exit 1; fi && \
 				cd ${GROUP_MODULE} && \
 				if [ -f makefile.unix ]; then make -f makefile.unix; else make unix; fi \
@@ -109,7 +110,7 @@ RUN \
 				echo "=== Compiling ${MODULE} ..." && \
 				DIRNAME_MODULE="`dirname ${MODULE}`" && \
 				BASENAME_MODULE="`basename ${MODULE}`" && \
-				cd ${EW_RUN_DIR}/src && \
+				cd ${EW_EARTHWORM_DIR}/src && \
 				if [ ! -d ${DIRNAME_MODULE} ]; then echo "ERROR: module directory ${DIRNAME_MODULE} not found. Exit."; exit 1; fi && \
 				cd ${DIRNAME_MODULE} && \
 				cd ${BASENAME_MODULE} && \
@@ -129,35 +130,38 @@ RUN apt-get clean \
 		&& apt-get clean
 
 RUN \
-		cd ${EW_RUN_DIR} \
+		cd ${EW_EARTHWORM_DIR} \
 		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git
 
-COPY ./random_seed.patch ${EW_RUN_DIR}/ew2openapi/json-c/
-COPY ./ew2openapi.patch ${EW_RUN_DIR}/ew2openapi/
+COPY ./random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/
+COPY ./ew2openapi.patch ${EW_EARTHWORM_DIR}/ew2openapi/
 
 RUN \
-		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& cd ${EW_RUN_DIR}/ew2openapi \
+		. ${EW_EARTHWORM_DIR}/environment/ew_linux.bash \
+		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
 		&& cd ./rabbitmq-c \
 		&& mkdir build \
 		&& cd build \
 		&& cmake -DENABLE_SSL_SUPPORT=OFF .. \
 		&& cmake --build . \
-		&& cd ${EW_RUN_DIR}/ew2openapi \
+		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
 		&& cd ./json-c \
 		&& patch < random_seed.patch \
 		&& sh autogen.sh \
 		&& ./configure --prefix=`pwd`/build \
 		&& make \
 		&& make install \
-		&& cd ${EW_RUN_DIR}/ew2openapi \
+		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
 		&& patch -p1 < ew2openapi.patch \
 		&& make -f makefile.unix static
 ##########################################################
 
-# Create EW_LOG
+# Create params, log and data subdirectories
 RUN \
-	mkdir ${EW_RUN_DIR}/log
+	mkdir ${EW_RUN_DIR} \
+	&& mkdir ${EW_RUN_DIR}/params \
+	&& mkdir ${EW_RUN_DIR}/log \
+	&& mkdir ${EW_RUN_DIR}/data
 
 # Set default working directory
 WORKDIR ${EW_RUN_DIR}
@@ -220,12 +224,11 @@ RUN \
 
 RUN mkdir ${HOMEDIR_USER}
 
-RUN mkdir -p ${EW_RUN_DIR}/OUTPUT
-RUN mkdir -p ${EW_RUN_DIR}/scripts
-
-COPY ./scripts/ew_get_rings_list.sh ${EW_RUN_DIR}/scripts
-COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_RUN_DIR}/scripts
-COPY ./scripts/ew_check_process_status.sh ${EW_RUN_DIR}/scripts
+# Copy scripts to container
+RUN mkdir -p ${EW_INSTALL_HOME}/scripts
+COPY ./scripts/ew_get_rings_list.sh ${EW_INSTALL_HOME}/scripts
+COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_INSTALL_HOME}/scripts
+COPY ./scripts/ew_check_process_status.sh ${EW_INSTALL_HOME}/scripts
 
 ##########################################################
 # RUN apt-get clean \
@@ -243,7 +246,7 @@ RUN \
 	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
-	 && echo ". ${EW_RUN_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
+	 && echo ". ${EW_EARTHWORM_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc
 
 RUN cp /root/.bashrc ${HOMEDIR_USER}/

@@ -222,8 +222,8 @@ run_ew_in_screen: check_for_running
 		&& screen -S ew -X screen \
 		&& screen -S ew -X screen \
 		&& screen -p 0 -S ew -X stuff \"startstop $(CARRIAGE_RETURN)\" \
-		&& screen -p 1 -S ew -X stuff \"sleep 2 && cd log && /opt/earthworm/scripts/ew_sniff_all_rings_except_tracebuf_message.sh | tee sniffrings.log $(CARRIAGE_RETURN)\" \
-		&& screen -p 2 -S ew -X stuff \"/opt/earthworm/scripts/ew_check_process_status.sh $(ARGS) $(CARRIAGE_RETURN)\" \
+		&& screen -p 1 -S ew -X stuff \"sleep 2 && cd log && /opt/scripts/ew_sniff_all_rings_except_tracebuf_message.sh | tee sniffrings.log $(CARRIAGE_RETURN)\" \
+		&& screen -p 2 -S ew -X stuff \"/opt/scripts/ew_check_process_status.sh $(ARGS) $(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
 
@@ -243,7 +243,7 @@ pau: check_for_running
 
 status_tankplayer: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
-		bash -c ". ~/.bashrc && /opt/earthworm/scripts/ew_check_process_status.sh"
+		bash -c ". ~/.bashrc && /opt/scripts/ew_check_process_status.sh"
 
 start: check_for_running
 	docker run $(DOCKER_USER) -d $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION)
@@ -259,7 +259,7 @@ sniffrings: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c '\
 		. ~/.bashrc \
 		&& echo $${RING_LIST} \
-		&& sniffrings $$(/opt/earthworm/scripts/ew_get_rings_list.sh) verbose 2>&1 | grep -v "TYPE_TRACEBUF" \
+		&& sniffrings $$(/opt/scripts/ew_get_rings_list.sh) verbose 2>&1 | grep -v "TYPE_TRACEBUF" \
 		'
 
 logtail: check_for_running
