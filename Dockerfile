@@ -69,55 +69,52 @@ ARG EW_SVN_REVISION=
 # Checkout necessary Earthworm repository directories
 RUN \
 		if [ -z ${EW_SVN_REVISION} ]; \
-		then EW_CO_SVN_REVISION=; \
-		else EW_CO_SVN_REVISION=@${EW_SVN_REVISION}; \
+		then \
+			EW_CO_SVN_REVISION=; \
+		else \
+			EW_CO_SVN_REVISION=@${EW_SVN_REVISION}; \
 		fi \
 		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_RUN_DIR} \
 		&& cp ${EW_RUN_DIR}/environment/earthworm.d ${EW_RUN_DIR}/environment/earthworm_global.d ${EW_RUN_DIR}/params/
 
-# Require compiling at least 'libsrc', 'system_control' and 'diagnostic_tools'
-ENV REQUIRED_GROUP_MODULE_LIST=" \
-libsrc \
-system_control \
-diagnostic_tools \
-"
-
-# Fix for EW_SVN_BRANCH=tags/ew_7.9_release
+# Fix for compiling when EW_SVN_BRANCH=tags/ew_7.9_release
 RUN \
 		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
 			sed -i'.bak' -e "s/-Werror=format//g" ${EW_RUN_DIR}/environment/ew_linux.bash; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
 
-# Compile required group modules
-RUN \
-		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
-			echo "=== Compiling required group module ${GROUP_MODULE} ..." && \
-			cd ${EW_RUN_DIR}/src && \
-			if [ ! -d ${GROUP_MODULE} ]; then echo "ERROR: ${GROUP_MODULE} not found. Exit."; exit 1; fi && \
-			cd ${GROUP_MODULE} && \
-			if [ -f makefile.unix ]; then make -f makefile.unix; else make unix; fi \
-		done;
-
-# Default ARG_SELECTED_MODULE_LIST is empty. Compile all Earthworm modules. Otherwise only in ARG_SELECTED_MODULE_LIST.
+# Default ARG_SELECTED_MODULE_LIST is empty. Compile all Earthworm modules.
 ARG ARG_SELECTED_MODULE_LIST=
 
-# Compile modules
+# If ARG_SELECTED_MODULE_LIST is not empty then compiling all Earthworm modules.
+# Otherwise only directories in REQUIRED_GROUP_MODULE_LIST and ARG_SELECTED_MODULE_LIST will compiled.
+# Required directories to compile 'libsrc', 'system_control' and 'diagnostic_tools'
+ENV REQUIRED_GROUP_MODULE_LIST="libsrc system_control diagnostic_tools"
 RUN \
 		. ${EW_RUN_DIR}/environment/ew_linux.bash \
-		&& if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
-		then cd ${EW_RUN_DIR}/src &&  make unix; \
-		else for MODULE in ${ARG_SELECTED_MODULE_LIST}; do \
-			echo "=== Compiling ${MODULE} ..." && \
-			DIRNAME_MODULE="`dirname ${MODULE}`" && \
-			BASENAME_MODULE="`basename ${MODULE}`" && \
-			cd ${EW_RUN_DIR}/src && \
-			if [ ! -d ${DIRNAME_MODULE} ]; then echo "ERROR: module directory ${DIRNAME_MODULE} not found. Exit."; exit 1; fi && \
-			cd ${DIRNAME_MODULE} && \
-			cd ${BASENAME_MODULE} && \
-			make -f makefile.unix; \
-		done; \
+		&& \
+		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
+		then \
+			cd ${EW_RUN_DIR}/src && make clean_bin_unix && make clean_unix && make unix; \
+		else \
+			for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
+				echo "=== Compiling required group module ${GROUP_MODULE} ..." && \
+				cd ${EW_RUN_DIR}/src && \
+				if [ ! -d ${GROUP_MODULE} ]; then echo "ERROR: ${GROUP_MODULE} not found. Exit."; exit 1; fi && \
+				cd ${GROUP_MODULE} && \
+				if [ -f makefile.unix ]; then make -f makefile.unix; else make unix; fi \
+			done; \
+			for MODULE in ${ARG_SELECTED_MODULE_LIST}; do \
+				echo "=== Compiling ${MODULE} ..." && \
+				DIRNAME_MODULE="`dirname ${MODULE}`" && \
+				BASENAME_MODULE="`basename ${MODULE}`" && \
+				cd ${EW_RUN_DIR}/src && \
+				if [ ! -d ${DIRNAME_MODULE} ]; then echo "ERROR: module directory ${DIRNAME_MODULE} not found. Exit."; exit 1; fi && \
+				cd ${DIRNAME_MODULE} && \
+				cd ${BASENAME_MODULE} && \
+				make -f makefile.unix; \
+			done; \
 		fi;
 
 ##########################################################
