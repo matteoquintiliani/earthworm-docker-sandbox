@@ -197,11 +197,12 @@ An example of the output is:
 
 ```
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          tags_ew_7_7_release    4f816b79adc4        18 hours ago        1.23GB
-ew-sandbox          tags_ew_7_8_release    4b4ecb3690da        18 hours ago        1.24GB
-ew-sandbox          tags_ew_7_9_release    b05a615596ca        19 hours ago        1.28GB
-ew-sandbox          tags_ew_7_10_release   a0a741e6f282        25 hours ago        1.31GB
-ew-sandbox          trunk                  99e08c4977c2        18 hours ago        1.32GB
+ew-sandbox          trunk                  8177864b777b        20 minutes ago      918MB
+ew-sandbox          trunk_r8028            50d6e7b59d8f        23 minutes ago      920MB
+ew-sandbox          tags_ew_7_10_release   3abf3e19bf36        9 minutes ago       916MB
+ew-sandbox          tags_ew_7_9_release    3d6173a7211e        5 minutes ago       861MB
+ew-sandbox          tags_ew_7_8_release    3a93f4fdedd9        2 minutes ago       840MB
+ew-sandbox          tags_ew_7_7_release    fdf9581a633b        21 seconds ago      838MB
 ```
 
 
