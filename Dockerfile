@@ -28,7 +28,6 @@ SHELL ["/bin/bash", "-c"]
 RUN echo root:toor | chpasswd
 
 # Install necessary packages
-# gcc-multilib is needed to compiling 32-bit Earthworm version
 RUN apt-get clean \
 		&& apt-get update \
 		&& apt-get install -y \
@@ -41,8 +40,14 @@ RUN apt-get clean \
 			gcc \
 			gfortran \
 			screen \
-			gcc-multilib \
 		&& apt-get clean
+
+# gcc-multilib is needed to compiling 32-bit Earthworm version
+RUN if [ "${EW_ARCHITECTURE}" != "arm" ]; then \
+		apt-get install -y \
+			gcc-multilib \
+		&& apt-get clean; \
+	fi;
 
 # Set .bashrc for root user
 RUN echo "" >> /root/.bashrc \
