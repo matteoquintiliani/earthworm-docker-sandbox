@@ -42,8 +42,11 @@ RUN apt-get clean \
 			screen \
 		&& apt-get clean
 
+# Default Earthworm architecture is empty. Otherwise is '_arm'.
+ARG EW_ARCHITECTURE=
+
 # gcc-multilib is needed to compiling 32-bit Earthworm version
-RUN if [ "${EW_ARCHITECTURE}" != "arm" ]; then \
+RUN if [ "${EW_ARCHITECTURE}" != "_arm" ]; then \
 		apt-get install -y \
 			gcc-multilib \
 		&& apt-get clean; \

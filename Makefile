@@ -190,6 +190,7 @@ build: check_for_building
 		--build-arg ENV_GID=$(ENV_GID) \
 		--build-arg EW_SVN_BRANCH=$(EW_SVN_BRANCH)  \
 		--build-arg EW_SVN_REVISION=$(EW_SVN_REVISION) \
+		--build-arg EW_ARCHITECTURE=$(EW_ARCHITECTURE) \
 		--build-arg ARG_SELECTED_MODULE_LIST=$(ARG_SELECTED_MODULE_LIST) \
 		-f Dockerfile .
 
