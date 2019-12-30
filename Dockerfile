@@ -20,6 +20,7 @@ ENV EW_INSTALL_VERSION="earthworm"
 ENV EW_INSTALL_BITS=64
 ENV EW_EARTHWORM_DIR="${EW_INSTALL_HOME}/${EW_INSTALL_VERSION}"
 ENV EW_RUN_DIR="${EW_INSTALL_HOME}/ew_env"
+ENV EW_FILE_ENV ${EW_EARTHWORM_DIR}/environment/ew_linux.bash
 
 # Set bash as shell
 SHELL ["/bin/bash", "-c"]
@@ -81,7 +82,7 @@ RUN \
 # Fix for compiling when EW_SVN_BRANCH=tags/ew_7.9_release
 RUN \
 		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
-			sed -i'.bak' -e "s/-Werror=format//g" ${EW_EARTHWORM_DIR}/environment/ew_linux.bash; \
+			sed -i'.bak' -e "s/-Werror=format//g" ${EW_FILE_ENV}; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
 
@@ -93,7 +94,7 @@ ARG ARG_SELECTED_MODULE_LIST=
 # Required directories to compile 'libsrc', 'system_control' and 'diagnostic_tools'
 ENV REQUIRED_GROUP_MODULE_LIST="libsrc system_control diagnostic_tools"
 RUN \
-		. ${EW_EARTHWORM_DIR}/environment/ew_linux.bash \
+		. ${EW_FILE_ENV} \
 		&& \
 		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
 		then \
@@ -137,7 +138,7 @@ COPY ./random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/
 COPY ./ew2openapi.patch ${EW_EARTHWORM_DIR}/ew2openapi/
 
 RUN \
-		. ${EW_EARTHWORM_DIR}/environment/ew_linux.bash \
+		. ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
 		&& cd ./rabbitmq-c \
 		&& mkdir build \
@@ -246,7 +247,7 @@ RUN \
 	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
-	 && echo ". ${EW_EARTHWORM_DIR}/environment/ew_linux.bash" >> /root/.bashrc \
+	 && echo ". ${EW_FILE_ENV}" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc
 
 RUN cp /root/.bashrc ${HOMEDIR_USER}/
