@@ -86,6 +86,7 @@ RUN \
 		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_EARTHWORM_DIR} \
 		&& cp ${EW_EARTHWORM_DIR}/environment/earthworm.d ${EW_EARTHWORM_DIR}/environment/earthworm_global.d ${EW_EARTHWORM_DIR}/params/
 
+# Set Earthworm configuration environment file
 ENV EW_FILE_ENV="${EW_EARTHWORM_DIR}/environment/ew_linux${EW_ARCHITECTURE}.bash"
 
 # Fix for compiling when EW_SVN_BRANCH=tags/ew_7.9_release
