@@ -225,7 +225,19 @@ make ew_env_list
 
 It depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
 
-You can create Earthworm Environments on your own by creating and managing file within subdirectories `params`, `log` and `params`. Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
+You can create Earthworm Environments on your own by creating and managing file within subdirectories `params`, `log` and `params`. To create an Earthworm Environment from scratch with empty subdirectories `params`, `log` and `params` you can run a command line like:
+
+```sh
+make EW_ENV=my_test_env create_ew_env_from_scratch
+```
+
+where `EW_ENV` is the name of the Earthworm Enviroment to create. Then you can manage files in your Earthworm Environment running a shell in a docker container by the following command:
+
+```sh
+make EW_ENV=my_test_env bash
+```
+
+Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
 
 Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If they reside in different paths, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
 
