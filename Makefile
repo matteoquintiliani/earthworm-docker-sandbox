@@ -40,7 +40,7 @@ EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
 help:
 	@echo "\n\
-Earthworm Docker Sandbox 0.2.0\n\
+Earthworm Docker Sandbox 0.3.0\n\
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy\n\
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
@@ -98,6 +98,8 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
      pau:              run 'pau' in the Earthworm running docker container\n\
 \n\
   - Commands for creating Earthworm Environment based on tankplayer configuration and data test:\n\
+\n\
+     create_ew_env_from_scratch:   create an Earthworm Environment from scratch\n\
 \n\
      create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file\n\
 \n\
@@ -274,6 +276,15 @@ rm: check_for_building
 
 release: build
 	make push -e DOCKER_IMAGE_VERSION=$(DOCKER_IMAGE_VERSION)
+
+create_ew_env_from_scratch: check_for_creating
+	@mkdir -p $(EW_ENV_MAINDIR) \
+		&& cd $(EW_ENV_MAINDIR) \
+		&& mkdir $(EW_ENV_DIR) \
+		&& cd $(EW_ENV_DIR) \
+		&& mkdir params \
+		&& mkdir log \
+		&& mkdir data
 
 create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
 	@echo "Trying to get zip file from $(ZIP_URL) ..."
