@@ -309,15 +309,16 @@ create_ew_env_ingv_test:
 create_ew_env_from_git_repository: check_for_creating check_git_variables
 	@echo "Trying to create Earthworm Environment \"$(EW_ENV)\" from git repository $(GIT_REP) and branch $(GIT_BRANCH) ..."
 	@cd $(EW_ENV_MAINDIR) \
-		&& git clone --recursive --single-branch --branch $(GIT_BRANCH) $(GIT_REP) $(EW_ENV_DIR) \
+		&& git clone --recursive $(GIT_REP) $(EW_ENV_DIR) \
 		&& cd $(EW_ENV_DIR) \
+		&& git checkout $(GIT_BRANCH) \
 		&& for CUR_DIR in $(CREATE_EW_ENV_SUBDIRS); do echo "Creating directory $${CUR_DIR} ..."; if [ ! -d "$${CUR_DIR}" ]; then mkdir -p "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} already exists."; fi; done \
-		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "ERROR: directory $${CUR_DIR} not found."; fi; done \
+		&& for CUR_DIR in $(MAP_EW_ENV_SUBDIRS); do echo "Mapping directory $${CUR_DIR} ..."; if [ -d "$${CUR_DIR}" ]; then ln -s "$${CUR_DIR}"; else echo "WARNING: directory $${CUR_DIR} not found."; echo "Make $${CUR_DIR} ..."; mkdir $${CUR_DIR}; fi; done \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from branch $(GIT_BRANCH) in $(GIT_REP) has been successfully created."
 
 # Short cut based on create_ew_env_from_git_repository for creating Earthworm Environment from INGV Git Repositories
 create_ew_env_from_ingv_runconfig_branch:
-	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=hew10 MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
+	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=$(GIT_BRANCH) MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
 
 create_tank:
 	@echo $(ARGS)
