@@ -34,6 +34,7 @@ RUN apt-get clean \
 			procps \
 			less \
 			vim \
+			nano \
 			subversion \
 			git \
 			make \
