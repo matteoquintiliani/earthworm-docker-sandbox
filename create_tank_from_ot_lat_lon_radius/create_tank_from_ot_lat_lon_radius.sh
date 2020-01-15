@@ -48,6 +48,11 @@ if [ -z "$7" ]; then
 	exit
 fi
 
+# Set DIROUT_COMPLETEPATH
+cd "${DIROUT}"
+DIROUT_COMPLETEPATH="`pwd`"
+cd -
+
 # Compute STARTTIME and ENDTIME from OT and interval before and after based on GNU date installed in Docker
 GNUDATECMD="docker run --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT ${NS_IMAGE_NAME_VERSION} /bin/bash -c"
 STARTTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z - ${SECS_BEFORE_OT} seconds' +%Y-%m-%dT%H:%M:%S")
@@ -76,10 +81,6 @@ if [ -e "${DIROUT}" ]; then
 else
 	mkdir -p "${DIROUT}"
 fi
-
-cd "${DIROUT}"
-DIROUT_COMPLETEPATH="`pwd`"
-cd -
 
 if [ "${FLAG_ALREADY_EXISTS}" != "yes" ]; then
 	docker run -it --rm -v ${DIRNAME_COMPLETEPATH}/stationxml.conf:/opt/stationxml.conf -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT fdsnws-fetcher \
