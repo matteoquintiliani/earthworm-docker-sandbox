@@ -286,6 +286,13 @@ create_ew_env_from_scratch: check_for_creating
 		&& mkdir log \
 		&& mkdir data
 
+EW_ENV_FROM_DIR=$(EW_ENV_MAINDIR)/$(EW_ENV_FROM)
+create_ew_env_from_another: check_for_creating
+	@if [ -z "$(EW_ENV_FROM)" ]; then echo "ERROR: EW_ENV_FROM must be defined. (example: make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2). Exit."; echo "SUGGESTION: run 'make ew_env_list' to see available Earthworm Environments."; make ew_env_list; exit 1; fi
+	@if [ ! -e $(EW_ENV_FROM_DIR) ]; then echo "ERROR: source directory $(EW_ENV_FROM_DIR) not found. Exit."; exit 9; fi
+	@cp -vR $(EW_ENV_FROM_DIR) $(EW_ENV_DIR) \
+		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from \"$(EW_ENV_FROM_DIR)\" has been successfully created."
+
 create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
 	@echo "Trying to get zip file from $(ZIP_URL) ..."
 	@mkdir -p $(EW_ENV_MAINDIR) \
