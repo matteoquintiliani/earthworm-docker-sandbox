@@ -40,7 +40,7 @@ EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
 help:
 	@echo "\n\
-Earthworm Docker Sandbox 0.3.0\n\
+Earthworm Docker Sandbox 0.4.0\n\
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy\n\
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
@@ -97,9 +97,13 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
      status:           run 'status' in the Earthworm running docker container\n\
      pau:              run 'pau' in the Earthworm running docker container\n\
 \n\
-  - Commands for creating Earthworm Environment based on tankplayer configuration and data test:\n\
+  - Commands for creating Earthworm Environment:\n\
 \n\
      create_ew_env_from_scratch:   create an Earthworm Environment from scratch\n\
+\n\
+     create_ew_env_from_another:   create an Earthworm Environment from another (duplicate environments)\n\
+\n\
+                   Example: make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2 \ \n\
 \n\
      create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file\n\
 \n\
@@ -111,8 +115,6 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
      create_ew_env_memphis_test:   short cut based on create_ew_env_from_zip_url for Memphis Test\n\
      create_ew_env_ingv_test:      short cut based on create_ew_env_from_zip_url for INGV Test\n\
-\n\
-  - Commands for creating Earthworm Environment based on git repository:\n\
 \n\
      create_ew_env_from_git_repository:\n\
                    create Earthworm Environment having main directory from a branch of a git repository\n\
