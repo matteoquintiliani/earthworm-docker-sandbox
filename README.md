@@ -237,6 +237,12 @@ where `EW_ENV` is the name of the Earthworm Enviroment to create. Then you can m
 make EW_ENV=my_test_env bash
 ```
 
+You can duplicate an Earthworm Environment starting from an existing one by:
+
+```sh
+make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2
+```
+
 Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
 
 Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If they reside in different paths, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
