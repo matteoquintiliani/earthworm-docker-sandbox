@@ -259,6 +259,8 @@ RUN \
 	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
 	 && echo ". ${EW_FILE_ENV}" >> /root/.bashrc \
+	 && echo "" >> /root/.bashrc \
+	 && echo "export PS1='\${debian_chroot:+(\$debian_chroot)}\h:\w\${EW_ENV:+ [ew:\${EW_ENV}]} \$ '" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc
 
 RUN cp /root/.bashrc ${HOMEDIR_USER}/
