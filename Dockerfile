@@ -168,6 +168,21 @@ RUN \
 		&& make -f makefile.unix static
 ##########################################################
 
+##########################################################
+# Compile ew2moledb
+##########################################################
+RUN apt-get clean \
+		&& apt-get update \
+		&& apt-get install -y \
+			default-libmysqlclient-dev \
+		&& apt-get clean
+
+RUN \
+		. ${EW_FILE_ENV} \
+		&& cd ${EW_EARTHWORM_DIR}/src/archiving/mole/ew2moledb \
+		&& make -f makefile.unix
+##########################################################
+
 # Create params, log and data subdirectories
 RUN \
 	mkdir ${EW_RUN_DIR} \
