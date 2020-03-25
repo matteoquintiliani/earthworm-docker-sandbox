@@ -86,7 +86,7 @@ REPOSITORY          TAG                    IMAGE ID            CREATED          
 ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        1.14GB
 ```
 
-  - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
+  - Creating if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
 
 ```sh
 mkdir ~/ew_envs
@@ -129,13 +129,19 @@ make EW_ENV=memphis_test1 \
 
 You will see the iteractive output from the Earthworm `startstop` process.
 
-  - Within another terminal, connecting docker container and launch a bash shell by:
+  - Within another terminal, run a shell within the docker container started for the Earthworm Environment `memphis_test1` by:
 
 ```sh
 make EW_ENV=memphis_test1 exec
 ```
 
-From that shell prompt within docker container you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
+The docker container shell prompt will be shown:
+
+```sh
+f74b689cb1ed:/opt/ew_env [ew:memphis_test1] $
+```
+
+From that shell prompt within the Earthworm Environment `memphis_test1`,  you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
 
 
 ## Configuration
