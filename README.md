@@ -82,8 +82,8 @@ $ docker images ew-sandbox
 ```
 
 ```
-REPOSITORY        TAG               IMAGE ID         CREATED            SIZE
-ew-sandbox        trunk             a9279221655d     7 minutes ago      532MB
+REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
+ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        1.14GB
 ```
 
   - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
