@@ -33,11 +33,11 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
 This tool is entirely based on `docker`, `make`, `bash` and other utilities like `sed`, `grep`, `find`, `wget`, etc.
 
-Before using it, make sure you have properly installed all those packages.
+Before using it, make sure you have properly installed all those packages specified in section "Required software".
 
-A very short help is:
+For a quick start, a very short help is:
 
-```
+```sh
  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
 
  Current main variable values:
@@ -51,15 +51,17 @@ A very short help is:
      - directory path is EW_ENV_DIR
 ```
 
-A more detailed help information can be show by running:
+A more detailed help information can be shown by running:
 
 ```sh
 make help
 ```
 
-## Quick start
+## Quick start and first test
 
-Get ready to get your first Earthworm Environment running in a Docker container by this tool. We will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
+Get ready to get your first Earthworm Environment running in a Docker container by this tool.
+
+To get familiar with this tool we will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
 
   - Changing directory to Earthworm Docker Sandbox by:
 
@@ -84,6 +86,17 @@ REPOSITORY        TAG               IMAGE ID         CREATED            SIZE
 ew-sandbox        trunk             a9279221655d     7 minutes ago      532MB
 ```
 
+  - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
+
+```sh
+mkdir ~/ew_envs
+```
+  - List available Earthworm Environments. First time the list should be empty.
+
+```sh
+make ew_env_list
+```
+
   - Creating Earthworm Environment with Memphis test `params`, `log` and `data` directories by:
 
 ```sh
@@ -91,6 +104,19 @@ make create_ew_env_from_zip_url \
      ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
      EW_ENV=memphis_test1
+```
+
+  - List of the Earthworm Environments. You should now see `memphis_test1`.
+
+```sh
+make ew_env_list
+```
+
+```sh
+Available Earthworm Environments:
+
+  - memphis_test1
+
 ```
 
   - Running `startstop` within the Earthworm Environment `memphis_test1` just created by:
