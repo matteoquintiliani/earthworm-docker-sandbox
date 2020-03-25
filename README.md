@@ -199,10 +199,12 @@ Variables involved in the docker image building process are `EW_SVN_BRANCH` and 
 EW_SVN_BRANCH = trunk
 # EW_SVN_BRANCH = tags/ew_7.10_release
 
-# Set optional Earthworm Revision. If it is empty that stands for last revision of the EW_SVN_BRANCH
+# Set optional Earthworm Revision.
+# If it is empty that stands for last available revision of the EW_SVN_BRANCH
 # You can set custom subversion revision 'NNN' where NNN is the revision number
-EW_SVN_REVISION =
-# EW_SVN_REVISION = 8106
+# EW_SVN_REVISION =
+# Latest Earthworm Subversion revision tested in this tool
+EW_SVN_REVISION = 8136
 ```
 
 Log of Subversion revisions are available from following url: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
@@ -237,6 +239,8 @@ An example of the output is:
 ```
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
 ew-sandbox          trunk                  8177864b777b        20 minutes ago      918MB
+ew-sandbox          trunk_r8136            cb78c92612f0        32 minutes ago      1.14GB
+ew-sandbox          trunk_r8126            6385ed1ef62b        50 minutes ago      1.14GB
 ew-sandbox          trunk_r8028            50d6e7b59d8f        23 minutes ago      920MB
 ew-sandbox          tags_ew_7_10_release   3abf3e19bf36        9 minutes ago       916MB
 ew-sandbox          tags_ew_7_9_release    3d6173a7211e        5 minutes ago       861MB
