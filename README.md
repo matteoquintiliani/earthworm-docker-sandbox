@@ -1,6 +1,6 @@
 # Earthworm Docker Sandbox
 
-A Docker tool for learning, testing, running and developing Earthworm System within enclosed environments.
+A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
 ## Earthworm System
 
@@ -12,15 +12,22 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
 ## Dependencies
 
-  - Docker
-  - Make
-  - Bash
-  - sed
-  - grep
-  - find
-  - wget
+#### Operating systems
 
-This tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use. It has also been successfully tested on Mac OS X. It is not been tested on Windows yet, any feedback will be very appreciated.
+- **Linux / Unix-like**: this tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use.
+- **Mac OS X**: this tool has also been successfully tested on Mac OS X.
+- **Windows**: this tool has not been tested on Windows yet, any feedback will be very appreciated.
+
+#### Required software
+
+  - **Docker** - [https://www.docker.com/](https://www.docker.com/)
+  - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
+  - **GNU Bash** or **Zsh** - [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/), [https://www.zsh.org/](https://www.zsh.org/)
+  - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
+  - **grep** - GNU version is available at [https://www.gnu.org/software/grep/](https://www.gnu.org/software/grep/)
+  - **findutils** - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
+  - **wget** - [https://www.gnu.org/software/wget/](https://www.gnu.org/software/wget/)
+  - **git** - [https://git-scm.com/](https://git-scm.com/)
 
 ## Help
 
