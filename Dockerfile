@@ -133,24 +133,32 @@ RUN \
 ##########################################################
 # Compile ew2openapi
 ##########################################################
-RUN apt-get clean \
+# Default ARG_ADDITIONAL_MODULE_EW2OPENAPI is "no".
+ARG ARG_ADDITIONAL_MODULE_EW2OPENAPI=no
+RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
+		apt-get clean \
 		&& apt-get update \
 		&& apt-get install -y \
 			libcurl4-openssl-dev \
 			cmake \
 			dh-autoreconf \
-		&& apt-get clean
+		&& apt-get clean \
+		; fi
 
-RUN \
+RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR} \
-		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git
+		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
+		; fi
 
-COPY ./random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/
-COPY ./ew2openapi.patch ${EW_EARTHWORM_DIR}/ew2openapi/
+RUN mkdir -p ${EW_EARTHWORM_DIR}/patches
+COPY ./patches/random_seed.patch ${EW_EARTHWORM_DIR}/patches/
+COPY ./patches/ew2openapi.patch ${EW_EARTHWORM_DIR}/patches/
 
-RUN \
+RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		. ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
+		&& cp ${EW_EARTHWORM_DIR}/patches/random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/ \
+		&& cp ${EW_EARTHWORM_DIR}/patches/ew2openapi.patch ${EW_EARTHWORM_DIR}/ew2openapi/ \
 		&& cd ./rabbitmq-c \
 		&& mkdir build \
 		&& cd build \
@@ -165,22 +173,35 @@ RUN \
 		&& make install \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
 		&& patch -p1 < ew2openapi.patch \
-		&& make -f makefile.unix static
+		&& make -f makefile.unix static \
+		; fi
 ##########################################################
 
 ##########################################################
 # Compile ew2moledb
 ##########################################################
-RUN apt-get clean \
+
+# Default ARG_ADDITIONAL_MODULE_EW2MOLEDB is "no".
+ARG ARG_ADDITIONAL_MODULE_EW2MOLEDB=no
+RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
+		apt-get clean \
 		&& apt-get update \
 		&& apt-get install -y \
 			default-libmysqlclient-dev \
-		&& apt-get clean
+		&& apt-get clean \
+		; fi
 
-RUN \
+# Apply changesets
+#   - http://earthworm.isti.com/trac/earthworm/changeset/8125 (MYSQL_CONNECTOR_C_PATH_BUILD)
+#   - http://earthworm.isti.com/trac/earthworm/changeset/8126 (LINUX_FLAGS=-lpthread -fstack-check -Wall -lm)
+RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
 		. ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/src/archiving/mole/ew2moledb \
-		&& make -f makefile.unix
+		&& svn info --show-item revision \
+		&& sed -i'.bak' -e 's/LINUX_FLAGS=\(.*\)$/LINUX_FLAGS=\1 -lm/' makefile.unix \
+		&& sed -i'.bak' -e 's=^.*\$L/libebloc\.a \$L/libebpick\.a.*$=\$L/complex_math\.o \$L/libebloc\.a \$L/libebpick\.a \\=' makefile.unix \
+		&& make -f makefile.unix MYSQL_CONNECTOR_C_PATH_BUILD=/usr \
+		; fi
 ##########################################################
 
 # Create params, log and data subdirectories

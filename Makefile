@@ -38,6 +38,20 @@ BUILD_SOURCES = \
 EW_ENV_LOG = $(EW_ENV_DIR)/log
 EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
+EW_SVN_BRANCH_BUILD_LIST=" \
+tags/ew_7.7_release \
+tags/ew_7.8_release \
+tags/ew_7.9_release \
+tags/ew_7.10_release \
+"
+
+EW_SVN_REVISION_BUILD_LIST="\
+8028 \
+8136 \
+"
+
+
+
 help:
 	@echo "\n\
 Earthworm Docker Sandbox 0.4.0\n\
@@ -65,8 +79,13 @@ Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
      help:         display this help\n\
      build:        build Dockerfile\n\
+     build_all:    build Dockerfile for the following branches and revision: \n\
+                   EW_SVN_BRANCH_BUILD_LIST= \\ \n\
+                       `echo $(EW_SVN_BRANCH_BUILD_LIST)` \n\
+                   EW_SVN_REVISION_BUILD_LIST=`echo $(EW_SVN_REVISION_BUILD_LIST) | sed -e 's/^[ ]*//'` \n\
 \n\
      ew_env_list:  list available Earthworm Environments\n\
+     image_list:   list available Earthworm Docker Sandbox images \n\
 \n\
   - Commands for running/stopping a new docker container:\n\
 \n\
@@ -172,6 +191,7 @@ check_ew_env_subdirs:
 	@if [ ! -e $(EW_ENV_DIR)/data ]; then echo "ERROR: directory $(EW_ENV_DIR)/data not found. Exit."; exit 9; fi
 
 check_for_building: check_docker_variables $(BUILD_SOURCES)
+	@if [ -z "$(EW_SVN_BRANCH)" ]; then echo "ERROR: EW_SVN_BRANCH must be defined and not empty. Exit."; exit 1; fi
 
 check_for_creating: check_docker_variables check_ew_env_variables
 	@if [ -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) already exists. Exit."; exit 9; fi
@@ -186,6 +206,9 @@ ew_env_list:
 		&& find . -mindepth 1 -maxdepth 1 -type d | sed -e "s/^[./]*/  - /" | sort \
 		&& echo ""
 
+image_list:
+	docker images $(DOCKER_IMAGE_NAME)
+
 build: check_for_building
 	# Build docker image
 	docker build -t $(NS_IMAGE_NAME_VERSION) \
@@ -196,7 +219,10 @@ build: check_for_building
 		--build-arg EW_SVN_REVISION=$(EW_SVN_REVISION) \
 		--build-arg EW_ARCHITECTURE=$(EW_ARCHITECTURE) \
 		--build-arg ARG_SELECTED_MODULE_LIST=$(ARG_SELECTED_MODULE_LIST) \
-		-f Dockerfile .
+		--build-arg ARG_ADDITIONAL_MODULE_EW2MOLEDB=$(ARG_ADDITIONAL_MODULE_EW2MOLEDB) \
+		--build-arg ARG_ADDITIONAL_MODULE_EW2OPENAPI=$(ARG_ADDITIONAL_MODULE_EW2OPENAPI) \
+		-f Dockerfile . \
+		2>&1 | tee build_$(DOCKER_IMAGE_VERSION).log
 
 bash: check_for_running
 	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) /bin/bash
@@ -356,3 +382,16 @@ clean_ew_ws: check_for_running
 		fi
 
 clean:
+	@echo
+
+build_all:
+	for EW_SVN_BRANCH_BUILD in `echo $(EW_SVN_BRANCH_BUILD_LIST)`; do \
+		echo "Building $${EW_SVN_BRANCH_BUILD} ..."; \
+		make EW_SVN_BRANCH=$${EW_SVN_BRANCH_BUILD} EW_SVN_REVISION= ARG_ADDITIONAL_MODULE_EW2MOLEDB=no ARG_ADDITIONAL_MODULE_EW2OPENAPI=no build ; \
+	done \
+	&& \
+	for EW_SVN_REVISION_BUILD in `echo $(EW_SVN_REVISION_BUILD_LIST)`; do \
+		echo "Building $${EW_SVN_REVISION_BUILD} ..."; \
+		make EW_SVN_REVISION=$${EW_SVN_REVISION_BUILD} build ; \
+	done
+

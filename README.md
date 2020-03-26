@@ -27,6 +27,7 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - **grep** - GNU version is available at [https://www.gnu.org/software/grep/](https://www.gnu.org/software/grep/)
   - **findutils** - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
   - **wget** - [https://www.gnu.org/software/wget/](https://www.gnu.org/software/wget/)
+  - **tee** - [https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)
   - **git** - [https://git-scm.com/](https://git-scm.com/)
 
 ## Help
@@ -168,9 +169,9 @@ make build
 
 ### Compiling Earthworm modules
 
-Default settings compile all Earthworm modules from last revision in the main Subversion directory from `svn://svn.isti.com/earthworm/trunk`.
+Default settings compile all Earthworm modules from latest Earthworm Subversion revision in `svn://svn.isti.com/earthworm/trunk` tested by this tool.
 
-You can choose to compile only specific modules by setting variable `ARG_SELECTED_MODULE_LIST` in `Makefile.env`. Example:
+ You can optionally choose to compile only specific modules by setting variable `ARG_SELECTED_MODULE_LIST` in `Makefile.env`. Example:
 
 ```sh
 ARG_SELECTED_MODULE_LIST=" \
@@ -212,18 +213,32 @@ Log of Subversion revisions are available from following url: [http://earthworm.
 If you want to compile an old version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
 
 ```sh
-make EW_SVN_BRANCH=tags/ew_7.10_release build
+make EW_SVN_REVISION=8068 build
 ```
 
-You might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
+or
 
-With the current `Doxyfile` you can compile:
+```sh
+make EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION= build
+```
 
-  - Subversion revision @8105, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to @8105, all consistent revisions should be successfully compiled).
-  - `EW_SVN_BRANCH=tags/ew_7.10_release` (svn revision @8068), 64-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.9_release` (svn revision @6859), 32-bit version. (by a minor fix in `Dockerfile`)
-  - `EW_SVN_BRANCH=tags/ew_7.8_relase` (svn revision @6404), 32-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.7_relase` (svn revision @5961), 32-bit version.
+Caveat: you might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
+
+Using the current `Doxyfile` you should be able to successfully compile all major revisions.
+
+By the following command:
+
+```sh
+$ make build_all
+```
+
+you can create docker image for the following images:
+
+  - `EW_SVN_REVISION=8136` Subversion revision @8136, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION=` (svn revision @8068 - 2019/08/17), 64-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.9_release EW_SVN_REVISION=` (svn revision @6859 - 2016/10/28), 32-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.8_relase EW_SVN_REVISION=` (svn revision @6404 - 2015/06/25), 32-bit version.
+  - `EW_SVN_BRANCH=tags/ew_7.7_relase EW_SVN_REVISION=` (svn revision @5961 - 2013/09/19), 32-bit version.
 
 
 When you build a docker image, default name is `ew-sandbox` and tag is built by the values of `EW_SVN_BRANCH` and `EW_SVN_REVISION` variables.
@@ -231,21 +246,20 @@ When you build a docker image, default name is `ew-sandbox` and tag is built by 
 For listing available earthworm docker sandbox images, use the following command:
 
 ```sh
-$ docker images ew-sandbox
+$ make image_list
+docker images ew-sandbox
 ```
 
 An example of the output is:
 
 ```
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk                  8177864b777b        20 minutes ago      918MB
-ew-sandbox          trunk_r8136            cb78c92612f0        32 minutes ago      1.14GB
-ew-sandbox          trunk_r8126            6385ed1ef62b        50 minutes ago      1.14GB
-ew-sandbox          trunk_r8028            50d6e7b59d8f        23 minutes ago      920MB
-ew-sandbox          tags_ew_7_10_release   3abf3e19bf36        9 minutes ago       916MB
-ew-sandbox          tags_ew_7_9_release    3d6173a7211e        5 minutes ago       861MB
-ew-sandbox          tags_ew_7_8_release    3a93f4fdedd9        2 minutes ago       840MB
-ew-sandbox          tags_ew_7_7_release    fdf9581a633b        21 seconds ago      838MB
+ew-sandbox          trunk_r8136            57d200416fdc        12 minutes ago      1.13GB
+ew-sandbox          trunk_r8028            c932a0ace575        54 minutes ago      1.13GB
+ew-sandbox          tags_ew_7_10_release   79865ee1affb        About an hour ago   917MB
+ew-sandbox          tags_ew_7_9_release    0f08896bac47        2 hours ago         862MB
+ew-sandbox          tags_ew_7_8_release    5f36eaff12f6        2 hours ago         841MB
+ew-sandbox          tags_ew_7_7_release    59ad5d0b3193        2 hours ago         839MB
 ```
 
 
