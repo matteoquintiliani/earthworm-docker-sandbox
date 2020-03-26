@@ -79,7 +79,8 @@ make build
 If all went well you can see your docker image by:
 
 ```sh
-$ docker images ew-sandbox
+$ make image_list
+docker images ew-sandbox
 ```
 
 ```
@@ -232,7 +233,7 @@ By the following command:
 $ make build_all
 ```
 
-you can create docker image for the following images:
+you can create the docker images for the following Earthworm revisions:
 
   - `EW_SVN_REVISION=8136` Subversion revision @8136, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION=` (svn revision @8068 - 2019/08/17), 64-bit version.
