@@ -38,12 +38,10 @@ BUILD_SOURCES = \
 EW_ENV_LOG = $(EW_ENV_DIR)/log
 EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
-EW_SVN_BRANCH_BUILD_LIST=" \
-tags/ew_7.7_release \
+EW_SVN_BRANCH_BUILD_LIST="tags/ew_7.7_release \
 tags/ew_7.8_release \
 tags/ew_7.9_release \
-tags/ew_7.10_release \
-"
+tags/ew_7.10_release"
 
 EW_SVN_REVISION_BUILD_LIST="\
 8028 \
@@ -53,112 +51,115 @@ EW_SVN_REVISION_BUILD_LIST="\
 EDS_VERSION=0.9.0
 
 help:
-	@echo "\n\
+	@echo "\
 Earthworm Docker Sandbox $(EDS_VERSION)\n\
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy\n\
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
- Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>\n\
+Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>\n\
 \n\
- Current main variable values:\n\
-     EW_ENV=$(EW_ENV)\n\
-     EW_ENV_MAINDIR=$(EW_ENV_MAINDIR)\n\
-     EW_ENV_DIR=$(EW_ENV_DIR)\n\
+Current main variable values:\n\
+    EW_ENV=$(EW_ENV)\n\
+    EW_ENV_MAINDIR=$(EW_ENV_MAINDIR)\n\
+    EW_ENV_DIR=$(EW_ENV_DIR)\n\
 \n\
- Earthworm Environment:\n\
-     - name is defined by EW_ENV\n\
-     - directory is in EW_ENV_MAINDIR with name EW_ENV\n\
-     - directory path is EW_ENV_DIR\n\
+Earthworm Environment:\n\
+    - name is defined by EW_ENV\n\
+    - directory is in EW_ENV_MAINDIR with name EW_ENV\n\
+    - directory path is EW_ENV_DIR\n\
 \n\
- An Earthworm Environment Directory must contain the following subdirectories:\n\
-     - params: contains Earthworm configuration files (EW_PARAMS variable)\n\
-     - log: where Earthworm log files are written (EW_LOG variable)\n\
-     - data: where additional files are read and written by Earthworm modules (EW_DATA_DIR variable)\n\
+An Earthworm Environment Directory must contain the following subdirectories:\n\
+    - params: contains Earthworm configuration files (EW_PARAMS variable)\n\
+    - log: where Earthworm log files are written (EW_LOG variable)\n\
+    - data: where additional files are read and written by Earthworm modules (EW_DATA_DIR variable)\n\
 \n\
- Available commands:\n\
+General commands:\n\
 \n\
-     help:         display this help\n\
-     build:        build Dockerfile\n\
-     build_all:    build Dockerfile for the following branches and revision: \n\
-                   EW_SVN_BRANCH_BUILD_LIST= \\ \n\
-                       `echo $(EW_SVN_BRANCH_BUILD_LIST)` \n\
-                   EW_SVN_REVISION_BUILD_LIST=`echo $(EW_SVN_REVISION_BUILD_LIST) | sed -e 's/^[ ]*//'` \n\
+    help:         display this help\n\
+    build:        build Dockerfile\n\
+    build_all:    build Dockerfile for the following branches and revision: \n\
 \n\
-     ew_env_list:  list available Earthworm Environments\n\
-     image_list:   list available Earthworm Docker Sandbox images \n\
+                  EW_SVN_BRANCH_BUILD_LIST=\n\
+`for B in "$(EW_SVN_BRANCH_BUILD_LIST)"; do echo "                                           $${B}"; done` \n\
 \n\
-  - Commands for running/stopping a new docker container:\n\
+                  EW_SVN_REVISION_BUILD_LIST=`echo $(EW_SVN_REVISION_BUILD_LIST) | sed -e 's/^[ ]*//'` \n\
 \n\
-     bash:   run bash shell in a new docker container\n\
-     screen: run screen shell in a new docker container\n\
+    ew_env_list:  list available Earthworm Environments\n\
+    image_list:   list available Earthworm Docker Sandbox images \n\
 \n\
-     start:  run new docker container as daemon\n\
-     stop:   stop the running docker container [daemon]\n\
+Commands for running/stopping a new docker container:\n\
 \n\
-  - Commands executed on running docker container:\n\
+    bash:   run bash shell in a new docker container\n\
+    screen: run screen shell in a new docker container\n\
 \n\
-     exec:       run bash shell in the running docker container\n\
-     ps:         output 'docker ps' of running docker container\n\
-     sniffrings: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2\n\
-     logtail:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)\n\
+    start:  run new docker container as daemon\n\
+    stop:   stop the running docker container [daemon]\n\
 \n\
-     status_tankplayer:   output tankplayer process status\n\
+Commands executed on running docker container:\n\
 \n\
-  - Commands for running/stopping Earthworm in docker container:\n\
+    exec:       run bash shell in the running docker container\n\
+    ps:         output 'docker ps' of running docker container\n\
+    sniffrings: sniffrings all rings except message TYPE_TRACEBUF and TYPE_TRACEBUF2\n\
+    logtail:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)\n\
 \n\
-     run_ew_in_bash:   run Earthworm by bash in a new docker container\n\
-     run_ew_in_screen: run Earthworm by screen in a new docker container\n\
-                       Pass arguments to ew_check_process_status.sh by ARGS variable\n\
+    status_tankplayer:   output tankplayer process status\n\
 \n\
-                       Examples: make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d nopau\"\n\
-                                 make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d pau\"\n\
+Commands for running/stopping Earthworm in docker container:\n\
 \n\
-     status:           run 'status' in the Earthworm running docker container\n\
-     pau:              run 'pau' in the Earthworm running docker container\n\
+    run_ew_in_bash:   run Earthworm by bash in a new docker container\n\
+    run_ew_in_screen: run Earthworm by screen in a new docker container\n\
+                      Pass arguments to ew_check_process_status.sh by ARGS variable\n\
 \n\
-  - Commands for creating Earthworm Environment:\n\
+            Examples: make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d nopau\"\n\
+                      make run_ew_in_screen EW_ENV=myew_test ARGS=\"tankplayer.d pau\"\n\
 \n\
-     create_ew_env_from_scratch:   create an Earthworm Environment from scratch\n\
+    status:           run 'status' in the Earthworm running docker container\n\
+    pau:              run 'pau' in the Earthworm running docker container\n\
 \n\
-     create_ew_env_from_another:   create an Earthworm Environment from another (duplicate environments)\n\
+Commands for creating Earthworm Environment:\n\
 \n\
-                   Example: make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2 \ \n\
+    create_ew_env_from_scratch:   create an Earthworm Environment from scratch\n\
+                                  (create an empty environment)\n\
+    create_ew_env_from_another:   create an Earthworm Environment from another\n\
+                                  (duplicate environment from EW_ENV_FROM)\n\
 \n\
-     create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file\n\
+            Example: make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2 \ \n\
 \n\
-                   Example: make create_ew_env_from_zip_url \ \n\
-                                 ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
-                                 CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
-                                 MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
-                                 EW_ENV=my_test_env\n\
+    create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file\n\
 \n\
-     create_ew_env_memphis_test:   short cut based on create_ew_env_from_zip_url for Memphis Test\n\
-     create_ew_env_ingv_test:      short cut based on create_ew_env_from_zip_url for INGV Test\n\
+            Example: make create_ew_env_from_zip_url \ \n\
+                          ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
+                          CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
+                          MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
+                          EW_ENV=my_test_env\n\
 \n\
-     create_ew_env_from_git_repository:\n\
-                   create Earthworm Environment having main directory from a branch of a git repository\n\
+    create_ew_env_memphis_test:   short cut based on create_ew_env_from_zip_url for Memphis Test\n\
+    create_ew_env_ingv_test:      short cut based on create_ew_env_from_zip_url for INGV Test\n\
 \n\
-                   Example: make create_ew_env_from_git_repository \ \n\
-                                 GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
-                                 GIT_BRANCH=develop \ \n\
-                                 CREATE_EW_ENV_SUBDIRS="log data" \ \n\
-                                 MAP_EW_ENV_SUBDIRS="run_realtime/params" \ \n\
-                                 EW_ENV=my_test_env\n\
+    create_ew_env_from_git_repository:\n\
+                  create Earthworm Environment having main directory from a branch of a git repository\n\
 \n\
-     create_ew_env_from_ingv_runconfig_branch:\n\
-                   short cut based on create_ew_env_from_git_repository for INGV Git Repository\n\
+            Example: make create_ew_env_from_git_repository \ \n\
+                          GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
+                          GIT_BRANCH=develop \ \n\
+                          CREATE_EW_ENV_SUBDIRS="log data" \ \n\
+                          MAP_EW_ENV_SUBDIRS="run_realtime/params" \ \n\
+                          EW_ENV=my_test_env\n\
 \n\
-  - Commands for creating tankfiles:\n\
+    create_ew_env_from_ingv_runconfig_branch:\n\
+                  short cut based on create_ew_env_from_git_repository for INGV Git Repository\n\
 \n\
-     create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh\n\
-                   Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable\n\
+Commands for creating tankfiles:\n\
 \n\
-                   Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\"\n\
+    create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh\n\
+                  Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable\n\
 \n\
-  - Commands for deleting files: (VERY DANGEROUS)\n\
+            Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\"\n\
 \n\
-     clean_ew_log: delete all files within log directory ($(EW_ENV_LOG))\n\
-     clean_ew_ws:  delete all files within waveserver directories ($(EW_ENV_WS))\n\
+Commands for deleting files: (VERY DANGEROUS)\n\
+\n\
+    clean_ew_log: delete all files within log directory ($(EW_ENV_LOG))\n\
+    clean_ew_ws:  delete all files within waveserver directories ($(EW_ENV_WS))\
 "
 
 check_docker_variables:
