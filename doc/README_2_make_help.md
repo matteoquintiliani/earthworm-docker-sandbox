@@ -78,7 +78,8 @@ Commands for creating Earthworm Environment:
 
             Example: make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2 \ 
 
-    create_ew_env_from_zip_url:   download and prepare configuration and data from zip url file
+    create_ew_env_from_zip_url:   download and prepare configuration and data
+                                  from zip url file
 
             Example: make create_ew_env_from_zip_url \ 
                           ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
@@ -86,11 +87,12 @@ Commands for creating Earthworm Environment:
                           MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \ 
                           EW_ENV=my_test_env
 
-    create_ew_env_memphis_test:   short cut based on create_ew_env_from_zip_url for Memphis Test
-    create_ew_env_ingv_test:      short cut based on create_ew_env_from_zip_url for INGV Test
-
-    create_ew_env_from_git_repository:
-                  create Earthworm Environment having main directory from a branch of a git repository
+    create_ew_env_memphis_test:   shortcut based on create_ew_env_from_zip_url
+                                  for creating an Earthworm Environment from Memphis Test
+    create_ew_env_ingv_test:      shortcut based on create_ew_env_from_zip_url
+                                  for creating an Earthworm Environment from INGV Test
+    create_ew_env_from_git_repository: create Earthworm Environment having main
+                                  directory from a branch of a git repository
 
             Example: make create_ew_env_from_git_repository \ 
                           GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
@@ -99,8 +101,8 @@ Commands for creating Earthworm Environment:
                           MAP_EW_ENV_SUBDIRS=run_realtime/params \ 
                           EW_ENV=my_test_env
 
-    create_ew_env_from_ingv_runconfig_branch:
-                  short cut based on create_ew_env_from_git_repository for INGV Git Repository
+    create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository
+                               for creating an Earthworm Environment from INGV git repository
 
 Commands for creating tankfiles:
 
