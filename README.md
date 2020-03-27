@@ -22,7 +22,7 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
   - **Docker** - [https://www.docker.com/](https://www.docker.com/)
   - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
-  - **GNU Bash** or **Zsh** - [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/), [https://www.zsh.org/](https://www.zsh.org/)
+  - **GNU Bash**  [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
   - **grep** - GNU version is available at [https://www.gnu.org/software/grep/](https://www.gnu.org/software/grep/)
   - **findutils** - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
