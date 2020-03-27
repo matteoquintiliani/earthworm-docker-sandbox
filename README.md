@@ -31,7 +31,7 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - **git** - [https://git-scm.com/](https://git-scm.com/)
   - **unzip** - depends on your system
 
-## Help
+## Short Help
 
 This tool is entirely based on `docker`, `make`, `bash` and other utilities like `sed`, `grep`, `find`, `wget`, etc.
 
