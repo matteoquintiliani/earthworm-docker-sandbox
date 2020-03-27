@@ -50,11 +50,11 @@ EW_SVN_REVISION_BUILD_LIST="\
 8136 \
 "
 
-
+EDS_VERSION=0.9.0
 
 help:
 	@echo "\n\
-Earthworm Docker Sandbox 0.4.0\n\
+Earthworm Docker Sandbox $(EDS_VERSION)\n\
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy\n\
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it\n\
 \n\
@@ -383,6 +383,18 @@ clean_ew_ws: check_for_running
 
 clean:
 	@echo
+
+doc: README.md
+
+README.md: help doc/README_*.md
+	echo "" > doc/README_2_make_help.md
+	echo "### Complete Help" >> doc/README_2_make_help.md
+	echo "" >> doc/README_2_make_help.md
+	echo '```' >> doc/README_2_make_help.md
+	make help EW_ENV=ew_help >> doc/README_2_make_help.md
+	echo '```' >> doc/README_2_make_help.md
+	echo "" >> doc/README_2_make_help.md
+	cat doc/README_*.md > README.md
 
 build_all:
 	for EW_SVN_BRANCH_BUILD in `echo $(EW_SVN_BRANCH_BUILD_LIST)`; do \
