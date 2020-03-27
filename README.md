@@ -26,9 +26,10 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
   - **grep** - GNU version is available at [https://www.gnu.org/software/grep/](https://www.gnu.org/software/grep/)
   - **findutils** - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
+  - **coreutils** - [https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)
   - **wget** - [https://www.gnu.org/software/wget/](https://www.gnu.org/software/wget/)
-  - **tee** - [https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)
   - **git** - [https://git-scm.com/](https://git-scm.com/)
+  - **unzip** - depends on your system
 
 ## Help
 
