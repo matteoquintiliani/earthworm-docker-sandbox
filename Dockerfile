@@ -131,7 +131,7 @@ RUN \
 		fi;
 
 ##########################################################
-# Compile ew2openapi
+# Optional compilation: ew2openapi
 ##########################################################
 # Default ARG_ADDITIONAL_MODULE_EW2OPENAPI is "no".
 ARG ARG_ADDITIONAL_MODULE_EW2OPENAPI=no
@@ -178,9 +178,8 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 ##########################################################
 
 ##########################################################
-# Compile ew2moledb
+# Optional compilation: ew2moledb
 ##########################################################
-
 # Default ARG_ADDITIONAL_MODULE_EW2MOLEDB is "no".
 ARG ARG_ADDITIONAL_MODULE_EW2MOLEDB=no
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
