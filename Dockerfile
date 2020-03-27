@@ -1,6 +1,6 @@
 ################################################################################
 # Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
-# developing Earthworm System within enclosed environments.
+# developing Earthworm System within single or multiple enclosed environments.
 ################################################################################
 # Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
 # Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
