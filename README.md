@@ -299,7 +299,7 @@ make EW_ENV=my_test_env ew_start_bash
 You can duplicate an Earthworm Environment starting from an existing one by:
 
 ```sh
-make create_ew_env_from_another EW_ENV_FROM=myenv1 EW_ENV=myenv2
+make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2
 ```
 
 Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
@@ -337,10 +337,10 @@ Main `make` commands for running and/or stopping Earthworm Envinronments within 
   - `ew_startstop_daemon`:  run new docker container as daemon
   - `ew_stop_container`:   stop the running docker container [daemon]
 
-Command example for running bash within the `myew_test1` Earthworm Environment:
+Command example for running bash within the `ew_test1` Earthworm Environment:
 
 ```sh
-make EW_ENV=myew_test1 ew_start_bash
+make EW_ENV=ew_test1 ew_start_bash
 ```
 
 Default setting allows you to run a single docker container for each Earthworm Environments. It depends on variable `DOCKER_CONTAINER_NAME`: 
@@ -357,10 +357,10 @@ Main `make` commands for executing processes within running Earthworm Environmen
   - `ew_sniffrings`: sniff messages from all rings except for TYPE_TRACEBUF and TYPE_TRACEBUF2
   - `ew_logtail`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
 
-Command example for executing a `bash` shell within the `myew_test1` Earthworm Environment:
+Command example for executing a `bash` shell within the `ew_test1` Earthworm Environment:
 
 ```sh
-make EW_ENV=myew_test1 ew_exec
+make EW_ENV=ew_test1 ew_exec
 ```
 
 There are two `make` commands to launch Earthworm automatically when the container starts:
@@ -375,7 +375,7 @@ Using `screen` you can create as many shell as you want inside the same containe
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-make ew_startstop_in_screen EW_ENV=myew_test ARGS="tankplayer.d nopau"
+make ew_startstop_in_screen EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
 ```
 
 ## Caveats
