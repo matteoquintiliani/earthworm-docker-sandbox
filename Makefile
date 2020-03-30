@@ -364,13 +364,13 @@ ew_status: check_for_running
 
 ew_pau: check_for_running
 	@echo
-	@read -p "WARNING: Are you sure you stop Earthworm ? [Y/n] " -n 1 -r \
+	@bash -c '(read -p "WARNING: Are you sure you stop Earthworm ? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
 		make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="pau"; \
 		else \
 		echo "Nothing has been done."; \
-		fi
+		fi)'
 
 ew_status_tankplayer: check_for_running
 	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="/opt/scripts/ew_check_process_status.sh"; \
