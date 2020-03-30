@@ -322,7 +322,7 @@ ew_run_screen: check_for_running
 
 ew_exec_bash: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
-		/bin/bash -c '. ~/.bashrc && if [ ! -z "$(ARGS)" ]; then bash -c '$(ARGS)'; else /bin/bash; fi'
+		/bin/bash -c '. ~/.bashrc && if [ ! -z "$(ARGS)" ]; then bash -c "$(ARGS)"; else /bin/bash; fi'
 
 ew_exec_screen: check_for_running
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
