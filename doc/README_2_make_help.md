@@ -105,30 +105,29 @@ Deleting files: (VERY DANGEROUS)
 Running/Stopping Earthworm docker container:
 =====================================================
 
-    ew_start_bash:   run interactive bash shell in a new docker container
-                     you can optionally run command passed by ARGS variable
-    ew_start_screen: run interactive screen shell in a new docker container
-                     you can optionally run command passed by ARGS variable
+    ew_run_bash:   run interactive bash shell in a new docker container
+                   you can optionally run command passed by ARGS variable
+    ew_run_screen: run interactive screen shell in a new docker container
+                   you can optionally run command passed by ARGS variable
 
     ew_startstop_in_bash:   run 'startstop' in an interactive bash shell
                             in a new docker container for currente EW_ENV
     ew_startstop_in_screen: run 'startstop' in an interactive screen shell
                             in a new docker container for currente EW_ENV
                             Pass arguments to ew_check_process_status.sh by ARGS variable
+    ew_startstop_detached:  run 'startstop' in a new docker container in detached mode
 
-    ew_startstop_daemon: run 'startstop' in a new docker container as daemon
-
-    ew_stop_container:   stop and remove the running docker container [daemon or not]
+    ew_stop_container:   stop and remove the running docker container [detached or not]
 
     Examples:
-              make EW_ENV=ew_test1 ew_start_bash
-              make EW_ENV=ew_test1 ew_start_bash ARGS="df -h"
-              make EW_ENV=ew_test1 ew_start_screen
-              make EW_ENV=ew_test1 ew_start_screen ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_bash
+              make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_screen
+              make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
               make EW_ENV=ew_test1 ew_startstop_in_bash
               make EW_ENV=ew_test1 ew_startstop_in_screen ARGS="tankplayer.d nopau"
               make EW_ENV=ew_test1 ew_startstop_in_screen ARGS="tankplayer.d pau"
-              make EW_ENV=ew_test1 ew_startstop_daemon
+              make EW_ENV=ew_test1 ew_startstop_detached
 
               make EW_ENV=ew_test1 ew_stop_container
 
@@ -136,22 +135,26 @@ Running/Stopping Earthworm docker container:
 Executing commands within running docker container:
 =====================================================
 
-    ew_exec:           run a new bash shell within the running docker container
+    ew_exec_bash:      run a new bash shell within the running docker container
                        you can optionally run command passed by ARGS variable
+    ew_exec_screen:    run a new screen shell within the running docker container
+                       you can optionally run command passed by ARGS variable
+
     ew_status:         run 'status' in the Earthworm running docker container
     ew_pau:            run 'pau' in the Earthworm running docker container
-    ew_sniffrings:     run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*
-    ew_logtail:        exec tail and follow all log files within
-                       EW_LOG directory (/opt/earthworm/log)
-    status_tankplayer: output tankplayer process status
+
+    ew_sniffrings_all:    run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*
+    ew_tail_all_logs:     exec tail and follow all log files within
+                          EW_LOG directory (/opt/earthworm/log)
+    ew_status_tankplayer: output tankplayer process status
 
     Examples:
-              make EW_ENV=ew_test1 ew_exec
-              make EW_ENV=ew_test1 ew_exec ARGS="ps aux"
+              make EW_ENV=ew_test1 ew_exec_bash
+              make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
               make EW_ENV=ew_test1 ew_status
               make EW_ENV=ew_test1 ew_pau
-              make EW_ENV=ew_test1 ew_sniffrings
-              make EW_ENV=ew_test1 ew_logtail
+              make EW_ENV=ew_test1 ew_sniffrings_all
+              make EW_ENV=ew_test1 ew_tail_all_logs
 
 ===========================================================================
 Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy

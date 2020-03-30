@@ -293,7 +293,7 @@ make EW_ENV=my_test_env create_ew_env_from_scratch
 where `EW_ENV` is the name of the Earthworm Enviroment to create. Then you can manage files in your Earthworm Environment running a shell in a docker container by the following command:
 
 ```sh
-make EW_ENV=my_test_env ew_start_bash
+make EW_ENV=my_test_env ew_run_bash
 ```
 
 You can duplicate an Earthworm Environment starting from an existing one by:
@@ -332,15 +332,15 @@ Variable `GIT_BRANCH` is optional.
 
 Main `make` commands for running and/or stopping Earthworm Envinronments within a docker container are:
 
-  - `ew_start_bash`:   run bash shell in a new docker container
-  - `ew_start_screen`: run screen shell in a new docker container
+  - `ew_run_bash`:   run bash shell in a new docker container
+  - `ew_run_screen`: run screen shell in a new docker container
   - `ew_startstop_daemon`:  run new docker container as daemon
   - `ew_stop_container`:   stop the running docker container [daemon]
 
 Command example for running bash within the `ew_test1` Earthworm Environment:
 
 ```sh
-make EW_ENV=ew_test1 ew_start_bash
+make EW_ENV=ew_test1 ew_run_bash
 ```
 
 Default setting allows you to run a single docker container for each Earthworm Environments. It depends on variable `DOCKER_CONTAINER_NAME`: 
@@ -354,8 +354,8 @@ Main `make` commands for executing processes within running Earthworm Environmen
 
   - `ew_exec`:    run bash shell in the running docker container
   - `list_containers`:  output 'docker ps' of running docker container
-  - `ew_sniffrings`: sniff messages from all rings except for TYPE_TRACEBUF and TYPE_TRACEBUF2
-  - `ew_logtail`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
+  - `ew_sniffrings_all`: sniff messages from all rings except for TYPE_TRACEBUF and TYPE_TRACEBUF2
+  - `ew_tail_all_logs`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
 
 Command example for executing a `bash` shell within the `ew_test1` Earthworm Environment:
 
