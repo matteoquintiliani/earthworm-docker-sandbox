@@ -360,8 +360,7 @@ ew_stop_container: check_for_running
 	docker container rm $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME)
 
 ew_status: check_for_running
-	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
-		bash -c ". ~/.bashrc && status"
+	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="status"
 
 ew_pau: check_for_running
 	@echo
