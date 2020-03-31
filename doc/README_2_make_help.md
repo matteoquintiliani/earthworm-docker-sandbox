@@ -2,8 +2,7 @@
 ### Complete Help
 
 ```
-make _help EW_ENV=ew_help
-Earthworm Docker Sandbox 0.11.0-dev
+Earthworm Docker Sandbox 0.11.1
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>

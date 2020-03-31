@@ -79,7 +79,7 @@ HELP_EW_ENV="ew_test1"
 HELP_EW_ENV_2="ew_test2"
 
 help:
-	make _help EW_ENV=ew_help
+	@make _help EW_ENV=ew_help
 
 _help:
 	@echo "\
