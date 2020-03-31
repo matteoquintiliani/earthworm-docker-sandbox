@@ -411,7 +411,7 @@ make ew_startstop_in_screen EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
 
 ```
 make _help EW_ENV=ew_help
-Earthworm Docker Sandbox 0.10.0
+Earthworm Docker Sandbox 0.11.0-dev
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
