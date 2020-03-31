@@ -3,7 +3,7 @@
 
 ```
 make _help EW_ENV=ew_help
-Earthworm Docker Sandbox 0.9.1
+Earthworm Docker Sandbox 0.10.0
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -20,8 +20,9 @@ Earthworm Environment:
 
 An Earthworm Environment Directory must contain the following subdirectories:
     - params: contains Earthworm configuration files (EW_PARAMS variable)
-    - log: where Earthworm log files are written (EW_LOG variable)
-    - data: where additional files are read and written by Earthworm modules (EW_DATA_DIR variable)
+    - log:    where Earthworm log files are written (EW_LOG variable)
+    - data:   where additional files are read and written
+              by Earthworm modules (EW_DATA_DIR variable)
 
 =====================================================
 General commands:
@@ -76,14 +77,14 @@ Creating Earthworm Environments with name EW_ENV:
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \ 
-                   EW_ENV=ew_test1
+                   EW_ENV=memphis_test1
 
               make create_ew_env_from_git_repository \ 
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
                    GIT_BRANCH=develop \ 
                    CREATE_EW_ENV_SUBDIRS=log data \ 
                    MAP_EW_ENV_SUBDIRS=run_realtime/params \ 
-                   EW_ENV=ew_test1
+                   EW_ENV=ingv_test1
 
 =====================================================
 Creating tankfiles:
