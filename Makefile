@@ -46,7 +46,7 @@ NS_IMAGE_NAME_VERSION = $(NS_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 	ew_status ew_sniffrings_all ew_tail_all_logs \
 	ew_startstop_in_bash \
 	ew_startstop_in_screen \
-	ew_startstop_in_screen_complex \
+	ew_startstop_in_screen_handling_exit \
 	ew_startstop_detached \
 	ew_stop_container \
 	ew_pau \
@@ -171,14 +171,14 @@ $(SEPLINE)\n\
     Example: make create_tank ARGS=\"2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data\"\n\
 \n\
 $(SEPLINE)\n\
-Deleting files: (VERY DANGEROUS)\n\
+Deleting files: (POTENTIALLY DANGEROUS)\n\
 $(SEPLINE)\n\
 \n\
     ew_dangerous_clean_log: delete all files within log directory ($(EW_ENV_LOG))\n\
     ew_dangerous_clean_ws:  delete all files within waveserver directories ($(EW_ENV_WS))\n\
 \n\
 $(SEPLINE)\n\
-Running/Stopping Earthworm docker container:\n\
+Running/Stopping Earthworm Docker Sandbox container:\n\
 $(SEPLINE)\n\
 \n\
     ew_run_bash:   run interactive bash shell in a new docker container\n\
@@ -187,28 +187,35 @@ $(SEPLINE)\n\
                    you can optionally run command passed by ARGS variable\n\
 \n\
     ew_startstop_in_bash:   run 'startstop' in an interactive bash shell\n\
-                            in a new docker container for currente EW_ENV\n\
+                            in a new docker container for current EW_ENV\n\
     ew_startstop_in_screen: run 'startstop' in an interactive screen shell\n\
-                            in a new docker container for currente EW_ENV\n\
-                            Pass arguments to ew_check_process_status.sh by ARGS variable\n\
-    ew_startstop_detached:  run 'startstop' in a new docker container in detached mode\n\
+                            in a new docker container for current EW_ENV\n\
+    ew_startstop_detached:  run 'startstop' in detached mode\n\
+                            in a new docker container for current EW_ENV\n\
 \n\
-    ew_stop_container:   stop and remove the running docker container [detached or not]\n\
+    ew_stop_container:      stop and remove the running docker container [detached or not]\n\
+\n\
+    ew_startstop_in_screen_handling_exit: run 'startstop' in detached mode\n\
+                            in a new docker container for current EW_ENV\n\
+                            Pass arguments to ew_check_process_status.sh by ARGS variable\n\
 \n\
     Examples:\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_bash\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_bash ARGS=\"df -h\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen ARGS=\"df -h\"\n\
+\n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_bash\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_screen ARGS=\"tankplayer.d nopau\"\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_screen ARGS=\"tankplayer.d pau\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_screen\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_detached\n\
 \n\
               make EW_ENV=$(HELP_EW_ENV) ew_stop_container\n\
 \n\
+              make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_screen_handling_exit ARGS=\"tankplayer.d nopau\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_startstop_in_screen_handling_exit ARGS=\"tankplayer.d pau\"\n\
+\n\
 $(SEPLINE)\n\
-Executing commands within running docker container:\n\
+Executing commands within running Earthworm Docker Sandbox containers:\n\
 $(SEPLINE)\n\
 \n\
     ew_exec_bash:      run a new bash shell within the running docker container\n\
@@ -250,8 +257,7 @@ check_ew_env_variables:
 	@if [ -z "$(EW_ENV_MAINDIR)" ]; then echo "ERROR: EW_ENV_MAINDIR must be defined. Exit."; exit 1; fi
 	@if [ -z "$(EW_ENV_DIR)" ]; then echo "ERROR: EW_ENV_DIR must be defined. Exit."; exit 1; fi
 
-check_zip_url_variables:
-	@if [ -z "$(ZIP_URL)" ]; then echo "ERROR: ZIP_URL must be defined. Exit."; exit 1; fi
+check_zip_url_variables: @if [ -z "$(ZIP_URL)" ]; then echo "ERROR: ZIP_URL must be defined. Exit."; exit 1; fi
 	@if [ -z "$(CREATE_EW_ENV_SUBDIRS)" ]; then echo "WARNING: CREATE_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 	@if [ -z "$(MAP_EW_ENV_SUBDIRS)" ]; then echo "WARNING: MAP_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 
@@ -273,6 +279,11 @@ check_for_creating: check_docker_variables check_ew_env_variables
 	@if [ -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) already exists. Exit."; exit 9; fi
 
 check_for_running: check_docker_variables check_ew_env_variables check_ew_env_subdirs
+
+check_for_executing: check_for_running
+	# TODO check_for_executing
+	@make list_containers
+	@# bash -c 'CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME)") && if [ -z "$${CONTAINER_ID}" ]; then echo "Container is not running."; exit 9; fi'
 
 list_ew_env:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
@@ -320,11 +331,11 @@ ew_run_screen: check_for_running
 		&& screen -r \
 	)"
 
-ew_exec_bash: check_for_running
+ew_exec_bash: check_for_executing
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
 		/bin/bash -c '. ~/.bashrc && if [ ! -z "$(ARGS)" ]; then bash -c "$(ARGS)"; else /bin/bash; fi'
 
-ew_exec_screen: check_for_running
+ew_exec_screen: check_for_executing
 	docker exec -it $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
@@ -338,9 +349,8 @@ ew_startstop_in_bash: check_for_running
 ew_startstop_in_screen: check_for_running
 	make EW_ENV="$(EW_ENV)" ew_run_screen ARGS="startstop"
 
-ew_startstop_in_screen_complex: check_for_running
-	@echo $(ARGS)
-	docker run $(DOCKER_USER) --rm -it $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+ew_startstop_in_screen_handling_exit: check_for_running
+	docker run $(DOCKER_USER) --rm -t -d $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -S ew -X screen \
@@ -518,4 +528,4 @@ run_ew_in_bash:
 
 run_ew_in_screen:
 	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_startstop_in_screen_complex ARGS="$(ARGS)"
+	make ew_startstop_in_screen_handling_exit ARGS="$(ARGS)"
