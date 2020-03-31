@@ -481,14 +481,14 @@ Creating tankfiles:
     Example: make create_tank ARGS="2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data"
 
 =====================================================
-Deleting files: (VERY DANGEROUS)
+Deleting files: (POTENTIALLY DANGEROUS)
 =====================================================
 
     ew_dangerous_clean_log: delete all files within log directory (~/ew_envs/ew_help/log)
     ew_dangerous_clean_ws:  delete all files within waveserver directories (~/ew_envs/ew_help/data/waveservers)
 
 =====================================================
-Running/Stopping Earthworm docker container:
+Running/Stopping Earthworm Docker Sandbox container:
 =====================================================
 
     ew_run_bash:   run interactive bash shell in a new docker container
@@ -497,28 +497,35 @@ Running/Stopping Earthworm docker container:
                    you can optionally run command passed by ARGS variable
 
     ew_startstop_in_bash:   run 'startstop' in an interactive bash shell
-                            in a new docker container for currente EW_ENV
+                            in a new docker container for current EW_ENV
     ew_startstop_in_screen: run 'startstop' in an interactive screen shell
-                            in a new docker container for currente EW_ENV
-                            Pass arguments to ew_check_process_status.sh by ARGS variable
-    ew_startstop_detached:  run 'startstop' in a new docker container in detached mode
+                            in a new docker container for current EW_ENV
+    ew_startstop_detached:  run 'startstop' in detached mode
+                            in a new docker container for current EW_ENV
 
-    ew_stop_container:   stop and remove the running docker container [detached or not]
+    ew_stop_container:      stop and remove the running docker container [detached or not]
+
+    ew_startstop_in_screen_handling_exit: run 'startstop' in detached mode
+                            in a new docker container for current EW_ENV
+                            Pass arguments to ew_check_process_status.sh by ARGS variable
 
     Examples:
               make EW_ENV=ew_test1 ew_run_bash
               make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
               make EW_ENV=ew_test1 ew_run_screen
               make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
+
               make EW_ENV=ew_test1 ew_startstop_in_bash
-              make EW_ENV=ew_test1 ew_startstop_in_screen ARGS="tankplayer.d nopau"
-              make EW_ENV=ew_test1 ew_startstop_in_screen ARGS="tankplayer.d pau"
+              make EW_ENV=ew_test1 ew_startstop_in_screen"
               make EW_ENV=ew_test1 ew_startstop_detached
 
               make EW_ENV=ew_test1 ew_stop_container
 
+              make EW_ENV=ew_test1 ew_startstop_in_screen_handling_exit ARGS="tankplayer.d nopau"
+              make EW_ENV=ew_test1 ew_startstop_in_screen_handling_exit ARGS="tankplayer.d pau"
+
 =====================================================
-Executing commands within running docker container:
+Executing commands within running Earthworm Docker Sandbox containers:
 =====================================================
 
     ew_exec_bash:      run a new bash shell within the running docker container
