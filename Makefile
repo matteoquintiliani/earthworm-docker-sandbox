@@ -516,7 +516,7 @@ image_list:
 
 bash:
 	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_run_bash ARGS="$(ARGS)"
+	make ew_run_bash
 
 screen:
 	@echo $(WARN_MSG_DEPRECATED_CMD)
@@ -524,8 +524,8 @@ screen:
 
 run_ew_in_bash:
 	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_startstop_in_bash ARGS="$(ARGS)"
+	make ew_startstop_in_bash
 
 run_ew_in_screen:
 	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_startstop_in_screen_handling_exit ARGS="$(ARGS)"
+	make ew_startstop_in_screen_handling_exit
