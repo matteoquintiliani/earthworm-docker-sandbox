@@ -42,18 +42,24 @@ For a quick start, a very short help is:
 ```sh
  Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
 
- Current main variable values:
-     EW_ENV=ew_default
-     EW_ENV_MAINDIR=~/ew_envs
-     EW_ENV_DIR=~/ew_envs/ew_default
+Current main variable values:
+    EW_ENV=ew_help
+    EW_ENV_MAINDIR=~/ew_envs
+    EW_ENV_DIR=~/ew_envs/ew_help
 
- Earthworm Environment:
-     - name is defined by EW_ENV
-     - directory is in EW_ENV_MAINDIR with name EW_ENV
-     - directory path is EW_ENV_DIR
+Earthworm Environment:
+    - name is defined by EW_ENV
+    - directory is in EW_ENV_MAINDIR with name EW_ENV
+    - directory path is EW_ENV_DIR
+
+An Earthworm Environment Directory must contain the following subdirectories:
+    - params: contains Earthworm configuration files (EW_PARAMS variable)
+    - log:    where Earthworm log files are written (EW_LOG variable)
+    - data:   where additional files are read and written
+              by Earthworm modules (EW_DATA_DIR variable)
 ```
 
-A more detailed help information can be shown by running:
+More detailed help information is reported in section "Complete Help" which is the output of the following command:
 
 ```sh
 make help
@@ -65,54 +71,55 @@ Get ready to get your first Earthworm Environment running in a Docker container 
 
 To get familiar with this tool we will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
 
-  - Changing directory to Earthworm Docker Sandbox by:
+  - Changing directory to Earthworm Docker Sandbox.
 
 ```sh
-cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
+$ cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
 ```
 
-  - Building the docker image
+  - Building the default Earthworm Docker Sandbox image.
 
 ```sh
-make build
+$ make build
 ```
 
-If all went well you can see your docker image by:
+If all went well you can list the Earthworm Docker Sandbox image.
 
 ```sh
 $ make list_images
-docker images ew-sandbox
 ```
 
 ```
+docker images ew-sandbox
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        1.14GB
+ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        856MB
 ```
 
   - Creating if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
 
 ```sh
-mkdir ~/ew_envs
+$ mkdir ~/ew_envs
 ```
-  - List available Earthworm Environments. First time the list should be empty.
+  - Listing available Earthworm Environments. First time the list should be empty.
 
 ```sh
-make list_ew_env
+$ make list_ew_env
 ```
 
-  - Creating Earthworm Environment with Memphis test `params`, `log` and `data` directories by:
+  - Creating your first Earthworm Environment (read details in section below) from Memphis test available online. The memphis file zip already contains directory `params`, `log` and `data`, by variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment called `memphis_test1`.
 
 ```sh
-make create_ew_env_from_zip_url \
-     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
-     MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-     EW_ENV=memphis_test1
+$ make create_ew_env_from_zip_url \
+       ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+       CREATE_EW_ENV_SUBDIRS="" \
+       MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
+       EW_ENV=memphis_test1
 ```
 
-  - List of the Earthworm Environments. You should now see `memphis_test1`.
+  - Listing of the Earthworm Environments. You should now see `memphis_test1`.
 
 ```sh
-make list_ew_env
+$ make list_ew_env
 ```
 
 ```sh
@@ -122,20 +129,20 @@ Available Earthworm Environments:
 
 ```
 
-  - Running `startstop` within the Earthworm Environment `memphis_test1` just created by:
+  - Running `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test1` just created.
 
 ```sh
-make EW_ENV=memphis_test1 \
+$ make EW_ENV=memphis_test1 \
      EW_INSTALL_INSTALLATION=INST_MEMPHIS \
      ew_startstop_in_bash
 ```
 
 You will see the iteractive output from the Earthworm `startstop` process.
 
-  - Within another terminal, run a shell within the docker container started for the Earthworm Environment `memphis_test1` by:
+  - From a different terminal prompt of your host, you can executing a bash shell within the docker container previously started for the Earthworm Environment `memphis_test1`.
 
 ```sh
-make EW_ENV=memphis_test1 ew_exec
+make EW_ENV=memphis_test1 ew_exec_bash
 ```
 
 The docker container shell prompt will be shown:
@@ -144,7 +151,7 @@ The docker container shell prompt will be shown:
 f74b689cb1ed:/opt/ew_env [ew:memphis_test1] $
 ```
 
-From that shell prompt within the Earthworm Environment `memphis_test1`,  you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
+From that shell prompt within the docker container,  you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
 
 
 ## Configuration
