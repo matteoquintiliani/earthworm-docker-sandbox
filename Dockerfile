@@ -289,9 +289,9 @@ RUN chown -R ${USER_NAME}:${GROUP_NAME} ${EW_RUN_DIR}
 # Set EW_INSTALL_INSTALLATION and EW_INST_ID
 ARG EW_INSTALL_INSTALLATION="INST_UNKNOWN"
 RUN \
-	 echo "export EW_INSTALL_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "export EW_INSTALLATION=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
-	 && echo "export EW_INST_ID=\"${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 echo "export EW_INSTALL_INSTALLATION=\"\${EW_INSTALL_INSTALLATION:-${EW_INSTALL_INSTALLATION}}\"" >> /root/.bashrc \
+	 && echo "export EW_INSTALLATION=\"\${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
+	 && echo "export EW_INST_ID=\"\${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
 	 && echo ". ${EW_FILE_ENV}" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
