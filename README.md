@@ -158,7 +158,7 @@ From that shell prompt within the docker container,  you can now execute Earthwo
 
 All configuration variables can be set within the file `Makefile.env` or passed as argument at run-time to command `make`.
 
-It is convenient to set all the variables, except for `EW_ENV` (or variables for creating the Earthworm Environments), within the `Makefile.env` file.
+It is convenient to set all the variables, except for `EW_ENV` (or variables for creating the Earthworm Environments), within the file `Makefile.env` .
 
 Usually, the variabile `EW_ENV` is passed as an argument to the command `make`. Example:
 
@@ -170,45 +170,37 @@ The variables passed as arguments override the values defined in the `Makefile.e
 
 ## Building Docker Image
 
-Default:
+Building the Earthworm Docker Sandbox images is based on:
+
+1. Local files `Dockerfile`, `Makefile`  and `Makefile.env`
+1. Online official Earthworm Subversion Repository `svn://svn.isti.com/earthworm`
+1. Optional: online `ew2openapi` git repository [https://gitlab.rm.ingv.it/earthworm/ew2openapi/](https://gitlab.rm.ingv.it/earthworm/ew2openapi/)
+
+Building the image with current variables in `Makefile.env`.
 
 ```sh
 make build
 ```
 
-### Compiling Earthworm modules
-
-Default settings compile all Earthworm modules from latest Earthworm Subversion revision in `svn://svn.isti.com/earthworm/trunk` tested by this tool.
-
- You can optionally choose to compile only specific modules by setting variable `ARG_SELECTED_MODULE_LIST` in `Makefile.env`. Example:
-
-```sh
-ARG_SELECTED_MODULE_LIST=" \
-reporting/statmgr \
-reporting/diskmgr \
-reporting/copystatus \
-...
-...
-...
-seismic_processing/pick_ew \
-seismic_processing/pick_FP \
-seismic_processing/binder_ew \
-"
-```
-
-**N.B.** In any case, `libsrc` and all modules in `system_control` and `diagnostic_tools` will be compiled.
-
 ### Compiling specific Earthworm versions
 
-You can also choose to compile a particolar Subversion directory or revision.
+Default settings compile all Earthworm modules from latest Earthworm Subversion revision tested by this tool from the main branch `svn://svn.isti.com/earthworm/trunk`.
 
-Variables involved in the docker image building process are `EW_SVN_BRANCH` and `EW_SVN_REVISION`. Default is last available subversion revision from main directory `trunk`.
+Branch and revision involved in the docker image building process are defined in variables `EW_SVN_BRANCH` and `EW_CO_SVN_REVISION`. You can compile a specific Earthworm version changing those values.
+
+- `EW_SVN_BRANCH`:
 
 ```sh
-# You can set custom main directories (e.g. 'tags/ew_7.10_release', 'branches/cosmos', etc.)
+# Set Earthworm Subversion Branch. Default is 'trunk'
+# EW_SVN_BRANCH must be defined and not empty.
+# You can set custom main directories
+# (e.g. 'tags/ew_7.10_release', 'branches/cosmos', etc.)
 EW_SVN_BRANCH = trunk
 # EW_SVN_BRANCH = tags/ew_7.10_release
+```
+- `EW_CO_SVN_REVISION`:
 
+```sh
 # Set optional Earthworm Revision.
 # If it is empty that stands for last available revision of the EW_SVN_BRANCH
 # You can set custom subversion revision 'NNN' where NNN is the revision number
@@ -217,9 +209,9 @@ EW_SVN_BRANCH = trunk
 EW_SVN_REVISION = 8136
 ```
 
-Log of Subversion revisions are available from following url: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
+Changelog of Earthworm subversion revisions are available from following url: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
 
-If you want to compile an old version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
+If you want to compile a previous version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
 
 ```sh
 make EW_SVN_REVISION=8068 build
@@ -249,10 +241,12 @@ you can create the docker images for the following Earthworm revisions:
   - `EW_SVN_BRANCH=tags/ew_7.8_relase EW_SVN_REVISION=` (svn revision @6404 - 2015/06/25), 32-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.7_relase EW_SVN_REVISION=` (svn revision @5961 - 2013/09/19), 32-bit version.
 
+Caveat:  arm architecture is available only since ew 7.10.
 
-When you build a docker image, default name is `ew-sandbox` and tag is built by the values of `EW_SVN_BRANCH` and `EW_SVN_REVISION` variables.
 
-For listing available earthworm docker sandbox images, use the following command:
+When you build an Earthworm Docker Sandbox image, default name is `ew-sandbox` and tag is built by the values of `EW_SVN_BRANCH` and `EW_SVN_REVISION` variables.
+
+Listing available Earthworm Docker Sandbox images.
 
 ```sh
 $ make list_images
@@ -271,6 +265,27 @@ ew-sandbox          tags_ew_7_8_release    5f36eaff12f6        2 hours ago      
 ew-sandbox          tags_ew_7_7_release    59ad5d0b3193        2 hours ago         839MB
 ```
 
+### Compiling Earthworm modules
+
+By default, all Earthworm modules are compiled. You could optionally choose to compile only specific modules by setting variable `ARG_SELECTED_MODULE_LIST` in `Makefile.env`. Example:
+
+```sh
+ARG_SELECTED_MODULE_LIST=" \
+reporting/statmgr \
+reporting/diskmgr \
+reporting/copystatus \
+...
+...
+...
+seismic_processing/pick_ew \
+seismic_processing/pick_FP \
+seismic_processing/binder_ew \
+"
+```
+
+**N.B.** In any case, `libsrc` and all modules in `system_control` and `diagnostic_tools` will be compiled.
+
+Moreover, you can enable also compilation for additional module `ew2moledb` and `ew2openapi` by the following variables `ARG_ADDITIONAL_MODULE_EW2MOLEDB=yes` and `ARG_ADDITIONAL_MODULE_EW2OPENAPI=yes` respectively.
 
 ## Creating Earthworm Environments
 
