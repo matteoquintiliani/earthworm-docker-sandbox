@@ -137,7 +137,7 @@ $ make EW_ENV=memphis_test1 \
      ew_startstop_bash
 ```
 
-You will see the iteractive output from the Earthworm `startstop` process.
+You will see the interactive output from the Earthworm `startstop` process.
 
   - From a different terminal prompt of your host, you can executing a bash shell within the docker container previously started for the Earthworm Environment `memphis_test1`.
 
@@ -441,7 +441,7 @@ Shortcut:
 ### Complete Help
 
 ```
-Earthworm Docker Sandbox 0.15.0
+Earthworm Docker Sandbox 0.15.1
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
