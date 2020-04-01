@@ -318,6 +318,8 @@ where `EW_ENV` is the name of the Earthworm Enviroment to create. Then you can m
 make EW_ENV=my_test_env ew_run_bash
 ```
 
+By default, subdirectories `params`, `log` and `data` are mounted, within the Earthworm Docker Sandbox, on directory  `EW_RUN_DIR`, which is `/opt/ew_env`.
+
 You can duplicate an Earthworm Environment starting from an existing one by:
 
 ```sh
