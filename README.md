@@ -134,7 +134,7 @@ Available Earthworm Environments:
 ```sh
 $ make EW_ENV=memphis_test1 \
      EW_INSTALL_INSTALLATION=INST_MEMPHIS \
-     ew_startstop_in_bash
+     ew_startstop_bash
 ```
 
 You will see the iteractive output from the Earthworm `startstop` process.
@@ -306,6 +306,10 @@ make list_ew_env
 
 It depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
 
+By default, subdirectories `params`, `log` and `data` are mounted, within the Earthworm Docker Sandbox, on directory  `EW_RUN_DIR`, which is `/opt/ew_env`.
+
+##### Create an empty Earthworm Environment
+
 You can create Earthworm Environments on your own by creating and managing file within subdirectories `params`, `log` and `params`. To create an Earthworm Environment from scratch with empty subdirectories `params`, `log` and `params` you can run a command line like:
 
 ```sh
@@ -318,15 +322,17 @@ where `EW_ENV` is the name of the Earthworm Enviroment to create. Then you can m
 make EW_ENV=my_test_env ew_run_bash
 ```
 
+##### Duplicate an Earthworm Environment
+
 You can duplicate an Earthworm Environment starting from an existing one by:
 
 ```sh
 make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2
 ```
 
-Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
+##### Create an Earthworm Environment from a zip file
 
-Remember, if the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If they reside in different paths, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`.
+Morevoer, you can create as many Earthworm Environments as you want starting from the same zip file or git repository.
 
 Example for creating from a zip file an Earthwom Environment with name `my_test_env`:
 
@@ -336,6 +342,10 @@ make create_ew_env_from_zip_url \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
      EW_ENV=my_test_env
 ```
+
+*Read below description of  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`.*
+
+##### Create an Earthworm Environment from a git repository
 
 Example for creating from a git repository an Earthwom Environment with name `my_test_env`:
 
@@ -350,55 +360,76 @@ make create_ew_env_from_git_repository \
 
 Variable `GIT_BRANCH` is optional.
 
-## Running Earthworm Environments
+*Read below description of  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`.*
 
-Main `make` commands for running and/or stopping Earthworm Envinronments within a docker container are:
+#####  Description of variables  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`
 
-  - `ew_run_bash`:   run bash shell in a new docker container
-  - `ew_run_screen`: run screen shell in a new docker container
-  - `ew_startstop_daemon`:  run new docker container as daemon
-  - `ew_stop_container`:   stop the running docker container [daemon]
+If the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If those directories reside in different paths in zip file or git repository, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`. Order to use is `"params log data"`.
 
-Command example for running bash within the `ew_test1` Earthworm Environment:
+## Running Earthworm Docker Sandbox Container
+
+It is possible to launch only one Docker Container at a time on a single Earthworm Environment. All commands will be executed in the container for that Earthworm Environment declared in the variable `EW_ENV` which  is usually defined by command line on run-time:
+
+A command for running commands within the Docker Container for a specific Earthworm Environment looks like:
 
 ```sh
-make EW_ENV=ew_test1 ew_run_bash
+$ make  EW_ENV=<earthworm_environment_name>  <command>
 ```
 
-Default setting allows you to run a single docker container for each Earthworm Environments. It depends on variable `DOCKER_CONTAINER_NAME`: 
+Name of Docker Container is built in the variable `DOCKER_CONTAINER_NAME` which is defined by default like this:
 
 ```sh
 DOCKER_CONTAINER_NAME ?= ew-sandbox-$(DOCKER_IMAGE_VERSION)-$(EW_ENV)
 ```
 
-Main `make` commands for executing processes within running Earthworm Environment docker containers:
+There are two command groups: one for launching commands in new containers (based on `docker run`) and the other for executing commands inside already running containers (base on `docker exec`).
 
+##### Start/Stop Earthworm Docker Sandbox Containers
 
-  - `ew_exec`:    run bash shell in the running docker container
-  - `list_containers`:  output 'docker ps' of running docker container
-  - `ew_sniffrings_all`: sniff messages from all rings except for TYPE_TRACEBUF and TYPE_TRACEBUF2
-  - `ew_tail_all_logs`:    exec tail and follow log files in EW_LOG directory (/opt/earthworm/log)
+The following  `make` commands based on `docker run` are used to start new docker container on an Earthworm Envinronment.
 
-Command example for executing a `bash` shell within the `ew_test1` Earthworm Environment:
+Start a new docker container within interactive shells:
 
-```sh
-make EW_ENV=ew_test1 ew_exec
-```
+  - `ew_run_bash`:   run interactive bash shell in a new docker container. You can optionally run command passed by ARGS variable.
+  - `ew_run_screen`: run interactive screen shell in a new docker container. You can optionally run command passed by ARGS variable.
 
-There are two `make` commands to launch Earthworm automatically when the container starts:
+Start a container by implicitly launching the Earthworm command `startstop`:
 
-  - `ew_startstop_in_bash`:   run Earthworm by bash in a new docker container
-  - `ew_startstop_in_screen`: run Earthworm by screen in a new docker container
+  - `ew_startstop_bash`:   run 'startstop' in an interactive bash shell in a new docker container for current EW_ENV.
+  - `ew_startstop_screen`: run 'startstop' in an interactive screen shell in a new docker container for current EW_ENV.
+  - `ew_startstop_detached`:  run 'startstop' in detached mode in a new docker container for current EW_ENV.
+  - `ew_startstop_screen_handling_exit`: run 'startstop' in detached mode in a new docker container for current EW_ENV. Pass arguments to ew_check_process_status.sh by ARGS variable.
 
 Both launch process `startstop`. Running in a `bash` you will have only one shell available for that container. You can still access a running container using the `make ew_exec` command.
 
-Using `screen` you can create as many shell as you want inside the same container. Moreover, when running a container by `ew_startstop_in_screen` you can pass arguments to the script `ew_check_process_status.sh` which can monitor an Earthworm module that when it is no longer alive then it can stop all Earthworm and exit from docker container.
+Using `screen` you can create as many shell as you want inside the same container. Moreover, when running a container by `ew_startstop_screen` you can pass arguments to the script `ew_check_process_status.sh` which can monitor an Earthworm module that when it is no longer alive then it can stop all Earthworm and exit from docker container.
 
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-make ew_startstop_in_screen EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
+make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
 ```
+
+Stop and remove a running container:
+
+- `ew_stop_container`:  stop and remove the running docker container [detached or not].
+
+##### Executing commands within running Earthworm Docker Sandbox Containers
+
+The following  `make` commands based on `docker exec` are used to launch commands in running docker container on an Earthworm Envinronment.
+
+
+  - `ew_exec_bash`: run a new interactive bash shell within the running docker container. You can optionally run command passed by ARGS variable.
+  - `ew_exec_screen`: run a new interactive screen shell within the running docker container. You can optionally run command passed by ARGS variable.
+
+Shortcut:
+
+
+  - `ew_status`: run 'status' in the Earthworm running docker container.
+  - `ew_pau`: run 'pau' in the Earthworm running docker container.
+  - `ew_sniffrings_all`: run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*.
+  - `ew_tail_all_logs`: exec tail and follow all log files within EW_LOG directory (/opt/earthworm/log).
+  - `ew_status_tankplayer`: output tankplayer process status.
 
 ## Caveats
 
@@ -410,7 +441,7 @@ make ew_startstop_in_screen EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
 ### Complete Help
 
 ```
-Earthworm Docker Sandbox 0.11.1
+Earthworm Docker Sandbox 0.13.0
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -426,17 +457,17 @@ Earthworm Environment:
     - directory path is EW_ENV_DIR
 
 An Earthworm Environment Directory must contain the following subdirectories:
-    - params: contains Earthworm configuration files (EW_PARAMS variable)
-    - log:    where Earthworm log files are written (EW_LOG variable)
+    - params: contains Earthworm configuration files (EW_PARAMS variable).
+    - log:    where Earthworm log files are written (EW_LOG variable).
     - data:   where additional files are read and written
-              by Earthworm modules (EW_DATA_DIR variable)
+              by Earthworm modules (EW_DATA_DIR variable).
 
 =====================================================
 General commands:
 =====================================================
 
-    help:       display this help
-    build:      build docker image using 'Dockerfile' and 'Makefile.env'
+    help:       display this help.
+    build:      build docker image using 'Dockerfile' and 'Makefile.env'.
     build_all:  build docker images using 'Dockerfile' for:
                   * branches in EW_SVN_BRANCH_BUILD_LIST=
                           - tags/ew_7.7_release
@@ -447,34 +478,34 @@ General commands:
                           - 8028
                           - 8136 
 
-    list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR)
+    list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR).
     list_images:     list available Earthworm Docker Sandbox images 
-                     wrap 'docker images' matching name 'ew-sandbox*' 
+                     wrap 'docker images' matching name 'ew-sandbox*'.
     list_containers: list available Earthworm Docker Sandbox containers
-                     wrap 'docker ps' containers matching name 'ew-sandbox*' 
+                     wrap 'docker ps' containers matching name 'ew-sandbox*'.
 
 =====================================================
 Creating Earthworm Environments with name EW_ENV:
 =====================================================
 
-    create_ew_env_from_scratch: create an Earthworm Environment from scratch
-                                (create an empty environment)
-    create_ew_env_from_another: create an Earthworm Environment from another
-                                (duplicate environment from EW_ENV_FROM)
+    create_ew_env_from_scratch: create an Earthworm Environment from scratch.
+                                (Create an empty environment).
+    create_ew_env_from_another: create an Earthworm Environment from another.
+                                (Duplicate environment from EW_ENV_FROM).
 
     create_ew_env_from_zip_url: download and prepare configuration and data
-                                from zip url file
+                                from zip url file.
 
     create_ew_env_from_git_repository: create Earthworm Environment having main
-                                  directory from a branch of a git repository
+                                       directory from a branch of a git repository.
 
-    create_ew_env_from_memphis_test: shortcut based on create_ew_env_from_zip_url
-                                  for creating an Earthworm Environment from Memphis Test
-    create_ew_env_from_ingv_test:    shortcut based on create_ew_env_from_zip_url
-                                  for creating an Earthworm Environment from INGV Test
+    create_ew_env_from_memphis_test: shortcut based on create_ew_env_from_zip_url for
+                                     creating an Earthworm Environment from Memphis Test.
+    create_ew_env_from_ingv_test:    shortcut based on create_ew_env_from_zip_url for
+                                     creating an Earthworm Environment from INGV Test.
 
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository
-                               for creating an Earthworm Environment from INGV git repository
+                               for creating an Earthworm Environment from INGV git repository.
 
     Examples:
               make create_ew_env_from_scratch EW_ENV=ew_test1 
@@ -497,8 +528,8 @@ Creating Earthworm Environments with name EW_ENV:
 Creating tankfiles:
 =====================================================
 
-    create_tank:  launch script create_tank_from_ot_lat_lon_radius.sh
-                  Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable
+    create_tank:  launch script 'create_tank_from_ot_lat_lon_radius.sh'.
+                  Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable.
 
     Example: make create_tank ARGS="2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data"
 
@@ -506,29 +537,29 @@ Creating tankfiles:
 Deleting files: (POTENTIALLY DANGEROUS)
 =====================================================
 
-    ew_dangerous_clean_log: delete all files within log directory (~/ew_envs/ew_help/log)
-    ew_dangerous_clean_ws:  delete all files within waveserver directories (~/ew_envs/ew_help/data/waveservers)
+    ew_dangerous_clean_log: delete all files within log directory (~/ew_envs/ew_help/log).
+    ew_dangerous_clean_ws:  delete all files within waveserver directories (~/ew_envs/ew_help/data/waveservers).
 
 =====================================================
-Running/Stopping Earthworm Docker Sandbox container:
+Start/Stop Earthworm Docker Sandbox Containers:
 =====================================================
 
-    ew_run_bash:   run interactive bash shell in a new docker container
-                   you can optionally run command passed by ARGS variable
-    ew_run_screen: run interactive screen shell in a new docker container
-                   you can optionally run command passed by ARGS variable
+    ew_run_bash:     run interactive bash shell in a new docker container.
+                     You can optionally run command passed by ARGS variable.
+    ew_run_screen:   run interactive screen shell in a new docker container.
+                     You can optionally run command passed by ARGS variable.
 
-    ew_startstop_in_bash:   run 'startstop' in an interactive bash shell
-                            in a new docker container for current EW_ENV
-    ew_startstop_in_screen: run 'startstop' in an interactive screen shell
-                            in a new docker container for current EW_ENV
-    ew_startstop_detached:  run 'startstop' in detached mode
-                            in a new docker container for current EW_ENV
+    ew_startstop_bash:     run 'startstop' in an interactive bash shell
+                           in a new docker container for current EW_ENV.
+    ew_startstop_screen:   run 'startstop' in an interactive screen shell
+                           in a new docker container for current EW_ENV.
+    ew_startstop_detached: run 'startstop' in detached mode
+                           in a new docker container for current EW_ENV.
 
-    ew_stop_container:      stop and remove the running docker container [detached or not]
+    ew_stop_container:     stop and remove the running docker container [detached or not].
 
-    ew_startstop_in_screen_handling_exit: run 'startstop' in detached mode
-                            in a new docker container for current EW_ENV
+    ew_startstop_screen_handling_exit: run 'startstop' in detached mode
+                            in a new docker container for current EW_ENV.
                             Pass arguments to ew_check_process_status.sh by ARGS variable
 
     Examples:
@@ -537,31 +568,31 @@ Running/Stopping Earthworm Docker Sandbox container:
               make EW_ENV=ew_test1 ew_run_screen
               make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
 
-              make EW_ENV=ew_test1 ew_startstop_in_bash
-              make EW_ENV=ew_test1 ew_startstop_in_screen"
+              make EW_ENV=ew_test1 ew_startstop_bash
+              make EW_ENV=ew_test1 ew_startstop_screen"
               make EW_ENV=ew_test1 ew_startstop_detached
 
               make EW_ENV=ew_test1 ew_stop_container
 
-              make EW_ENV=ew_test1 ew_startstop_in_screen_handling_exit ARGS="tankplayer.d nopau"
-              make EW_ENV=ew_test1 ew_startstop_in_screen_handling_exit ARGS="tankplayer.d pau"
+              make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d nopau"
+              make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
 
 =====================================================
-Executing commands within running Earthworm Docker Sandbox containers:
+Executing commands within running Earthworm Docker Sandbox Containers:
 =====================================================
 
-    ew_exec_bash:      run a new bash shell within the running docker container
-                       you can optionally run command passed by ARGS variable
-    ew_exec_screen:    run a new screen shell within the running docker container
-                       you can optionally run command passed by ARGS variable
+    ew_exec_bash:      run a new bash shell within the running docker container.
+                       You can optionally run command passed by ARGS variable.
+    ew_exec_screen:    run a new screen shell within the running docker container.
+                       You can optionally run command passed by ARGS variable.
 
-    ew_status:         run 'status' in the Earthworm running docker container
-    ew_pau:            run 'pau' in the Earthworm running docker container
+    ew_status:         run 'status' in the Earthworm running docker container.
+    ew_pau:            run 'pau' in the Earthworm running docker container.
 
-    ew_sniffrings_all:    run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*
+    ew_sniffrings_all:    run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*.
     ew_tail_all_logs:     exec tail and follow all log files within
-                          EW_LOG directory (/opt/earthworm/log)
-    ew_status_tankplayer: output tankplayer process status
+                          EW_LOG directory (/opt/earthworm/log).
+    ew_status_tankplayer: output tankplayer process status.
 
     Examples:
               make EW_ENV=ew_test1 ew_exec_bash
