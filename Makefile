@@ -31,9 +31,10 @@ DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME ?= $(DOCKER_CONTAINER_NAME)-$(DOCKER_CON
 NS_IMAGE_NAME = $(DOCKER_NAMESPACE_EXT)$(DOCKER_IMAGE_NAME)
 NS_IMAGE_NAME_VERSION = $(NS_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
-OPT_RUN_D="-d"
-OPT_RUN_I="-i"
-OPT_RUN_T="-t"
+# Default options for 'docker run' and 'docker exec': interactive, tty and not detached
+OPT_RUN_I = -i
+OPT_RUN_T = -t
+OPT_RUN_D =
 
 .PHONY: \
 	build build_all \
@@ -331,15 +332,16 @@ build: check_for_building
 CARRIAGE_RETURN=""
 
 ew_run_bash: check_for_running
-	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 		/bin/bash -c 'CMD="$(ARGS)" && CMD=$${CMD:-bash} && . ~/.bashrc && $${CMD}'
 
 # ew_run_screen: check_for_running
-	# docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
+	# docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	# bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
 ew_run_screen: check_for_running
 	@echo $(ARGS)
-	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -p 0 -S ew -X stuff \"$(ARGS)$(CARRIAGE_RETURN)\" \
@@ -347,11 +349,11 @@ ew_run_screen: check_for_running
 	)"
 
 ew_exec_bash: check_for_executing
-	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
+	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
 		/bin/bash -c 'CMD="$(ARGS)" && CMD=$${CMD:-bash} && . ~/.bashrc && $${CMD}'
 
 ew_exec_screen: check_for_executing
-	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
+	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -p 0 -S ew -X stuff \"$(ARGS)$(CARRIAGE_RETURN)\" \
@@ -365,7 +367,7 @@ ew_startstop_screen: check_for_running
 	make ew_run_screen ARGS="startstop"
 
 ew_startstop_screen_handling_exit: check_for_running
-	docker run $(DOCKER_USER) --rm $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
 		&& screen -S ew -X screen \
@@ -377,8 +379,7 @@ ew_startstop_screen_handling_exit: check_for_running
 	)"
 
 ew_startstop_detached: check_for_running
-	docker run $(DOCKER_USER) --rm $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
-	bash -c ". ~/.bashrc && startstop"
+	make ew_run_bash ARGS="startstop" OPT_RUN_D=-d
 
 ew_stop_container: check_for_running
 	docker stop $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME)
@@ -401,14 +402,14 @@ ew_status_tankplayer: check_for_running
 	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="/opt/scripts/ew_check_process_status.sh"; \
 
 ew_sniffrings_all: check_for_running
-	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c '\
+	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c '\
 		. ~/.bashrc \
 		&& echo $${RING_LIST} \
 		&& sniffrings $$(/opt/scripts/ew_get_rings_list.sh) verbose 2>&1 | grep -v "TYPE_TRACEBUF" \
 		'
 
 ew_tail_all_logs: check_for_running
-	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c 'tail -f `find /opt/ew_env/log -name "*.log"`'
+	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c 'tail -f `find /opt/ew_env/log -name "*.log"`'
 
 create_ew_env_from_scratch: check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
