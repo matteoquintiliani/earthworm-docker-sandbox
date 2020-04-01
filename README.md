@@ -441,7 +441,7 @@ Shortcut:
 ### Complete Help
 
 ```
-Earthworm Docker Sandbox 0.13.0
+Earthworm Docker Sandbox 0.13.1
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
