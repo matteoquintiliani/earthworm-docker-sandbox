@@ -377,7 +377,7 @@ ew_startstop_screen_handling_exit: check_for_running
 	)"
 
 ew_startstop_detached: check_for_running
-	docker run $(DOCKER_USER) --rm $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+	docker run $(DOCKER_USER) --rm $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	bash -c ". ~/.bashrc && startstop"
 
 ew_stop_container: check_for_running
