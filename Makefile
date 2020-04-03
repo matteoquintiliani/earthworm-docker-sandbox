@@ -349,8 +349,7 @@ ew_run_screen: check_for_running
 		&& screen -r \
 	)"
 
-# ew_run_screen: check_for_running
-	# docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
+# docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) $(PORTS) $(VOLUMES) $(ENV) $(NS_IMAGE_NAME_VERSION) \
 	# bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
 ew_exec_bash: check_for_executing
@@ -403,10 +402,10 @@ ew_pau: check_for_executing
 		echo "Nothing has been done."; \
 		fi)'
 
-ew_status_tankplayer: check_for_running
+ew_status_tankplayer: check_for_executing
 	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="/opt/scripts/ew_check_process_status.sh"; \
 
-ew_sniffrings_all: check_for_running
+ew_sniffrings_all: check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_COMPLETE_INSTANCE_NAME) /bin/bash -c '\
 		. ~/.bashrc \
 		&& echo $${RING_LIST} \
