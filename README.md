@@ -441,7 +441,7 @@ Shortcut:
 ### Complete Help
 
 ```
-Earthworm Docker Sandbox 0.17.0-dev
+Earthworm Docker Sandbox 0.17.0
 =====================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -591,7 +591,7 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 
     ew_sniffrings_all:    run 'sniffrings' for all rings and messages except for TYPE_TRACEBUF*.
     ew_tail_all_logs:     exec tail and follow all log files within
-                          EW_LOG directory (/opt/earthworm/log).
+                          EW_LOG directory (/opt/ew_env/log).
     ew_status_tankplayer: output tankplayer process status.
 
     Examples:
