@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 0.19.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.1 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -522,7 +522,7 @@ Examples:
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.19.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.1 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
