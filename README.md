@@ -26,8 +26,6 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
       - Install or upgrade your [WSL to the version 2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install).
       - Install the [docker for windows](https://docs.docker.com/docker-for-windows/).
       - Complete [these steps](https://docs.docker.com/docker-for-windows/wsl-tech-preview/) to complete the Docker WSL backend.
-
-
   - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
   - **GNU Bash**  [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
