@@ -484,9 +484,9 @@ The following  `make` commands based on `docker exec` are used to launch command
 Examples:
 
 ```sh
-              make EW_ENV=ew_test1 ew_exec_bash
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
+$ make EW_ENV=ew_test1 ew_exec_bash
+$ make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
+$ make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
 ```
 
 Shortcuts for running commands within running Earthworm Docker Sandbox Containers:
@@ -499,10 +499,10 @@ Shortcuts for running commands within running Earthworm Docker Sandbox Container
 Examples:
 
 ```sh
-              make EW_ENV=ew_test1 ew_status
-              make EW_ENV=ew_test1 ew_pau
-              make EW_ENV=ew_test1 ew_sniffrings_all
-              make EW_ENV=ew_test1 ew_tail_all_logs
+$ make EW_ENV=ew_test1 ew_status
+$ make EW_ENV=ew_test1 ew_pau
+$ make EW_ENV=ew_test1 ew_sniffrings_all
+$ make EW_ENV=ew_test1 ew_tail_all_logs
 ```
 
 
