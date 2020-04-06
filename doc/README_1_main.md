@@ -413,7 +413,7 @@ Using `screen` you can create as many shell as you want inside the same containe
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
+make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d pau"
 ```
 
 Stop and remove a running container:
