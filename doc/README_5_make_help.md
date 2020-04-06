@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.18.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.0 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -133,7 +133,7 @@ Start/Stop Earthworm Docker Sandbox Containers:
               make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
 
               make EW_ENV=ew_test1 ew_startstop_bash
-              make EW_ENV=ew_test1 ew_startstop_screen"
+              make EW_ENV=ew_test1 ew_startstop_screen
               make EW_ENV=ew_test1 ew_startstop_detached
 
               make EW_ENV=ew_test1 ew_stop_container
@@ -161,6 +161,7 @@ Executing commands within running Earthworm Docker Sandbox Containers:
     Examples:
               make EW_ENV=ew_test1 ew_exec_bash
               make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
+              make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
               make EW_ENV=ew_test1 ew_status
               make EW_ENV=ew_test1 ew_pau
               make EW_ENV=ew_test1 ew_sniffrings_all
@@ -169,7 +170,6 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 ======================================================================
 License
 ======================================================================
-
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 
