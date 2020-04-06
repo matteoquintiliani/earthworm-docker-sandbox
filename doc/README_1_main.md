@@ -46,7 +46,7 @@ Before using it, make sure you have properly installed all those packages specif
 For a quick start, a very short help is:
 
 ```sh
- Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
+Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
 
 Current main variable values:
     EW_ENV=ew_help
@@ -77,13 +77,13 @@ Get ready to get your first Earthworm Environment running in a Docker container 
 
 To get familiar with this tool we will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
 
-  - Changing directory to Earthworm Docker Sandbox.
+  - Change directory to Earthworm Docker Sandbox.
 
 ```sh
 $ cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
 ```
 
-  - Building the default Earthworm Docker Sandbox image.
+  - Build the default Earthworm Docker Sandbox image.
 
 ```sh
 $ make build
@@ -101,18 +101,18 @@ REPOSITORY          TAG                    IMAGE ID            CREATED          
 ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        856MB
 ```
 
-  - Creating if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
+  - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
 
 ```sh
 $ mkdir ~/ew_envs
 ```
-  - Listing available Earthworm Environments. First time the list should be empty.
+  - List available Earthworm Environments. First time the list should be empty.
 
 ```sh
 $ make list_ew_env
 ```
 
-  - Creating your first Earthworm Environment (read details in section below) from Memphis test available online. The memphis file zip already contains directory `params`, `log` and `data`, by variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment called `memphis_test1`.
+  - Create your first Earthworm Environment (read details in section below) from Memphis test available online. The memphis file zip already contains directory `params`, `log` and `data`, by variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment called `memphis_test1`.
 
 ```sh
 $ make create_ew_env_from_zip_url \
@@ -122,7 +122,7 @@ $ make create_ew_env_from_zip_url \
        EW_ENV=memphis_test1
 ```
 
-  - Listing of the Earthworm Environments. You should now see `memphis_test1`.
+  - List of the Earthworm Environments. You should now see `memphis_test1`.
 
 ```sh
 $ make list_ew_env
@@ -135,7 +135,7 @@ Available Earthworm Environments:
 
 ```
 
-  - Running `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test1` just created.
+  - Run `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test1` just created.
 
 ```sh
 $ make EW_ENV=memphis_test1 \
@@ -145,13 +145,28 @@ $ make EW_ENV=memphis_test1 \
 
 You will see the interactive output from the Earthworm `startstop` process.
 
-  - From a different terminal prompt of your host, you can executing a bash shell within the docker container previously started for the Earthworm Environment `memphis_test1`.
+  - From a different terminal prompt of your host, list the running Earthworm Docker Sandbox Container:
 
 ```sh
-make EW_ENV=memphis_test1 ew_exec_bash
+$ make list_containers
+docker ps -f name='ew-sandbox*'
 ```
 
-The docker container shell prompt will be shown:
+a possible output:
+
+```sh
+CONTAINER ID        IMAGE                    COMMAND                   CREATED             STATUS              PORTS               NAMES
+5c4241577326        ew-sandbox:trunk_r8136   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8136.memphis_test1
+```
+
+  - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test1`.
+
+```sh
+$ make EW_ENV=memphis_test1 ew_exec_bash
+```
+
+
+The Earthworm Docker Sandbox Container shell prompt will be shown:
 
 ```sh
 f74b689cb1ed:/opt/ew_env [ew:memphis_test1] $
@@ -182,15 +197,15 @@ Building the Earthworm Docker Sandbox images is based on:
 1. Online official Earthworm Subversion Repository `svn://svn.isti.com/earthworm`
 1. Optional: online `ew2openapi` git repository [https://gitlab.rm.ingv.it/earthworm/ew2openapi/](https://gitlab.rm.ingv.it/earthworm/ew2openapi/)
 
-Building the image with current variables in `Makefile.env`.
+- Build the image with current variables in `Makefile.env`:
 
 ```sh
-make build
+$ make build
 ```
 
 ### Compiling specific Earthworm versions
 
-Default settings compile all Earthworm modules from latest Earthworm Subversion revision tested by this tool from the main branch `svn://svn.isti.com/earthworm/trunk`.
+Default settings get the latest Earthworm Subversion revision tested by this tool from the main branch `svn://svn.isti.com/earthworm/trunk` and compile all Earthworm sources.
 
 Branch and revision involved in the docker image building process are defined in variables `EW_SVN_BRANCH` and `EW_CO_SVN_REVISION`. You can compile a specific Earthworm version changing those values.
 
@@ -211,11 +226,11 @@ EW_SVN_BRANCH = trunk
 # If it is empty that stands for last available revision of the EW_SVN_BRANCH
 # You can set custom subversion revision 'NNN' where NNN is the revision number
 # EW_SVN_REVISION =
-# Latest Earthworm Subversion revision tested in this tool
+# Latest Earthworm Subversion revision tested by this tool
 EW_SVN_REVISION = 8136
 ```
 
-Changelog of Earthworm subversion revisions are available from following url: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
+Changelog of Earthworm subversion revisions are available from the following URL: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
 
 If you want to compile a previous version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
 
@@ -231,9 +246,7 @@ make EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION= build
 
 Caveat: you might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
 
-Using the current `Doxyfile` you should be able to successfully compile all major revisions.
-
-By the following command:
+Using the current `Doxyfile` you should be able to successfully compile all major revisions. In particular, by the following command:
 
 ```sh
 $ make build_all
