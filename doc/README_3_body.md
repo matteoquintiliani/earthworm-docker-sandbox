@@ -1,7 +1,3 @@
-# Earthworm Docker Sandbox
-
-A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
-
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.

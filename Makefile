@@ -581,13 +581,14 @@ ew_dangerous_clean_ws: check_for_running
 		fi
 
 doc:
-	echo "" > doc/README_2_make_help.md
-	echo "### Complete Help" >> doc/README_2_make_help.md
-	echo "" >> doc/README_2_make_help.md
-	echo '```' >> doc/README_2_make_help.md
-	make help >> doc/README_2_make_help.md
-	echo '```' >> doc/README_2_make_help.md
-	echo "" >> doc/README_2_make_help.md
+	make version > doc/README_2_version.md
+	echo "" > doc/README_5_make_help.md
+	echo "### Complete Help" >> doc/README_5_make_help.md
+	echo "" >> doc/README_5_make_help.md
+	echo '```' >> doc/README_5_make_help.md
+	make help >> doc/README_5_make_help.md
+	echo '```' >> doc/README_5_make_help.md
+	echo "" >> doc/README_5_make_help.md
 	echo "" > doc/README_7_license.md
 	echo "### License" >> doc/README_7_license.md
 	echo "" >> doc/README_7_license.md
