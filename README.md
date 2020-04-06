@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 0.19.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.1 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -26,8 +26,6 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
       - Install or upgrade your [WSL to the version 2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install).
       - Install the [docker for windows](https://docs.docker.com/docker-for-windows/).
       - Complete [these steps](https://docs.docker.com/docker-for-windows/wsl-tech-preview/) to complete the Docker WSL backend.
-
-
   - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
   - **GNU Bash**  [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
@@ -524,7 +522,7 @@ Examples:
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.19.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.1 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
