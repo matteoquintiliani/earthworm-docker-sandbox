@@ -14,13 +14,19 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
 #### Operating systems
 
-- **Linux / Unix-like**: this tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use.
-- **Mac OS X**: this tool has also been successfully tested on Mac OS X.
-- **Windows**: this tool has not been tested on Windows yet, any feedback will be very appreciated.
+  - **Linux / Unix-like**: this tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use.
+  - **Mac OS X**: this tool has been successfully tested on Mac OS X.
+  - **Windows**: this tool has been  successfully tested on Widows by WSL (Windows Subsystem for Linux).
 
 #### Required software
 
   - **Docker** - [https://www.docker.com/](https://www.docker.com/)
+    - For Windows:
+      - Install or upgrade your [WSL to the version 2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install).
+      - Install the [docker for windows](https://docs.docker.com/docker-for-windows/).
+      - Complete [these steps](https://docs.docker.com/docker-for-windows/wsl-tech-preview/) to complete the Docker WSL backend.
+
+
   - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
   - **GNU Bash**  [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
@@ -407,7 +413,7 @@ Using `screen` you can create as many shell as you want inside the same containe
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
+make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d pau"
 ```
 
 Stop and remove a running container:
@@ -441,8 +447,9 @@ Shortcut:
 ### Complete Help
 
 ```
-Earthworm Docker Sandbox 0.17.0
-=====================================================
+===========================================================================
+Earthworm Docker Sandbox 0.18.0 Copyright (C) 2020  Matteo Quintiliani
+===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
 
@@ -462,9 +469,9 @@ An Earthworm Environment Directory must contain the following subdirectories:
     - data:   where additional files are read and written
               by Earthworm modules (EW_DATA_DIR variable).
 
-=====================================================
+======================================================================
 General commands:
-=====================================================
+======================================================================
 
     help:       display this help.
     build:      build docker image using 'Dockerfile' and 'Makefile.env'.
@@ -484,9 +491,9 @@ General commands:
     list_containers: list available Earthworm Docker Sandbox containers
                      wrap 'docker ps' containers matching name 'ew-sandbox*'.
 
-=====================================================
+======================================================================
 Creating Earthworm Environments with name EW_ENV:
-=====================================================
+======================================================================
 
     create_ew_env_from_scratch: create an Earthworm Environment from scratch.
                                 (Create an empty environment).
@@ -524,25 +531,27 @@ Creating Earthworm Environments with name EW_ENV:
                    MAP_EW_ENV_SUBDIRS=run_realtime/params \ 
                    EW_ENV=ingv_test1
 
-=====================================================
+======================================================================
 Creating tankfiles:
-=====================================================
+======================================================================
 
     create_tank:  launch script 'create_tank_from_ot_lat_lon_radius.sh'.
                   Pass arguments to create_tank_from_ot_lat_lon_radius.sh by ARGS variable.
 
     Example: make create_tank ARGS="2017-01-01T00:00:00 10 30 42 13 0.3 ~/ew_data"
 
-=====================================================
+======================================================================
 Deleting files: (POTENTIALLY DANGEROUS)
-=====================================================
+======================================================================
 
-    ew_dangerous_clean_log: delete all files within log directory (~/ew_envs/ew_help/log).
-    ew_dangerous_clean_ws:  delete all files within waveserver directories (~/ew_envs/ew_help/data/waveservers).
+    ew_dangerous_clean_log: delete all files within docker host
+                            log directory (~/ew_envs/ew_help/log).
+    ew_dangerous_clean_ws:  delete all files within docker host
+                            waveserver directories (~/ew_envs/ew_help/data/waveservers).
 
-=====================================================
+======================================================================
 Start/Stop Earthworm Docker Sandbox Containers:
-=====================================================
+======================================================================
 
     ew_run_bash:     run interactive bash shell in a new docker container.
                      You can optionally run command passed by ARGS variable.
@@ -577,9 +586,9 @@ Start/Stop Earthworm Docker Sandbox Containers:
               make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d nopau"
               make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
 
-=====================================================
+======================================================================
 Executing commands within running Earthworm Docker Sandbox Containers:
-=====================================================
+======================================================================
 
     ew_exec_bash:      run a new bash shell within the running docker container.
                        You can optionally run command passed by ARGS variable.
@@ -602,12 +611,55 @@ Executing commands within running Earthworm Docker Sandbox Containers:
               make EW_ENV=ew_test1 ew_sniffrings_all
               make EW_ENV=ew_test1 ew_tail_all_logs
 
-===========================================================================
-Matteo Quintiliani - Istituto Nazionale di Geofisica e Vulcanologia - Italy
+======================================================================
+License
+======================================================================
+
+Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
+developing Earthworm System within enclosed environments.
+
+Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
+
+### License
+
+Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
+developing Earthworm System within enclosed environments.
+
+Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
+Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+## Acknowledgements
+
+Andrè Herrero, Lucia Margheriti, Franco Mele, Salvatore Mazza, Diana Latorre, Marina Pastori, Anna Nardi, Valentino Lauciani - Istituto Nazionale Geofisica e Vulcanologia - Italy
 
 ## Author
 

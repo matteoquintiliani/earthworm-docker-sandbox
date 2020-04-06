@@ -14,13 +14,19 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
 
 #### Operating systems
 
-- **Linux / Unix-like**: this tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use.
-- **Mac OS X**: this tool has also been successfully tested on Mac OS X.
-- **Windows**: this tool has not been tested on Windows yet, any feedback will be very appreciated.
+  - **Linux / Unix-like**: this tool is designed to work on all Unix-like operating systems and CPU architectures (*32-bit/64bit, i386, x386, amd386, arm, ...*) supported by the Earthworm version you want to use.
+  - **Mac OS X**: this tool has been successfully tested on Mac OS X.
+  - **Windows**: this tool has been  successfully tested on Widows by WSL (Windows Subsystem for Linux).
 
 #### Required software
 
   - **Docker** - [https://www.docker.com/](https://www.docker.com/)
+    - For Windows:
+      - Install or upgrade your [WSL to the version 2](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install).
+      - Install the [docker for windows](https://docs.docker.com/docker-for-windows/).
+      - Complete [these steps](https://docs.docker.com/docker-for-windows/wsl-tech-preview/) to complete the Docker WSL backend.
+
+
   - **GNU Make** - [https://www.gnu.org/software/make/](https://www.gnu.org/software/make/)
   - **GNU Bash**  [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
   - **sed** - GNU version is available at [https://www.gnu.org/software/sed/](https://www.gnu.org/software/sed/)
@@ -407,7 +413,7 @@ Using `screen` you can create as many shell as you want inside the same containe
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d nopau"
+make ew_startstop_screen_handling_exit EW_ENV=ew_test1 ARGS="tankplayer.d pau"
 ```
 
 Stop and remove a running container:
