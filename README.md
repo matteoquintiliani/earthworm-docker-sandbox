@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 0.19.2 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.3 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -489,9 +489,9 @@ The following  `make` commands based on `docker exec` are used to launch command
 Examples:
 
 ```sh
-              make EW_ENV=ew_test1 ew_exec_bash
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
+$ make EW_ENV=ew_test1 ew_exec_bash
+$ make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
+$ make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
 ```
 
 Shortcuts for running commands within running Earthworm Docker Sandbox Containers:
@@ -504,10 +504,10 @@ Shortcuts for running commands within running Earthworm Docker Sandbox Container
 Examples:
 
 ```sh
-              make EW_ENV=ew_test1 ew_status
-              make EW_ENV=ew_test1 ew_pau
-              make EW_ENV=ew_test1 ew_sniffrings_all
-              make EW_ENV=ew_test1 ew_tail_all_logs
+$ make EW_ENV=ew_test1 ew_status
+$ make EW_ENV=ew_test1 ew_pau
+$ make EW_ENV=ew_test1 ew_sniffrings_all
+$ make EW_ENV=ew_test1 ew_tail_all_logs
 ```
 
 
@@ -522,7 +522,7 @@ Examples:
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.19.2 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.19.3 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
