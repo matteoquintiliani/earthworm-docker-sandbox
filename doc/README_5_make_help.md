@@ -170,7 +170,6 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 ======================================================================
 License
 ======================================================================
-
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 

@@ -305,7 +305,7 @@ $(SEPLINE)\n\
 \n\
 $(SEPLINE)\n\
 License\n\
-$(SEPLINE)\n\
+$(SEPLINE)\
 "
 	@make license
 
