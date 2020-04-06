@@ -269,7 +269,7 @@ $(SEPLINE)\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen ARGS=\"df -h\"\n\
 \n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_bash\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_startstop_screen\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_startstop_screen\n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_detached\n\
 \n\
               make EW_ENV=$(HELP_EW_ENV) ew_stop_container\n\
@@ -297,6 +297,7 @@ $(SEPLINE)\n\
     Examples:\n\
               make EW_ENV=$(HELP_EW_ENV) ew_exec_bash\n\
               make EW_ENV=$(HELP_EW_ENV) ew_exec_bash ARGS=\"ps aux\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_exec_bash ARGS=\"status\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_status\n\
               make EW_ENV=$(HELP_EW_ENV) ew_pau\n\
               make EW_ENV=$(HELP_EW_ENV) ew_sniffrings_all\n\
