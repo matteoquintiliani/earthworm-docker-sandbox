@@ -587,6 +587,11 @@ doc:
 	make help >> doc/README_2_make_help.md
 	echo '```' >> doc/README_2_make_help.md
 	echo "" >> doc/README_2_make_help.md
+	echo "" > doc/README_7_license.md
+	echo "### License" >> doc/README_7_license.md
+	echo "" >> doc/README_7_license.md
+	make license >> doc/README_7_license.md
+	echo "" >> doc/README_7_license.md
 	cat doc/README_*.md > README.md
 
 build_all:
