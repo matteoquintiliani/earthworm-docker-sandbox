@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 0.20.0-dev Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.20.0 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -362,7 +362,7 @@ Example for creating an Earthwom Environment with name `my_test_env` from an onl
 $ make create_ew_env_from_zip_url \
      ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-     EW_ENV=my_test_env
+     EW_ENV=memphis_test1
 ```
 
 *Read below description of  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`.*
@@ -376,10 +376,10 @@ Example for creating an Earthwom Environment with name `my_test_env` from a git 
 ```sh
 $ make create_ew_env_from_git_repository \
      GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \
-     GIT_BRANCH=develop \
-     CREATE_EW_ENV_SUBDIRS="log data" \
+     GIT_BRANCH=tankplayer \
+     CREATE_EW_ENV_SUBDIRS="" \
      MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \
-     EW_ENV=my_test_env
+     EW_ENV=ingv_test1
 ```
 
 Variable `GIT_BRANCH` is optional.
@@ -523,7 +523,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.20.0-dev Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.20.0 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
