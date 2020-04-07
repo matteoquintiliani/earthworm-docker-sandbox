@@ -372,8 +372,8 @@ Example for creating an Earthwom Environment with name `my_test_env` from a git 
 $ make create_ew_env_from_git_repository \
      GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \
      GIT_BRANCH=tankplayer \
-     CREATE_EW_ENV_SUBDIRS="" \
-     MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \
+     CREATE_EW_ENV_SUBDIRS="log data" \
+     MAP_EW_ENV_SUBDIRS="run_realtime/params" \
      EW_ENV=ingv_test1
 ```
 
