@@ -18,20 +18,53 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ################################################################################
-#
+
 #########################
 Release History
 #########################
 
 * Release 1.0.0 (2020/04/07)
-    - First public release
+    - First public release.
+    - Hotfix: 1.0.1: update HISTORY.
 
 * Release 0.20.2 (2020/04/07)
-    - Mount whole Earthworm Environment directory on Docker Container.
-    - Add HISTORY
+    - Mount whole Earthworm Environment directory on Docker Container,
+      instead of single subdirectory params, log, data.
+    - Add file HISTORY.
     - Hotfix: 0.20.1: minor fix.
     - Hotfix: 0.20.2: minor fix.
 
 * Release 0.19.3 (2020/04/06)
-    - Initial release history
+    - Improve documentation in file README.md
     - Hotfix: 0.19.3: fix README.md.
+
+* Release 0.18.0 (2020/04/06)
+    - Add GNU General Public License. COPYING and notices in source files.
+
+* Release 0.17.0 (2020/04/04)
+    - Redefine Default Docker Container Name based on variables
+      DOCKER_IMAGE_NAME, DOCKER_IMAGE_VERSION and EW_ENV
+    - Tool prevents launching multiple Earthworm Docker Sandbox
+      Containers on the same Earthworm Environment.
+
+* Release 0.16.0 (2020/04/03)
+    - Add rule 'check_for_executing'.
+
+* Release 0.15.1 (2020/04/01)
+    - Add rules 'check_container_is_running' and 'check_container_is_not_running'.
+
+* Release 0.14.0 (2020/04/01)
+    - Add variables OPT_RUN_I, OPT_RUN_T and OPT_RUN_D.
+
+* Release 0.13.1 (2020/04/01)
+    - Improve and fix 'make help'.
+
+* Release 0.12.0 (2020/03/31)
+    - Add Docker environment variables EW_INSTALL_INSTALLATION.
+
+* Release 0.11.1 (2020/03/31)
+    - Improve and fix running commands in docker container.
+
+* Release 0.10.0 (2020/03/31)
+    - First tag version.
+
