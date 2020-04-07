@@ -68,9 +68,10 @@ DOCKER_EW_RUN_DIR=/opt/ew_env
 
 # Set Default Volume Mounts
 DOCKER_VOLUMES = \
-	-v  $(EW_ENV_COMPLETE_PATH)/params:$(DOCKER_EW_RUN_DIR)/params \
-	-v  $(EW_ENV_COMPLETE_PATH)/log:$(DOCKER_EW_RUN_DIR)/log \
-	-v  $(EW_ENV_COMPLETE_PATH)/data:$(DOCKER_EW_RUN_DIR)/data
+	-v  $(EW_ENV_COMPLETE_PATH)/:$(DOCKER_EW_RUN_DIR)/
+	# -v  $(EW_ENV_COMPLETE_PATH)/params:$(DOCKER_EW_RUN_DIR)/params \
+	# -v  $(EW_ENV_COMPLETE_PATH)/log:$(DOCKER_EW_RUN_DIR)/log \
+	# -v  $(EW_ENV_COMPLETE_PATH)/data:$(DOCKER_EW_RUN_DIR)/data
 
 # Set default User and Group id from current user
 # If UID and/or GID are equal to zero then new user and/or group are created into the Docker Container

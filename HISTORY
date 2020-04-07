@@ -24,6 +24,7 @@ Release History
 #########################
 
 * Release 0.20.0-dev (2020/04/07)
+    - Mount whole Earthworm Environment directory on Docker Container.
     - Add HISTORY
 
 * Release 0.19.3 (2020/04/06)
