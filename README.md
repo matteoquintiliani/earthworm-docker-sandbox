@@ -465,7 +465,8 @@ Moreover, when running a container by `ew_startstop_screen_handling_exit` you ca
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-$ make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
+$ make EW_ENV=memphis_test1 EW_INSTALL_INSTALLATION=INST_MEMPHIS \
+       ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
 ```
 
 Usually, a running Earthworm Docker Sandbox Container will end and be automatically removed once the command with which it was created ends. If for any reason you want to stop and remove the running container you can use:
