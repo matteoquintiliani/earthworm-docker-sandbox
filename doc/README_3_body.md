@@ -357,7 +357,7 @@ Example for creating an Earthwom Environment with name `my_test_env` from an onl
 $ make create_ew_env_from_zip_url \
      ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-     EW_ENV=my_test_env
+     EW_ENV=memphis_test1
 ```
 
 *Read below description of  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`.*
@@ -371,10 +371,10 @@ Example for creating an Earthwom Environment with name `my_test_env` from a git 
 ```sh
 $ make create_ew_env_from_git_repository \
      GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \
-     GIT_BRANCH=develop \
-     CREATE_EW_ENV_SUBDIRS="log data" \
+     GIT_BRANCH=tankplayer \
+     CREATE_EW_ENV_SUBDIRS="" \
      MAP_EW_ENV_SUBDIRS="run_realtime/params log data" \
-     EW_ENV=my_test_env
+     EW_ENV=ingv_test1
 ```
 
 Variable `GIT_BRANCH` is optional.
@@ -460,7 +460,8 @@ Moreover, when running a container by `ew_startstop_screen_handling_exit` you ca
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-$ make EW_ENV=ew_test1 ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
+$ make EW_ENV=memphis_test1 EW_INSTALL_INSTALLATION=INST_MEMPHIS \
+       ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
 ```
 
 Usually, a running Earthworm Docker Sandbox Container will end and be automatically removed once the command with which it was created ends. If for any reason you want to stop and remove the running container you can use:
