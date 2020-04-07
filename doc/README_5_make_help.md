@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 0.20.1 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 0.20.2 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -82,7 +82,7 @@ Creating Earthworm Environments with name EW_ENV:
               make create_ew_env_from_git_repository \ 
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
                    GIT_BRANCH=develop \ 
-                   CREATE_EW_ENV_SUBDIRS=log data \ 
+                   CREATE_EW_ENV_SUBDIRS="log data" \ 
                    MAP_EW_ENV_SUBDIRS=run_realtime/params \ 
                    EW_ENV=ingv_test1
 
