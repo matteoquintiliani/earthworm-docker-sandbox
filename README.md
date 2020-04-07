@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.0.1 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.0.2 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -324,7 +324,7 @@ $ make list_ew_env
 
 Previous command depends on variable `EW_ENV_MAINDIR` which must be set with the path of the main directory containing all Earthworm Environment directories. Default is the directory `ew_envs` in the home user directory (`EW_ENV_MAINDIR=~/ew_envs`).
 
-By default, subdirectories `params`, `log` and `data` are mounted within the Earthworm Docker Sandbox under the container directory  `EW_RUN_DIR`, which is `/opt/ew_env`.
+By default, the host Earthworm Environment directory (where reside the subdirectories `params`, `log` and `data`) is mounted at run-time within the Earthworm Docker Sandbox Container under the directory  `EW_RUN_DIR`, which is `/opt/ew_env`.
 
 You can create as many Earthworm Environments as you want using one of the following command.
 
@@ -389,6 +389,8 @@ Variable `GIT_BRANCH` is optional.
 #####  Description of variables  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`
 
 If the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If those directories reside in different paths in zip file or git repository, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`. Order to use is `"params log data"`.
+
+##### Initialize Earthworm Environment
 
 ## Running Earthworm Docker Sandbox Container
 
@@ -523,7 +525,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.0.1 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.0.2 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
