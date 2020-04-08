@@ -23,11 +23,12 @@
 Release History
 #########################
 
-* Release 1.0.3 (2020/04/07)
+* Release 1.0.4 (2020/04/07)
     - First public release.
     - Hotfix: 1.0.1: update HISTORY.
     - Hotfix: 1.0.2: update README.md about Earthworm Environment directory mount.
     - Hotfix: 1.0.3: set Docker Namespace for 'docker push'. (2020/04/08).
+    - Hotfix: 1.0.4: fix variables for Docker name and version. (2020/04/08).
 
 * Release 0.20.2 (2020/04/07)
     - Mount whole Earthworm Environment directory on Docker Container,
