@@ -210,8 +210,8 @@ $(SEPLINE)\n\
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository\n\
                                for creating an Earthworm Environment from INGV git repository.\n\
 \n\
-    cp: copy files in a Earthworm Environment by running or executing a Docker Container.\n\
-                               Based on variables SRC_PATH and DEST_PATH.\n\
+    cp: copy files to an Earthworm Environment by running or executing a Docker Container.\n\
+                               Based on 'tar' and variables SRC_PATH and DEST_PATH.\n\
 \n\
     Examples:\n\
               make create_ew_env_from_scratch EW_ENV=$(HELP_EW_ENV) \n\
@@ -568,10 +568,14 @@ create_ew_env_from_git_repository: check_for_creating check_git_variables
 create_ew_env_from_ingv_runconfig_branch:
 	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=$(GIT_BRANCH) MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
 
-# Copy files in a Earthworm Environment by running or executing a Docker Container
+# Copy files to an Earthworm Environment by running or executing a Docker Container
 cp: check_for_copying
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		&& if [ -n "$${CONTAINER_ID}" ]; then make _cp_exec_tar; else make _cp_run_tar; fi
+
+# Copy files based on 'docker cp', useful only on running containers
+_cp: check_for_copying
+	docker cp $(SRC_PATH) $(DOCKER_CONTAINER_NAME):$(DEST_PATH)
 
 # Copy files based on 'tar' and 'docker run'
 _cp_run_tar: check_for_running

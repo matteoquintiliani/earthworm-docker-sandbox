@@ -611,8 +611,8 @@ Creating Earthworm Environments with name EW_ENV:
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository
                                for creating an Earthworm Environment from INGV git repository.
 
-    cp: copy files in a Earthworm Environment by running or executing a Docker Container.
-                               Based on variables SRC_PATH and DEST_PATH.
+    cp: copy files to an Earthworm Environment by running or executing a Docker Container.
+                               Based on 'tar' and variables SRC_PATH and DEST_PATH.
 
     Examples:
               make create_ew_env_from_scratch EW_ENV=ew_test1 
