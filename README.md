@@ -352,6 +352,14 @@ You can duplicate an Earthworm Environment starting from an existing one by:
 make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2
 ```
 
+##### Copy files to an Earthworm Environment
+
+```sh
+make EW_ENV_FROM=ew_test1 cp SRC_PATH=...  DEST_PATH=...
+```
+
+Variable `SRC_PATH` is the host local file or directory and `DEST_PATH` is the docker container path.
+
 ##### Create an Earthworm Environment from a zip file
 
 You can create Earthworm Environments starting from online zip files.
@@ -391,6 +399,18 @@ Variable `GIT_BRANCH` is optional.
 If the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If those directories reside in different paths in zip file or git repository, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`. Order to use is `"params log data"`.
 
 ##### Initialize Earthworm Environment
+
+It may be useful to initialize an Earthworm Environment by running a script within the docker container.
+
+Example:
+
+```sh
+make EW_ENV=my_test_env create_ew_env_from_scratch
+
+make EW_ENV=my_test_env cp SRC_PATH=./init_script_earthworm_docker_sandbox.sh  DEST_PATH=/opt/ew_env
+
+make EW_ENV=my_test_env ARGS="./init_script_earthworm_docker_sandbox.sh"
+```
 
 ## Running Earthworm Docker Sandbox Container
 
