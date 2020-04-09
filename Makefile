@@ -217,7 +217,7 @@ $(SEPLINE)\n\
               make create_ew_env_from_scratch EW_ENV=$(HELP_EW_ENV) \n\
               make create_ew_env_from_another EW_ENV_FROM=$(HELP_EW_ENV) EW_ENV=$(HELP_EW_ENV_2) \n\
 \n\
-              make EW_ENV=$(HELP_EW_ENV)  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/ \n\
+              make EW_ENV=$(HELP_EW_ENV)  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/\n\
 \n\
               make create_ew_env_from_zip_url \ \n\
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
