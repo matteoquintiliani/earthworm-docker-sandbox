@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.0.4 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.1.0 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -69,9 +69,14 @@ Creating Earthworm Environments with name EW_ENV:
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository
                                for creating an Earthworm Environment from INGV git repository.
 
+    cp: copy files to an Earthworm Environment by running or executing a Docker Container.
+                               Based on 'tar' and variables SRC_PATH and DEST_PATH.
+
     Examples:
               make create_ew_env_from_scratch EW_ENV=ew_test1 
               make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2 
+
+              make EW_ENV=ew_test1  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/
 
               make create_ew_env_from_zip_url \ 
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 

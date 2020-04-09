@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.0.4 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.1.0 Copyright (C) 2020  Matteo Quintiliani
 ## Earthworm System
 
 Earthworm is the most widely used seismic data acquisition and automatic earthquake processing software for regional seismic networks. Operates on Linux, Solaris, Mac OS X, and Windows.
@@ -352,6 +352,14 @@ You can duplicate an Earthworm Environment starting from an existing one by:
 make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2
 ```
 
+##### Copy files to an Earthworm Environment
+
+```sh
+make EW_ENV_FROM=ew_test1 cp SRC_PATH=...  DEST_PATH=...
+```
+
+Variable `SRC_PATH` is the host local file or directory and `DEST_PATH` is the docker container path.
+
 ##### Create an Earthworm Environment from a zip file
 
 You can create Earthworm Environments starting from online zip files.
@@ -391,6 +399,18 @@ Variable `GIT_BRANCH` is optional.
 If the subdirectories `params`, `log` and `data` do not exist then you can not be able to run the Earthworm Environment. If those directories reside in different paths in zip file or git repository, you can optionally map by symbolic links the Earthworm Environment subdirectories by variable `MAP_EW_ENV_SUBDIRS`. If they do not exist, you can even create subdirectories as needed declaring the paths within variable `CREATE_EW_ENV_SUBDIRS`. Order to use is `"params log data"`.
 
 ##### Initialize Earthworm Environment
+
+It may be useful to initialize an Earthworm Environment by running a script within the docker container.
+
+Example:
+
+```sh
+make EW_ENV=my_test_env create_ew_env_from_scratch
+
+make EW_ENV=my_test_env cp SRC_PATH=./init_script_earthworm_docker_sandbox.sh  DEST_PATH=/opt/ew_env
+
+make EW_ENV=my_test_env ARGS="./init_script_earthworm_docker_sandbox.sh"
+```
 
 ## Running Earthworm Docker Sandbox Container
 
@@ -525,7 +545,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.0.4 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.1.0 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -591,9 +611,14 @@ Creating Earthworm Environments with name EW_ENV:
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository
                                for creating an Earthworm Environment from INGV git repository.
 
+    cp: copy files to an Earthworm Environment by running or executing a Docker Container.
+                               Based on 'tar' and variables SRC_PATH and DEST_PATH.
+
     Examples:
               make create_ew_env_from_scratch EW_ENV=ew_test1 
               make create_ew_env_from_another EW_ENV_FROM=ew_test1 EW_ENV=ew_test2 
+
+              make EW_ENV=ew_test1  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/
 
               make create_ew_env_from_zip_url \ 
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
