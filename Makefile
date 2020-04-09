@@ -210,9 +210,14 @@ $(SEPLINE)\n\
     create_ew_env_from_ingv_runconfig_branch: shortcut based on create_ew_env_from_git_repository\n\
                                for creating an Earthworm Environment from INGV git repository.\n\
 \n\
+    cp: copy files in a Earthworm Environment by running or executing a Docker Container.\n\
+                               Based on variables SRC_PATH and DEST_PATH.\n\
+\n\
     Examples:\n\
               make create_ew_env_from_scratch EW_ENV=$(HELP_EW_ENV) \n\
               make create_ew_env_from_another EW_ENV_FROM=$(HELP_EW_ENV) EW_ENV=$(HELP_EW_ENV_2) \n\
+\n\
+              make EW_ENV=$(HELP_EW_ENV)  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/ \n\
 \n\
               make create_ew_env_from_zip_url \ \n\
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
@@ -399,6 +404,10 @@ check_for_running: license_short check_docker_variables check_ew_env_variables c
 
 check_for_executing: license_short check_docker_variables check_ew_env_variables check_ew_env_subdirs check_container_is_running
 
+check_for_copying: check_docker_variables check_ew_env_variables check_ew_env_subdirs
+	@if [ -z "$(SRC_PATH)" ]; then echo "ERROR: SRC_PATH must be defined. Exit."; exit 1; fi
+	@if [ -z "$(DEST_PATH)" ]; then echo "ERROR: DEST_PATH must be defined. Exit."; exit 1; fi
+
 list_ew_env:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
 	@cd $(EW_ENV_MAINDIR) \
@@ -560,7 +569,7 @@ create_ew_env_from_ingv_runconfig_branch:
 	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=$(GIT_BRANCH) MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
 
 # Copy files in a Earthworm Environment by running or executing a Docker Container
-cp:
+cp: check_for_copying
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		&& if [ -n "$${CONTAINER_ID}" ]; then make _cp_exec_tar; else make _cp_run_tar; fi
 
