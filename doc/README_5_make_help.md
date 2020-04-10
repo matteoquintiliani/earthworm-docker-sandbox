@@ -85,8 +85,15 @@ Creating Earthworm Environments with name EW_ENV:
                    EW_ENV=memphis_test1
 
               make create_ew_env_from_git_repository \ 
+                   GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ 
+                   GIT_BRANCH=master \ 
+                   CREATE_EW_ENV_SUBDIRS="" \ 
+                   MAP_EW_ENV_SUBDIRS= \ 
+                   EW_ENV=memphis_test2
+
+              make create_ew_env_from_git_repository \ 
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
-                   GIT_BRANCH=develop \ 
+                   GIT_BRANCH=tankplayer \ 
                    CREATE_EW_ENV_SUBDIRS="log data" \ 
                    MAP_EW_ENV_SUBDIRS=run_realtime/params \ 
                    EW_ENV=ingv_test1

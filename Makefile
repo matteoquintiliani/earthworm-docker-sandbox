@@ -226,8 +226,15 @@ $(SEPLINE)\n\
                    EW_ENV=memphis_test1\n\
 \n\
               make create_ew_env_from_git_repository \ \n\
+                   GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ \n\
+                   GIT_BRANCH=master \ \n\
+                   CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
+                   MAP_EW_ENV_SUBDIRS="" \ \n\
+                   EW_ENV=memphis_test2\n\
+\n\
+              make create_ew_env_from_git_repository \ \n\
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
-                   GIT_BRANCH=develop \ \n\
+                   GIT_BRANCH=tankplayer \ \n\
                    CREATE_EW_ENV_SUBDIRS=\"log data\" \ \n\
                    MAP_EW_ENV_SUBDIRS="run_realtime/params" \ \n\
                    EW_ENV=ingv_test1\n\

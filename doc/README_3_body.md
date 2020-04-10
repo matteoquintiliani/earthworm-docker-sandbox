@@ -69,7 +69,10 @@ make help
 
 Get ready to get your first Earthworm Environment running in a Docker container by this tool.
 
-To get familiar with this tool we will use the Memphis test configuration available from [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
+To get familiar with this tool we will use the Memphis test configuration available from:
+
+1. URL zip file at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
+2. git repository at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
 
   - Change directory to Earthworm Docker Sandbox.
 
@@ -116,7 +119,7 @@ $ make create_ew_env_from_zip_url \
        EW_ENV=memphis_test1
 ```
 
-  - List of the Earthworm Environments. You should now see `memphis_test1`.
+- List of the Earthworm Environments. You should now see `memphis_test1`.
 
 ```sh
 $ make list_ew_env
@@ -126,6 +129,29 @@ $ make list_ew_env
 Available Earthworm Environments:
 
   - memphis_test1
+
+```
+
+  - Create your second Earthworm Environment (read details in section below) called `memphis_test2`, from Memphis test but in this case download from a git repository.
+
+```sh
+$ make create_ew_env_from_git_repository \
+       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_BRANCH=master \
+       EW_ENV=memphis_test2
+```
+
+  - List of the Earthworm Environments. You should now see `memphis_test1` and `memphis_test2`.
+
+```sh
+$ make list_ew_env
+```
+
+```sh
+Available Earthworm Environments:
+
+  - memphis_test1
+  - memphis_test2
 
 ```
 
@@ -374,7 +400,14 @@ $ make create_ew_env_from_zip_url \
 
 You can create Earthworm Environments starting from git repositories.
 
-Example for creating an Earthwom Environment with name `my_test_env` from a git repository:
+Examples for creating an Earthwom Environment from a git repository:
+
+```sh
+$ make create_ew_env_from_git_repository \
+       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_BRANCH=master \
+       EW_ENV=memphis_test2
+```
 
 ```sh
 $ make create_ew_env_from_git_repository \
