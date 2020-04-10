@@ -23,11 +23,12 @@
 Release History
 #########################
 
-* Release 1.1.1 (2020/04/09)
+* Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
       Example: 'make EW_ENV=ew_env_test1 cp  SRC_PATH=... DEST_PATH=...'
     - Extend README.md
     - Hotfix: 1.1.1: improve 'make ew_run_bash' and 'make ew_exec_bash'.  (2020/04/10)
+    - Hotfix: 1.1.2: Add example for creating Earthworm Environment from git repository.  (2020/04/10)
 
 * Release 1.0.4 (2020/04/07)
     - First public release.
