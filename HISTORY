@@ -27,6 +27,7 @@ Release History
     - Set EW_SVN_REVISION = 8141.
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
     - Use command 'shell' in Makefile and break compatibility with 'make' different than 'GNU make'.
+    - Add 'make EW_ENV=... check' for checking basic functioning within an Earthworm Environment.
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.

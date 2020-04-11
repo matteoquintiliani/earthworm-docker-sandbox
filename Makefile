@@ -120,7 +120,7 @@ DOCKER_ENV_COMPLETE = \
 	doc \
 	release \
 	clean \
-	test
+	check
 
 BUILD_SOURCES = \
 				./Dockerfile \
@@ -225,14 +225,14 @@ $(SEPLINE)\n\
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
                    CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
                    MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
-                   EW_ENV=memphis_test1\n\
+                   EW_ENV=memphis_test_zip\n\
 \n\
               make create_ew_env_from_git_repository \ \n\
                    GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ \n\
                    GIT_BRANCH=master \ \n\
                    CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
                    MAP_EW_ENV_SUBDIRS="" \ \n\
-                   EW_ENV=memphis_test2\n\
+                   EW_ENV=memphis_test_git\n\
 \n\
               make create_ew_env_from_git_repository \ \n\
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ \n\
@@ -258,6 +258,13 @@ $(SEPLINE)\n\
                             log directory ($(EW_ENV_LOG)).\n\
     ew_dangerous_clean_ws:  delete all files within docker host\n\
                             waveserver directories ($(EW_ENV_WS)).\n\
+\n\
+$(SEPLINE)\n\
+Check commands within an Earthworm Environment by a Docker Sandbox Container:\n\
+$(SEPLINE)\n\
+\n\
+    check:    run a series of general purpose commands within an Earthworm Environment\n\
+              in order to verify the correct basic functioning.\n\
 \n\
 $(SEPLINE)\n\
 Start/Stop Earthworm Docker Sandbox Containers:\n\
@@ -421,9 +428,7 @@ list_ew_env:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
 	@cd $(EW_ENV_MAINDIR) \
 		&& echo "Available Earthworm Environments: " \
-		&& echo "" \
-		&& find . -mindepth 1 -maxdepth 1 -type d | sed -e "s/^[./]*/  - /" | sort \
-		&& echo ""
+		&& find . -mindepth 1 -maxdepth 1 -type d | sed -e "s/^[./]*/  - /" | sort
 
 list_images: check_for_building
 	docker images $(DOCKER_IMAGE_NAME)
@@ -561,11 +566,15 @@ create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
 
 # Short cut based on create_ew_env_from_zip_url for creating memphis_test Earthworm Environment
 create_ew_env_from_memphis_test:
-	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
+	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url \
+		ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+		MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
 
 # Short cut based on create_ew_env_from_zip_url for creating INGV test Earthworm Environment
 create_ew_env_from_ingv_test:
-	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url ZIP_URL=http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip MAP_EW_ENV_SUBDIRS="tankplayer_ew_maindir/params tankplayer_ew_maindir/log tankplayer_ew_maindir/data"
+	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url \
+		ZIP_URL=http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip \
+		MAP_EW_ENV_SUBDIRS="tankplayer_ew_maindir/params tankplayer_ew_maindir/log tankplayer_ew_maindir/data"
 
 create_ew_env_from_git_repository: check_for_creating check_git_variables
 	@echo "Trying to create Earthworm Environment \"$(EW_ENV)\" from git repository $(GIT_REP) and branch $(GIT_BRANCH) ..."
@@ -667,6 +676,26 @@ release: build
 
 clean:
 	@echo
+
+check: check_for_running
+	@# TODO: add more commands
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="pwd"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="ls -l"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="env"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="which startstop"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="ls -l $${EW_EARTHWORM_DIR}/bin/"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="find ./params/"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="find ./data/"
+	@echo "$(SEPLONGLINE)"
+	@make ew_run_bash CMD="find ./log/"
+	@echo "$(SEPLONGLINE)"
 
 # Remap more used old commands for backward compatibility
 WARN_MSG_DEPRECATED_CMD="WARNING: this command is deprecated. Use the following."

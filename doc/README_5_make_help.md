@@ -82,14 +82,14 @@ Creating Earthworm Environments with name EW_ENV:
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \ 
-                   EW_ENV=memphis_test1
+                   EW_ENV=memphis_test_zip
 
               make create_ew_env_from_git_repository \ 
                    GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ 
                    GIT_BRANCH=master \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS= \ 
-                   EW_ENV=memphis_test2
+                   EW_ENV=memphis_test_git
 
               make create_ew_env_from_git_repository \ 
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
@@ -115,6 +115,13 @@ Deleting files: (POTENTIALLY DANGEROUS)
                             log directory (~/ew_envs/ew_help/log).
     ew_dangerous_clean_ws:  delete all files within docker host
                             waveserver directories (~/ew_envs/ew_help/data/waveservers).
+
+======================================================================
+Check commands within an Earthworm Environment by a Docker Sandbox Container:
+======================================================================
+
+    check:    run a series of general purpose commands within an Earthworm Environment
+              in order to verify the correct basic functioning.
 
 ======================================================================
 Start/Stop Earthworm Docker Sandbox Containers:
