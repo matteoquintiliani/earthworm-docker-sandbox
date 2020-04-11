@@ -373,7 +373,7 @@ You should have received a copy of the GNU General Public License\n\
 along with this program.  If not, see <https://www.gnu.org/licenses/>.\
 "
 
-license_short:
+_license_short:
 	@make version
 	@echo "\
 This program comes with ABSOLUTELY NO WARRANTY; for details type 'make license'.\n\
@@ -427,9 +427,9 @@ _check_container_is_not_running:
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		   && if [ -n "$${CONTAINER_ID}" ]; then echo "ERROR: container $(DOCKER_CONTAINER_NAME) is already running. Exit."; exit 9; fi
 
-_check_for_running: license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_not_running _check_container_is_not_running_on_the_same_ew_env
+_check_for_running: _license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_not_running _check_container_is_not_running_on_the_same_ew_env
 
-_check_for_executing: license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_running
+_check_for_executing: _license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_running
 
 _check_for_copying: _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs
 	@if [ -z "$(SRC_PATH)" ]; then echo "ERROR: SRC_PATH must be defined. Exit."; exit 1; fi
