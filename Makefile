@@ -140,6 +140,8 @@ BUILD_SOURCES = \
 EW_ENV_LOG = $(EW_ENV_DIR)/log
 EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
+REQUIRED_COMMAND = make bash docker sed grep find tee wget git unzip tar
+
 EW_SVN_BRANCH_BUILD_LIST="tags/ew_7.7_release \
 tags/ew_7.8_release \
 tags/ew_7.9_release \
@@ -218,6 +220,8 @@ $(SEPLINE)\n\
     list_containers: list available Earthworm Docker Sandbox containers\n\
                      wrap 'docker ps' containers matching name '$(DOCKER_IMAGE_NAME)*'.\n\
 \n\
+    check_required_command: check the availability of all necessary commands.\n\
+\n\
 $(SEPLINE)\n\
 Creating Earthworm Environments with name EW_ENV:\n\
 $(SEPLINE)\n\
@@ -289,11 +293,11 @@ $(SEPLINE)\n\
                             waveserver directories ($(EW_ENV_WS)).\n\
 \n\
 $(SEPLINE)\n\
-Check commands within an Earthworm Environment by a Docker Sandbox Container:\n\
+Check execution within an Earthworm Environment by a Docker Sandbox Container:\n\
 $(SEPLINE)\n\
 \n\
-    check:    run a series of general purpose commands within an Earthworm Environment\n\
-              in order to verify the correct basic functioning.\n\
+    check:    run a series of general purpose commands within an Earthworm Environment by\n\
+              a Docker Sandbox Container in order to verify the correct basic functioning.\n\
 \n\
 $(SEPLINE)\n\
 Start/Stop Earthworm Docker Sandbox Containers:\n\
@@ -694,6 +698,9 @@ build_all:
 		echo "Building $${EW_SVN_REVISION_BUILD} ..."; \
 		make EW_SVN_REVISION=$${EW_SVN_REVISION_BUILD} build ; \
 	done
+
+check_required_command:
+	@for COMMAND in $(REQUIRED_COMMAND); do echo "Checking $${COMMAND} ..."; (which $${COMMAND} || echo "    ERROR: command '$${COMMAND}' not found!"); done
 
 check: _check_for_running
 	@# TODO: add more commands

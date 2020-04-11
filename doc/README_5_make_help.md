@@ -46,6 +46,8 @@ General commands:
     list_containers: list available Earthworm Docker Sandbox containers
                      wrap 'docker ps' containers matching name 'ew-sandbox*'.
 
+    check_required_command: check the availability of all necessary commands.
+
 ======================================================================
 Creating Earthworm Environments with name EW_ENV:
 ======================================================================
@@ -117,11 +119,11 @@ Deleting files: (POTENTIALLY DANGEROUS)
                             waveserver directories (~/ew_envs/ew_help/data/waveservers).
 
 ======================================================================
-Check commands within an Earthworm Environment by a Docker Sandbox Container:
+Check execution within an Earthworm Environment by a Docker Sandbox Container:
 ======================================================================
 
-    check:    run a series of general purpose commands within an Earthworm Environment
-              in order to verify the correct basic functioning.
+    check:    run a series of general purpose commands within an Earthworm Environment by
+              a Docker Sandbox Container in order to verify the correct basic functioning.
 
 ======================================================================
 Start/Stop Earthworm Docker Sandbox Containers:

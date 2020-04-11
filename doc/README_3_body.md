@@ -28,8 +28,9 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - **find** in *findutils* - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
   - **tee** in *coreutils* - [https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)
   - **wget** - [https://www.gnu.org/software/wget/](https://www.gnu.org/software/wget/)
-  - **git** - [https://git-scm.com/](https://git-scm.com/)
+  - **tar** - [https://www.gnu.org/software/tar/](https://www.gnu.org/software/tar/)
   - **unzip** - depends on your system
+  - **git** - [https://git-scm.com/](https://git-scm.com/)
 
 ## Short Help
 
@@ -477,7 +478,7 @@ There are two main groups of commands:
 1. Launching commands and start/stop containers (based on `docker run`, `docker stop` and `docker rm`).
 2. Executing commands inside already running containers (based on `docker exec`).
 
-##### Check commands within an Earthworm Environment by a Docker Sandbox Container
+##### Check execution within an Earthworm Environment by a Docker Sandbox Container
 
 Before starting to use an Earthworm Environment, or if something goes wrong, it may be useful to properly check that the basic functions are working within an Earthworm Docker Sandbox Container.
 
