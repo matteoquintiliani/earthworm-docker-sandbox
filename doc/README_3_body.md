@@ -28,8 +28,9 @@ Earthworm developer web pages hosted by ISTI: [http://earthworm.isti.com/trac/ea
   - **find** in *findutils* - GNU version is available at [https://www.gnu.org/software/findutils/](https://www.gnu.org/software/findutils/)
   - **tee** in *coreutils* - [https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)
   - **wget** - [https://www.gnu.org/software/wget/](https://www.gnu.org/software/wget/)
-  - **git** - [https://git-scm.com/](https://git-scm.com/)
+  - **tar** - [https://www.gnu.org/software/tar/](https://www.gnu.org/software/tar/)
   - **unzip** - depends on your system
+  - **git** - [https://git-scm.com/](https://git-scm.com/)
 
 ## Short Help
 
@@ -69,15 +70,17 @@ make help
 
 Get ready to get your first Earthworm Environment running in a Docker container by this tool.
 
-To get familiar with this tool we will use the Memphis test configuration available from:
-
-1. URL zip file at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
-2. git repository at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
-
-  - Change directory to Earthworm Docker Sandbox.
+  - Get Earthworm Docker Sandbox and change directory.
 
 ```sh
-$ cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
+$ git clone https://github.com/matteoquintiliani/earthworm-docker-sandbox.git
+$ cd earthworm-docker-sandbox
+```
+
+  - Check the availability of all necessary commands.
+
+```sh
+$ make check_required_commands
 ```
 
   - Build the default Earthworm Docker Sandbox image.
@@ -95,7 +98,7 @@ $ make list_images
 ```
 docker images ew-sandbox
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        856MB
+ew-sandbox          trunk_r8141            cb78c92612f0        25 hours ago        856MB
 ```
 
   - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
@@ -109,17 +112,24 @@ $ mkdir ~/ew_envs
 $ make list_ew_env
 ```
 
-  - Create your first Earthworm Environment (read details in section below) from Memphis test available online. The memphis file zip already contains directory `params`, `log` and `data`, by variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment called `memphis_test1`.
+To get familiar with this tool we will use the Memphis test configuration. It already contains the Earthworm configuration directory `params`, the log directory `log` and the directory for reading and writing `data`.
+
+The Memphis test that we will use is available from two different sources:
+
+  1. zip file in the URL [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
+  2. git repository available at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
+
+  - Create your first Earthworm Environment from Memphis test available online in a zip file. By variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment that we will call `memphis_test_zip`.
 
 ```sh
 $ make create_ew_env_from_zip_url \
        ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
        CREATE_EW_ENV_SUBDIRS="" \
        MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-       EW_ENV=memphis_test1
+       EW_ENV=memphis_test_zip
 ```
 
-- List of the Earthworm Environments. You should now see `memphis_test1`.
+- List of the Earthworm Environments. You should now see `memphis_test_zip`.
 
 ```sh
 $ make list_ew_env
@@ -127,21 +137,19 @@ $ make list_ew_env
 
 ```sh
 Available Earthworm Environments:
-
-  - memphis_test1
-
+  - memphis_test_zip
 ```
 
-  - Create your second Earthworm Environment (read details in section below) called `memphis_test2`, from Memphis test but in this case download from a git repository.
+  - Create your second Earthworm Environment containing the Memphis test but in this case obtained by a git repository. For that we will give the name of `memphis_test_git`,
 
 ```sh
 $ make create_ew_env_from_git_repository \
        GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
        GIT_BRANCH=master \
-       EW_ENV=memphis_test2
+       EW_ENV=memphis_test_git
 ```
 
-  - List of the Earthworm Environments. You should now see `memphis_test1` and `memphis_test2`.
+  - List of the Earthworm Environments. You should now see `memphis_test_zip` and `memphis_test_git`.
 
 ```sh
 $ make list_ew_env
@@ -149,23 +157,27 @@ $ make list_ew_env
 
 ```sh
 Available Earthworm Environments:
-
-  - memphis_test1
-  - memphis_test2
-
+  - memphis_test_zip
+  - memphis_test_git
 ```
 
-  - Run `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test1` just created.
+  - Check the Earthworm Environment within an Earthworm Docker Sandbox Container.
 
 ```sh
-$ make EW_ENV=memphis_test1 \
+$ make EW_ENV=memphis_test_zip check_operation
+```
+
+  - Run `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test_zip` just created.
+
+```sh
+$ make EW_ENV=memphis_test_zip \
      EW_INSTALL_INSTALLATION=INST_MEMPHIS \
      ew_startstop_bash
 ```
 
 You will see the interactive output from the Earthworm `startstop` process.
 
-  - From a different terminal prompt of your host, list the running Earthworm Docker Sandbox Container:
+  - From a different terminal prompt of your host, list the running Earthworm Docker Sandbox Container.
 
 ```sh
 $ make list_containers
@@ -176,20 +188,20 @@ a possible output:
 
 ```sh
 CONTAINER ID        IMAGE                    COMMAND                   CREATED             STATUS              PORTS               NAMES
-5c4241577326        ew-sandbox:trunk_r8136   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8136.memphis_test1
+5c4241577326        ew-sandbox:trunk_r8141   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8141.memphis_test_zip
 ```
 
-  - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test1`.
+  - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test_zip`.
 
 ```sh
-$ make EW_ENV=memphis_test1 ew_exec_bash
+$ make EW_ENV=memphis_test_zip ew_exec_bash
 ```
 
 
-The Earthworm Docker Sandbox Container shell prompt will be shown:
+The Earthworm Docker Sandbox Container shell prompt will be shown.
 
 ```sh
-f74b689cb1ed:/opt/ew_env [ew:memphis_test1] $
+f74b689cb1ed:/opt/ew_env [ew:memphis_test_zip] $
 ```
 
 From that shell prompt within the docker container,  you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
@@ -208,6 +220,12 @@ Syntax: make  EW_ENV=ew_default  <command>
 ```
 
 The variables passed as arguments override the values defined in the `Makefile.env` file.
+
+##### Check the availability of all necessary commands.
+
+```sh
+$ make check_required_commands
+```
 
 ## Building Docker Image
 
@@ -247,7 +265,7 @@ EW_SVN_BRANCH = trunk
 # You can set custom subversion revision 'NNN' where NNN is the revision number
 # EW_SVN_REVISION =
 # Latest Earthworm Subversion revision tested by this tool
-EW_SVN_REVISION = 8136
+EW_SVN_REVISION = 8141
 ```
 
 Changelog of Earthworm subversion revisions are available from the following URL: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
@@ -274,7 +292,7 @@ $ make build_all
 
 you can create the docker images for the following Earthworm revisions:
 
-  - `EW_SVN_REVISION=8136` Subversion revision @8136, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
+  - `EW_SVN_REVISION=8141` Subversion revision @8141, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION=` (svn revision @8068 - 2019/08/17), 64-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.9_release EW_SVN_REVISION=` (svn revision @6859 - 2016/10/28), 32-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.8_relase EW_SVN_REVISION=` (svn revision @6404 - 2015/06/25), 32-bit version.
@@ -296,7 +314,7 @@ An example of the output is:
 
 ```
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8136            57d200416fdc        12 minutes ago      1.13GB
+ew-sandbox          trunk_r8141            57d200416fdc        12 minutes ago      1.13GB
 ew-sandbox          trunk_r8028            c932a0ace575        54 minutes ago      1.13GB
 ew-sandbox          tags_ew_7_10_release   79865ee1affb        About an hour ago   917MB
 ew-sandbox          tags_ew_7_9_release    0f08896bac47        2 hours ago         862MB
@@ -385,13 +403,13 @@ Variable `SRC_PATH` is the host local file or directory and `DEST_PATH` is the d
 
 You can create Earthworm Environments starting from online zip files.
 
-Example for creating an Earthwom Environment with name `my_test_env` from an online zip file:
+Example for creating an Earthwom Environment from an online zip file:
 
 ```sh
 $ make create_ew_env_from_zip_url \
      ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
-     EW_ENV=memphis_test1
+     EW_ENV=memphis_test_zip
 ```
 
 *Read below description of  `MAP_EW_ENV_SUBDIRS` and `CREATE_EW_ENV_SUBDIRS`.*
@@ -406,7 +424,7 @@ Examples for creating an Earthwom Environment from a git repository:
 $ make create_ew_env_from_git_repository \
        GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
        GIT_BRANCH=master \
-       EW_ENV=memphis_test2
+       EW_ENV=memphis_test_git
 ```
 
 ```sh
@@ -415,7 +433,7 @@ $ make create_ew_env_from_git_repository \
      GIT_BRANCH=tankplayer \
      CREATE_EW_ENV_SUBDIRS="log data" \
      MAP_EW_ENV_SUBDIRS="run_realtime/params" \
-     EW_ENV=ingv_test1
+     EW_ENV=ingv_test_git
 ```
 
 Variable `GIT_BRANCH` is optional.
@@ -428,7 +446,7 @@ If the subdirectories `params`, `log` and `data` do not exist then you can not b
 
 ##### Initialize Earthworm Environment
 
-It may be useful to initialize an Earthworm Environment by running a script within the docker container.
+It may be useful to initialize an Earthworm Environment by running a script within the docker container and/or copying files inside it.
 
 Example:
 
@@ -437,7 +455,7 @@ make EW_ENV=my_test_env create_ew_env_from_scratch
 
 make EW_ENV=my_test_env cp SRC_PATH=./init_script_earthworm_docker_sandbox.sh  DEST_PATH=/opt/ew_env
 
-make EW_ENV=my_test_env ARGS="./init_script_earthworm_docker_sandbox.sh"
+make EW_ENV=my_test_env ew_run_bash CMD="./init_script_earthworm_docker_sandbox.sh"
 ```
 
 ## Running Earthworm Docker Sandbox Container
@@ -472,23 +490,46 @@ There are two main groups of commands:
 1. Launching commands and start/stop containers (based on `docker run`, `docker stop` and `docker rm`).
 2. Executing commands inside already running containers (based on `docker exec`).
 
+##### Check operation within an Earthworm Environment by a Docker Sandbox Container
+
+Before starting to use an Earthworm Environment, or if something goes wrong, it may be useful to properly check that the basic functions are working within an Earthworm Docker Sandbox Container.
+
+Launching `make check_operation` a series of general purpose commands is executed within an Earthworm Environment in order to verify the correct basic functioning.
+
+An example:
+
+```sh
+$ make EW_ENV=my_test_env check_operation
+```
+
 ##### Start/Stop Earthworm Docker Sandbox Containers
 
 The following  `make` commands based on `docker run` are used to start new docker container on an Earthworm Envinronment.
 
 Start a new docker container within an interactive shell:
 
-  - `ew_run_bash`:   run an interactive bash shell in a new docker container. You can optionally run command passed by ARGS variable.
+  - `ew_run_bash`:   run an interactive bash shell in a new docker container. You can optionally run command passed by CMD variable.
 
-  - `ew_run_screen`: run an interactive screen shell in a new docker container. You can optionally run command passed by ARGS variable.
+  - `ew_run_screen`: run an interactive screen shell in a new docker container. You can optionally run command passed by CMD variable.
 
 Examples:
 
 ```sh
 $ make EW_ENV=ew_test1 ew_run_bash
-$ make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
+$ make EW_ENV=ew_test1 ew_run_bash CMD="df -h"
 $ make EW_ENV=ew_test1 ew_run_screen
-$ make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
+$ make EW_ENV=ew_test1 ew_run_screen CMD="df -h"
+```
+
+Start a new docker container in detached mode:
+
+  - `ew_run_detached`: run a new docker container in detached mode. You can optionally run command passed by CMD variable. If no command is passed, the container remains active until it is stopped.
+
+Examples:
+
+```sh
+$ make EW_ENV=ew_test1 ew_run_detached
+$ make EW_ENV=ew_test1 ew_run_detached CMD="startstop"
 ```
 
 Start a container by implicitly launching the Earthworm command `startstop`:
@@ -496,7 +537,7 @@ Start a container by implicitly launching the Earthworm command `startstop`:
   - `ew_startstop_bash`:   run 'startstop' in an interactive bash shell in a new docker container for current EW_ENV.
   - `ew_startstop_screen`: run 'startstop' in an interactive screen shell in a new docker container for current EW_ENV.
   - `ew_startstop_detached`:  run 'startstop' in detached mode in a new docker container for current EW_ENV.
-  - `ew_startstop_screen_handling_exit`: run 'startstop' in detached mode in a new docker container for current EW_ENV. Pass arguments to ew_check_process_status.sh by ARGS variable.
+  - `ew_startstop_screen_handling_exit`: run 'startstop' in detached mode in a new docker container for current EW_ENV. Pass arguments to `ew_check_process_status.sh` by ARGS variable.
 
 Running commands in a `bash` you will have only one shell available for that container at time. To run another shell within the same running container you can use commands in the group based on `docker exec `.
 
@@ -515,7 +556,7 @@ Moreover, when running a container by `ew_startstop_screen_handling_exit` you ca
 Example for running Earthworm within an Earthworm Environment and quit docker container when `tankplayer.d` is no longer alive:
 
 ```sh
-$ make EW_ENV=memphis_test1 EW_INSTALL_INSTALLATION=INST_MEMPHIS \
+$ make EW_ENV=memphis_test_zip EW_INSTALL_INSTALLATION=INST_MEMPHIS \
        ew_startstop_screen_handling_exit ARGS="tankplayer.d pau"
 ```
 
@@ -534,15 +575,15 @@ $ make EW_ENV=ew_test1 ew_stop_container
 The following  `make` commands based on `docker exec` are used to launch commands in a running Earthworm Docker Sandbox Container on an Earthworm Envinronment.
 
 
-  - `ew_exec_bash`: run a new interactive bash shell within the running docker container. You can optionally run command passed by ARGS variable.
-  - `ew_exec_screen`: run a new interactive screen shell within the running docker container. You can optionally run command passed by ARGS variable.
+  - `ew_exec_bash`: run a new interactive bash shell within the running docker container. You can optionally run command passed by CMD variable.
+  - `ew_exec_screen`: run a new interactive screen shell within the running docker container. You can optionally run command passed by CMD variable.
 
 Examples:
 
 ```sh
 $ make EW_ENV=ew_test1 ew_exec_bash
-$ make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
-$ make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
+$ make EW_ENV=ew_test1 ew_exec_bash CMD="status"
+$ make EW_ENV=ew_test1 ew_exec_bash CMD="ps aux"
 ```
 
 Shortcuts for running commands within running Earthworm Docker Sandbox Containers:
@@ -561,10 +602,9 @@ $ make EW_ENV=ew_test1 ew_sniffrings_all
 $ make EW_ENV=ew_test1 ew_tail_all_logs
 ```
 
-
 ## Caveats
 
   - <u>CPU Architecture Dependent</u>. When you build `Dockerfile`, the Earthworm Environment Shell Configuration File ( `ew_linux.bash` or `ew_linux_arm.sh`) is automatically selected depending if your system is based on ARM or not.
-  - <u>Repeated executions of the same tankfiles by `tankplayer` when you also use `wave_server` module that stores waveforms to a persistent directory</u>. If you are running `wave_server` module within your Earthworm Environments which it is processing the waveforms read by `tankplayer` module, probably you will have to have delete all tank files generated by `wave_server` between one Earthworm Environment execution and the next one. For example, for a memphis test environment you may need to run `rm ~/ew_envs/memphis_test1/data/wave_serverV_tank/*`.
+  - <u>Repeated executions of the same tankfiles by `tankplayer` when you also use `wave_server` module that stores waveforms to a persistent directory</u>. If you are running `wave_server` module within your Earthworm Environments which it is processing the waveforms read by `tankplayer` module, probably you will have to have delete all tank files generated by `wave_server` between one Earthworm Environment execution and the next one. For example, for a memphis test environment you may need to run `rm ~/ew_envs/memphis_test_zip/data/wave_serverV_tank/*`.
   - <u>User and Group ID on Linux system</u>.  `Dockerfile` adds a new user `ew` and a new group `ew` within the Docker image. When you build and run the image the User ID and Group ID are automatically mapped with the current user and group in the host. This allows you to run docker container as non-root user and to write with the appropriate privileges within the Earthworm Environment directories `params`, `log`and `data`.
 

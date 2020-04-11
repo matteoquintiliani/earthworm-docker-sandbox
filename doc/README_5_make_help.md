@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.1.2 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.2.0 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -46,6 +46,8 @@ General commands:
     list_containers: list available Earthworm Docker Sandbox containers
                      wrap 'docker ps' containers matching name 'ew-sandbox*'.
 
+    check_required_commands: check the availability of all necessary commands.
+
 ======================================================================
 Creating Earthworm Environments with name EW_ENV:
 ======================================================================
@@ -82,14 +84,14 @@ Creating Earthworm Environments with name EW_ENV:
                    ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \ 
-                   EW_ENV=memphis_test1
+                   EW_ENV=memphis_test_zip
 
               make create_ew_env_from_git_repository \ 
                    GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ 
                    GIT_BRANCH=master \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS= \ 
-                   EW_ENV=memphis_test2
+                   EW_ENV=memphis_test_git
 
               make create_ew_env_from_git_repository \ 
                    GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git \ 
@@ -117,13 +119,23 @@ Deleting files: (POTENTIALLY DANGEROUS)
                             waveserver directories (~/ew_envs/ew_help/data/waveservers).
 
 ======================================================================
+Check operation within an Earthworm Environment by a Docker Sandbox Container:
+======================================================================
+
+    check_operation: run a series of general purpose commands within an Earthworm Environment
+                   in order to verify the correct basic functioning.
+
+======================================================================
 Start/Stop Earthworm Docker Sandbox Containers:
 ======================================================================
 
     ew_run_bash:     run interactive bash shell in a new docker container.
-                     You can optionally run command passed by ARGS variable.
+                     You can optionally run command passed by CMD variable.
     ew_run_screen:   run interactive screen shell in a new docker container.
-                     You can optionally run command passed by ARGS variable.
+                     You can optionally run command passed by CMD variable.
+    ew_run_detached: run a new docker container in detached mode.
+                     You can optionally run command passed by CMD variable.
+                     If no command is passed, the container remains active until it is stopped.
 
     ew_startstop_bash:     run 'startstop' in an interactive bash shell
                            in a new docker container for current EW_ENV.
@@ -140,9 +152,11 @@ Start/Stop Earthworm Docker Sandbox Containers:
 
     Examples:
               make EW_ENV=ew_test1 ew_run_bash
-              make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_bash CMD="df -h"
               make EW_ENV=ew_test1 ew_run_screen
-              make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_screen CMD="df -h"
+              make EW_ENV=ew_test1 ew_run_detached
+              make EW_ENV=ew_test1 ew_run_detached CMD="startstop"
 
               make EW_ENV=ew_test1 ew_startstop_bash
               make EW_ENV=ew_test1 ew_startstop_screen
@@ -158,9 +172,9 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 ======================================================================
 
     ew_exec_bash:      run a new bash shell within the running docker container.
-                       You can optionally run command passed by ARGS variable.
+                       You can optionally run command passed by CMD variable.
     ew_exec_screen:    run a new screen shell within the running docker container.
-                       You can optionally run command passed by ARGS variable.
+                       You can optionally run command passed by CMD variable.
 
     ew_status:         run 'status' in the Earthworm running docker container.
     ew_pau:            run 'pau' in the Earthworm running docker container.
@@ -172,8 +186,8 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 
     Examples:
               make EW_ENV=ew_test1 ew_exec_bash
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
+              make EW_ENV=ew_test1 ew_exec_bash CMD="ps aux"
+              make EW_ENV=ew_test1 ew_exec_bash CMD="status"
               make EW_ENV=ew_test1 ew_status
               make EW_ENV=ew_test1 ew_pau
               make EW_ENV=ew_test1 ew_sniffrings_all
