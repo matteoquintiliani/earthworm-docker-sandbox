@@ -505,6 +505,17 @@ $ make EW_ENV=ew_test1 ew_run_screen
 $ make EW_ENV=ew_test1 ew_run_screen CMD="df -h"
 ```
 
+Start a new docker container in detached mode:
+
+  - `ew_run_detached`: run a new docker container in detached mode. You can optionally run command passed by CMD variable. If no command is passed, the container remains active until it is stopped.
+
+Examples:
+
+```sh
+$ make EW_ENV=ew_test1 ew_run_detached
+$ make EW_ENV=ew_test1 ew_run_detached CMD="startstop"
+```
+
 Start a container by implicitly launching the Earthworm command `startstop`:
 
   - `ew_startstop_bash`:   run 'startstop' in an interactive bash shell in a new docker container for current EW_ENV.

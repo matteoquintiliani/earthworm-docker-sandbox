@@ -94,7 +94,8 @@ DOCKER_ENV_COMPLETE = \
 	-e EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION)
 
 .PHONY: \
-	build build_all \
+	build \
+	build_all \
 	version \
 	list_ew_env list_images list_containers \
 	create_ew_env_from_scratch \
@@ -104,15 +105,20 @@ DOCKER_ENV_COMPLETE = \
 	create_ew_env_from_memphis_test \
 	create_ew_env_from_ingv_test \
 	create_ew_env_from_ingv_runconfig_branch \
-	ew_run_bash ew_run_screen \
-	ew_exec_bash ew_exec_screen \
-	ew_status ew_sniffrings_all ew_tail_all_logs \
+	ew_run_bash \
+	ew_run_screen \
+	ew_run_detached \
+	ew_exec_bash \
+	ew_exec_screen \
 	ew_startstop_bash \
 	ew_startstop_screen \
-	ew_startstop_screen_handling_exit \
 	ew_startstop_detached \
+	ew_startstop_screen_handling_exit \
 	ew_stop_container \
+	ew_status \
 	ew_pau \
+	ew_sniffrings_all \
+	ew_tail_all_logs \
 	create_tank \
 	ew_dangerous_clean_log \
 	ew_dangerous_clean_ws \
@@ -274,6 +280,9 @@ $(SEPLINE)\n\
                      You can optionally run command passed by CMD variable.\n\
     ew_run_screen:   run interactive screen shell in a new docker container.\n\
                      You can optionally run command passed by CMD variable.\n\
+    ew_run_detached: run a new docker container in detached mode.\n\
+                     You can optionally run command passed by CMD variable.\n\
+                     If no command is passed, the container remains active until it is stopped.\n\
 \n\
     ew_startstop_bash:     run 'startstop' in an interactive bash shell\n\
                            in a new docker container for current EW_ENV.\n\
@@ -293,6 +302,8 @@ $(SEPLINE)\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_bash CMD=\"df -h\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen CMD=\"df -h\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_run_detached\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_run_detached CMD=\"startstop\"\n\
 \n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_bash\n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_screen\n\
@@ -471,6 +482,13 @@ ew_run_screen: check_for_running
 # docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 	# bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
+ew_run_detached:
+	CMD="$(CMD)" \
+		&& if [ -z "$${CMD}" ]; then \
+		CMD="echo 'Started in detached mode....'; while true; do sleep 1; done"; \
+		fi \
+		&& make EW_ENV=$(EW_ENV) ew_run_bash OPT_RUN_D='-d' CMD="$${CMD}"
+
 ew_exec_bash: check_for_executing
 	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
@@ -491,6 +509,9 @@ ew_startstop_bash: check_for_running
 ew_startstop_screen: check_for_running
 	make ew_run_screen CMD="startstop"
 
+ew_startstop_detached: check_for_running
+	make ew_run_detached CMD="startstop"
+
 ew_startstop_screen_handling_exit: check_for_running
 	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 	bash -c "( \
@@ -502,9 +523,6 @@ ew_startstop_screen_handling_exit: check_for_running
 		&& screen -p 2 -S ew -X stuff \"/opt/scripts/ew_check_process_status.sh $(CMD) $(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
-
-ew_startstop_detached: check_for_running
-	make ew_run_bash CMD="startstop" OPT_RUN_D=-d
 
 ew_stop_container: check_for_executing
 	docker stop $(DOCKER_CONTAINER_NAME)
