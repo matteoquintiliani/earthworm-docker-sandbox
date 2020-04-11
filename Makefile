@@ -42,7 +42,9 @@ endif
 DOCKER_IMAGE_NAME ?= ew-sandbox
 
 # Docker Image Version depends on EW_SVN_BRANCH and EW_SVN_REVISION
-DOCKER_IMAGE_VERSION = `echo \`echo $(EW_SVN_BRANCH) | sed -e 's/[\.\/\@]/_/g'\`\`echo $(EW_SVN_REVISION) | sed -e 's/\([0-9]\)/_r\1/'\``
+DOCKER_IMAGE_EW_SVN_BRANCH = $(shell echo $(EW_SVN_BRANCH) | sed -e 's/[\.\/\@]/_/g')
+DOCKER_IMAGE_EW_SVN_REVISION = $(shell echo $(EW_SVN_REVISION) | sed -e 's/\([0-9]\)/_r\1/')
+DOCKER_IMAGE_VERSION = $(DOCKER_IMAGE_EW_SVN_BRANCH)$(DOCKER_IMAGE_EW_SVN_REVISION)
 
 # Set Docker Image Name and Version
 DOCKER_IMAGE_NAME_VERSION = $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
@@ -62,7 +64,7 @@ OPT_RUN_D =
 EW_ENV_DIR=$(EW_ENV_MAINDIR)/$(EW_ENV)
 
 # Compute EW_ENV_MAINDIR_ABSPATH and EW_ENV_COMPLETE_PATH that is base on EW_ENV
-EW_ENV_MAINDIR_ABSPATH=`cd $(EW_ENV_MAINDIR) && pwd`
+EW_ENV_MAINDIR_ABSPATH=$(shell cd $(EW_ENV_MAINDIR) && pwd)
 EW_ENV_COMPLETE_PATH=$(EW_ENV_MAINDIR_ABSPATH)/$(EW_ENV)
 
 # Docker EW_RUN_DIR
