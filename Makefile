@@ -262,9 +262,9 @@ Start/Stop Earthworm Docker Sandbox Containers:\n\
 $(SEPLINE)\n\
 \n\
     ew_run_bash:     run interactive bash shell in a new docker container.\n\
-                     You can optionally run command passed by ARGS variable.\n\
+                     You can optionally run command passed by CMD variable.\n\
     ew_run_screen:   run interactive screen shell in a new docker container.\n\
-                     You can optionally run command passed by ARGS variable.\n\
+                     You can optionally run command passed by CMD variable.\n\
 \n\
     ew_startstop_bash:     run 'startstop' in an interactive bash shell\n\
                            in a new docker container for current EW_ENV.\n\
@@ -281,9 +281,9 @@ $(SEPLINE)\n\
 \n\
     Examples:\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_bash\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_run_bash ARGS=\"df -h\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_run_bash CMD=\"df -h\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_run_screen\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_run_screen ARGS=\"df -h\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_run_screen CMD=\"df -h\"\n\
 \n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_bash\n\
               make EW_ENV=$(HELP_EW_ENV) ew_startstop_screen\n\
@@ -299,9 +299,9 @@ Executing commands within running Earthworm Docker Sandbox Containers:\n\
 $(SEPLINE)\n\
 \n\
     ew_exec_bash:      run a new bash shell within the running docker container.\n\
-                       You can optionally run command passed by ARGS variable.\n\
+                       You can optionally run command passed by CMD variable.\n\
     ew_exec_screen:    run a new screen shell within the running docker container.\n\
-                       You can optionally run command passed by ARGS variable.\n\
+                       You can optionally run command passed by CMD variable.\n\
 \n\
     ew_status:         run 'status' in the Earthworm running docker container.\n\
     ew_pau:            run 'pau' in the Earthworm running docker container.\n\
@@ -313,8 +313,8 @@ $(SEPLINE)\n\
 \n\
     Examples:\n\
               make EW_ENV=$(HELP_EW_ENV) ew_exec_bash\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_exec_bash ARGS=\"ps aux\"\n\
-              make EW_ENV=$(HELP_EW_ENV) ew_exec_bash ARGS=\"status\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_exec_bash CMD=\"ps aux\"\n\
+              make EW_ENV=$(HELP_EW_ENV) ew_exec_bash CMD=\"status\"\n\
               make EW_ENV=$(HELP_EW_ENV) ew_status\n\
               make EW_ENV=$(HELP_EW_ENV) ew_pau\n\
               make EW_ENV=$(HELP_EW_ENV) ew_sniffrings_all\n\
@@ -447,17 +447,17 @@ build: check_for_building
 CARRIAGE_RETURN=""
 
 ew_run_bash: check_for_running
-	CMD="$(ARGS)" \
+	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 			/bin/bash -c ". ~/.bashrc && $${CMD}"
 
 ew_run_screen: check_for_running
-	@echo $(ARGS)
+	@echo $(CMD)
 	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
-		&& screen -p 0 -S ew -X stuff \"$(ARGS)$(CARRIAGE_RETURN)\" \
+		&& screen -p 0 -S ew -X stuff \"$(CMD)$(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
 
@@ -465,7 +465,7 @@ ew_run_screen: check_for_running
 	# bash -c "(screen -d -m -S ew -s /bin/bash && screen -r)"
 
 ew_exec_bash: check_for_executing
-	CMD="$(ARGS)" \
+	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
 			/bin/bash -c ". ~/.bashrc && $${CMD}"
@@ -474,15 +474,15 @@ ew_exec_screen: check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
-		&& screen -p 0 -S ew -X stuff \"$(ARGS)$(CARRIAGE_RETURN)\" \
+		&& screen -p 0 -S ew -X stuff \"$(CMD)$(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
 
 ew_startstop_bash: check_for_running
-	make ew_run_bash ARGS="startstop"
+	make ew_run_bash CMD="startstop"
 
 ew_startstop_screen: check_for_running
-	make ew_run_screen ARGS="startstop"
+	make ew_run_screen CMD="startstop"
 
 ew_startstop_screen_handling_exit: check_for_running
 	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
@@ -492,32 +492,32 @@ ew_startstop_screen_handling_exit: check_for_running
 		&& screen -S ew -X screen \
 		&& screen -p 0 -S ew -X stuff \"startstop $(CARRIAGE_RETURN)\" \
 		&& screen -p 1 -S ew -X stuff \"sleep 2 && cd log && /opt/scripts/ew_sniff_all_rings_except_tracebuf_message.sh | tee sniffrings.log $(CARRIAGE_RETURN)\" \
-		&& screen -p 2 -S ew -X stuff \"/opt/scripts/ew_check_process_status.sh $(ARGS) $(CARRIAGE_RETURN)\" \
+		&& screen -p 2 -S ew -X stuff \"/opt/scripts/ew_check_process_status.sh $(CMD) $(CARRIAGE_RETURN)\" \
 		&& screen -r \
 	)"
 
 ew_startstop_detached: check_for_running
-	make ew_run_bash ARGS="startstop" OPT_RUN_D=-d
+	make ew_run_bash CMD="startstop" OPT_RUN_D=-d
 
 ew_stop_container: check_for_executing
 	docker stop $(DOCKER_CONTAINER_NAME)
 	docker container rm $(DOCKER_CONTAINER_NAME)
 
 ew_status: check_for_executing
-	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="status"
+	make EW_ENV="$(EW_ENV)" ew_exec_bash CMD="status"
 
 ew_pau: check_for_executing
 	@echo
 	@bash -c '(read -p "WARNING: Are you sure you stop Earthworm ? [Y/n] " -n 1 -r \
 		&& echo "" \
 		&& if [[ $$REPLY =~ ^[Y]$$ ]]; then \
-		make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="pau"; \
+		make EW_ENV="$(EW_ENV)" ew_exec_bash CMD="pau"; \
 		else \
 		echo "Nothing has been done."; \
 		fi)'
 
 ew_status_tankplayer: check_for_executing
-	make EW_ENV="$(EW_ENV)" ew_exec_bash ARGS="/opt/scripts/ew_check_process_status.sh"; \
+	make EW_ENV="$(EW_ENV)" ew_exec_bash CMD="/opt/scripts/ew_check_process_status.sh"; \
 
 ew_sniffrings_all: check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) /bin/bash -c '\

@@ -437,7 +437,7 @@ make EW_ENV=my_test_env create_ew_env_from_scratch
 
 make EW_ENV=my_test_env cp SRC_PATH=./init_script_earthworm_docker_sandbox.sh  DEST_PATH=/opt/ew_env
 
-make EW_ENV=my_test_env ARGS="./init_script_earthworm_docker_sandbox.sh"
+make EW_ENV=my_test_env ew_run_bash CMD="./init_script_earthworm_docker_sandbox.sh"
 ```
 
 ## Running Earthworm Docker Sandbox Container
@@ -478,17 +478,17 @@ The following  `make` commands based on `docker run` are used to start new docke
 
 Start a new docker container within an interactive shell:
 
-  - `ew_run_bash`:   run an interactive bash shell in a new docker container. You can optionally run command passed by ARGS variable.
+  - `ew_run_bash`:   run an interactive bash shell in a new docker container. You can optionally run command passed by CMD variable.
 
-  - `ew_run_screen`: run an interactive screen shell in a new docker container. You can optionally run command passed by ARGS variable.
+  - `ew_run_screen`: run an interactive screen shell in a new docker container. You can optionally run command passed by CMD variable.
 
 Examples:
 
 ```sh
 $ make EW_ENV=ew_test1 ew_run_bash
-$ make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
+$ make EW_ENV=ew_test1 ew_run_bash CMD="df -h"
 $ make EW_ENV=ew_test1 ew_run_screen
-$ make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
+$ make EW_ENV=ew_test1 ew_run_screen CMD="df -h"
 ```
 
 Start a container by implicitly launching the Earthworm command `startstop`:
@@ -534,15 +534,15 @@ $ make EW_ENV=ew_test1 ew_stop_container
 The following  `make` commands based on `docker exec` are used to launch commands in a running Earthworm Docker Sandbox Container on an Earthworm Envinronment.
 
 
-  - `ew_exec_bash`: run a new interactive bash shell within the running docker container. You can optionally run command passed by ARGS variable.
-  - `ew_exec_screen`: run a new interactive screen shell within the running docker container. You can optionally run command passed by ARGS variable.
+  - `ew_exec_bash`: run a new interactive bash shell within the running docker container. You can optionally run command passed by CMD variable.
+  - `ew_exec_screen`: run a new interactive screen shell within the running docker container. You can optionally run command passed by CMD variable.
 
 Examples:
 
 ```sh
 $ make EW_ENV=ew_test1 ew_exec_bash
-$ make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
-$ make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
+$ make EW_ENV=ew_test1 ew_exec_bash CMD="status"
+$ make EW_ENV=ew_test1 ew_exec_bash CMD="ps aux"
 ```
 
 Shortcuts for running commands within running Earthworm Docker Sandbox Containers:

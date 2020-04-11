@@ -121,9 +121,9 @@ Start/Stop Earthworm Docker Sandbox Containers:
 ======================================================================
 
     ew_run_bash:     run interactive bash shell in a new docker container.
-                     You can optionally run command passed by ARGS variable.
+                     You can optionally run command passed by CMD variable.
     ew_run_screen:   run interactive screen shell in a new docker container.
-                     You can optionally run command passed by ARGS variable.
+                     You can optionally run command passed by CMD variable.
 
     ew_startstop_bash:     run 'startstop' in an interactive bash shell
                            in a new docker container for current EW_ENV.
@@ -140,9 +140,9 @@ Start/Stop Earthworm Docker Sandbox Containers:
 
     Examples:
               make EW_ENV=ew_test1 ew_run_bash
-              make EW_ENV=ew_test1 ew_run_bash ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_bash CMD="df -h"
               make EW_ENV=ew_test1 ew_run_screen
-              make EW_ENV=ew_test1 ew_run_screen ARGS="df -h"
+              make EW_ENV=ew_test1 ew_run_screen CMD="df -h"
 
               make EW_ENV=ew_test1 ew_startstop_bash
               make EW_ENV=ew_test1 ew_startstop_screen
@@ -158,9 +158,9 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 ======================================================================
 
     ew_exec_bash:      run a new bash shell within the running docker container.
-                       You can optionally run command passed by ARGS variable.
+                       You can optionally run command passed by CMD variable.
     ew_exec_screen:    run a new screen shell within the running docker container.
-                       You can optionally run command passed by ARGS variable.
+                       You can optionally run command passed by CMD variable.
 
     ew_status:         run 'status' in the Earthworm running docker container.
     ew_pau:            run 'pau' in the Earthworm running docker container.
@@ -172,8 +172,8 @@ Executing commands within running Earthworm Docker Sandbox Containers:
 
     Examples:
               make EW_ENV=ew_test1 ew_exec_bash
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="ps aux"
-              make EW_ENV=ew_test1 ew_exec_bash ARGS="status"
+              make EW_ENV=ew_test1 ew_exec_bash CMD="ps aux"
+              make EW_ENV=ew_test1 ew_exec_bash CMD="status"
               make EW_ENV=ew_test1 ew_status
               make EW_ENV=ew_test1 ew_pau
               make EW_ENV=ew_test1 ew_sniffrings_all
