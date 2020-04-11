@@ -28,7 +28,7 @@ Release History
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
     - Use command 'shell' in Makefile and break compatibility with 'make' different than 'GNU make'.
     - Add 'make EW_ENV=... check' for checking basic functioning within an Earthworm Environment.
-    - Add 'make EW_ENV=... ew_run_detached' for running containers and/or commands in detached mode.
+    - Obsfucate some make rules by prefixing the underscore character '_'.
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.

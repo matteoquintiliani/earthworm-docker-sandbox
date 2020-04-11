@@ -381,57 +381,57 @@ This is free software, and you are welcome to redistribute it\n\
 under certain conditions; type 'make license' for details.\
 "
 
-check_docker_variables:
+_check_docker_variables:
 	@if [ -z "$(DOCKER_IMAGE_NAME)" ]; then echo "ERROR: DOCKER_IMAGE_NAME must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DOCKER_IMAGE_VERSION)" ]; then echo "ERROR: DOCKER_IMAGE_VERSION must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DOCKER_IMAGE_NAME_VERSION)" ]; then echo "ERROR: DOCKER_IMAGE_NAME_VERSION must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DOCKER_CONTAINER_NAME)" ]; then echo "ERROR: DOCKER_CONTAINER_NAME must be defined. Exit."; exit 1; fi
 	@if [ -z "$(NS_DOCKER_IMAGE_NAME_VERSION)" ]; then echo "ERROR: NS_DOCKER_IMAGE_NAME_VERSION must be defined. Exit."; exit 1; fi
 
-check_ew_env_variables:
+_check_ew_env_variables:
 	@if [ -z "$(EW_ENV)" ]; then echo "ERROR: EW_ENV must be defined. (example: make EW_ENV=$(HELP_EW_ENV) <command>). Exit."; echo "SUGGESTION: run 'make list_ew_env' to see available Earthworm Environments."; make list_ew_env; exit 1; fi
 	@if [ -z "$(EW_ENV_MAINDIR)" ]; then echo "ERROR: EW_ENV_MAINDIR must be defined. Exit."; exit 1; fi
 	@if [ -z "$(EW_ENV_DIR)" ]; then echo "ERROR: EW_ENV_DIR must be defined. Exit."; exit 1; fi
 
-check_zip_url_variables:
+_check_zip_url_variables:
 	@if [ -z "$(ZIP_URL)" ]; then echo "ERROR: ZIP_URL must be defined. Exit."; exit 1; fi
 	@if [ -z "$(CREATE_EW_ENV_SUBDIRS)" ]; then echo "WARNING: CREATE_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 	@if [ -z "$(MAP_EW_ENV_SUBDIRS)" ]; then echo "WARNING: MAP_EW_ENV_SUBDIRS variable not defined."; echo "         Make sure that params, log and data directories are available in main directory."; fi
 
-check_git_variables:
+_check_git_variables:
 	@if [ -z "$(GIT_REP)" ]; then echo "ERROR: GIT_REP must be defined. Exit."; exit 1; fi
 	@if [ -z "$(GIT_BRANCH)" ]; then echo "ERROR: GIT_BRANCH must be defined. Exit."; exit 1; fi
 
-check_ew_env_subdirs:
+_check_ew_env_subdirs:
 	@if [ ! -e $(EW_ENV_MAINDIR) ]; then echo "ERROR: directory $(EW_ENV_MAINDIR) for EW_ENV_MAINDIR not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR)/params ]; then echo "ERROR: directory $(EW_ENV_DIR)/params not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR)/log ]; then echo "ERROR: directory $(EW_ENV_DIR)/log not found. Exit."; exit 9; fi
 	@if [ ! -e $(EW_ENV_DIR)/data ]; then echo "ERROR: directory $(EW_ENV_DIR)/data not found. Exit."; exit 9; fi
 
-check_for_building: check_docker_variables $(BUILD_SOURCES)
+_check_for_building: _check_docker_variables $(BUILD_SOURCES)
 	@if [ -z "$(EW_SVN_BRANCH)" ]; then echo "ERROR: EW_SVN_BRANCH must be defined and not empty. Exit."; exit 1; fi
 
-check_for_creating: check_docker_variables check_ew_env_variables
+_check_for_creating: _check_docker_variables _check_ew_env_variables
 	@if [ -e $(EW_ENV_DIR) ]; then echo "ERROR: directory $(EW_ENV_DIR) already exists. Exit."; exit 9; fi
 
-check_container_is_running:
+_check_container_is_running:
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		   && if [ ! -n "$${CONTAINER_ID}" ]; then echo "ERROR: container $(DOCKER_CONTAINER_NAME) is not running. Exit."; exit 9; fi
 
-check_container_is_not_running_on_the_same_ew_env:
+_check_container_is_not_running_on_the_same_ew_env:
 	@CONTAINER_ID=$$(docker ps -q  -f name=".*\.$(EW_ENV)") \
 		   && if [ -n "$${CONTAINER_ID}" ]; then echo "ERROR: container $${CONTAINER_ID} is already running on the same EW_ENV=$(EW_ENV). Exit."; docker ps -f name=".*\.$(EW_ENV)"; exit 9; fi
 
-check_container_is_not_running:
+_check_container_is_not_running:
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		   && if [ -n "$${CONTAINER_ID}" ]; then echo "ERROR: container $(DOCKER_CONTAINER_NAME) is already running. Exit."; exit 9; fi
 
-check_for_running: license_short check_docker_variables check_ew_env_variables check_ew_env_subdirs check_container_is_not_running check_container_is_not_running_on_the_same_ew_env
+_check_for_running: license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_not_running _check_container_is_not_running_on_the_same_ew_env
 
-check_for_executing: license_short check_docker_variables check_ew_env_variables check_ew_env_subdirs check_container_is_running
+_check_for_executing: license_short _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs _check_container_is_running
 
-check_for_copying: check_docker_variables check_ew_env_variables check_ew_env_subdirs
+_check_for_copying: _check_docker_variables _check_ew_env_variables _check_ew_env_subdirs
 	@if [ -z "$(SRC_PATH)" ]; then echo "ERROR: SRC_PATH must be defined. Exit."; exit 1; fi
 	@if [ -z "$(DEST_PATH)" ]; then echo "ERROR: DEST_PATH must be defined. Exit."; exit 1; fi
 
@@ -441,13 +441,13 @@ list_ew_env:
 		&& echo "Available Earthworm Environments: " \
 		&& find . -mindepth 1 -maxdepth 1 -type d | sed -e "s/^[./]*/  - /" | sort
 
-list_images: check_for_building
+list_images: _check_for_building
 	docker images $(DOCKER_IMAGE_NAME)
 
-list_containers: check_for_building
+list_containers: _check_for_building
 	docker ps -f name='$(DOCKER_IMAGE_NAME)*'
 
-build: check_for_building
+build: _check_for_building
 	# Build docker image
 	docker build -t $(DOCKER_IMAGE_NAME_VERSION) \
 		--build-arg EW_INSTALL_INSTALLATION=$(EW_INSTALL_INSTALLATION) \
@@ -464,13 +464,13 @@ build: check_for_building
 
 CARRIAGE_RETURN=""
 
-ew_run_bash: check_for_running
+ew_run_bash: _check_for_running
 	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 			/bin/bash -c ". ~/.bashrc && $${CMD}"
 
-ew_run_screen: check_for_running
+ew_run_screen: _check_for_running
 	@echo $(CMD)
 	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 	bash -c "( \
@@ -489,13 +489,13 @@ ew_run_detached:
 		fi \
 		&& make EW_ENV=$(EW_ENV) ew_run_bash OPT_RUN_D='-d' CMD="$${CMD}"
 
-ew_exec_bash: check_for_executing
+ew_exec_bash: _check_for_executing
 	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
 			/bin/bash -c ". ~/.bashrc && $${CMD}"
 
-ew_exec_screen: check_for_executing
+ew_exec_screen: _check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
@@ -503,16 +503,16 @@ ew_exec_screen: check_for_executing
 		&& screen -r \
 	)"
 
-ew_startstop_bash: check_for_running
+ew_startstop_bash: _check_for_running
 	make ew_run_bash CMD="startstop"
 
-ew_startstop_screen: check_for_running
+ew_startstop_screen: _check_for_running
 	make ew_run_screen CMD="startstop"
 
-ew_startstop_detached: check_for_running
+ew_startstop_detached: _check_for_running
 	make ew_run_detached CMD="startstop"
 
-ew_startstop_screen_handling_exit: check_for_running
+ew_startstop_screen_handling_exit: _check_for_running
 	docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 	bash -c "( \
 		screen -d -m -S ew -s /bin/bash \
@@ -524,14 +524,14 @@ ew_startstop_screen_handling_exit: check_for_running
 		&& screen -r \
 	)"
 
-ew_stop_container: check_for_executing
+ew_stop_container: _check_for_executing
 	docker stop $(DOCKER_CONTAINER_NAME)
 	docker container rm $(DOCKER_CONTAINER_NAME)
 
-ew_status: check_for_executing
+ew_status: _check_for_executing
 	make EW_ENV="$(EW_ENV)" ew_exec_bash CMD="status"
 
-ew_pau: check_for_executing
+ew_pau: _check_for_executing
 	@echo
 	@bash -c '(read -p "WARNING: Are you sure you stop Earthworm ? [Y/n] " -n 1 -r \
 		&& echo "" \
@@ -541,20 +541,20 @@ ew_pau: check_for_executing
 		echo "Nothing has been done."; \
 		fi)'
 
-ew_status_tankplayer: check_for_executing
+ew_status_tankplayer: _check_for_executing
 	make EW_ENV="$(EW_ENV)" ew_exec_bash CMD="/opt/scripts/ew_check_process_status.sh"; \
 
-ew_sniffrings_all: check_for_executing
+ew_sniffrings_all: _check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) /bin/bash -c '\
 		. ~/.bashrc \
 		&& echo $${RING_LIST} \
 		&& sniffrings $$(/opt/scripts/ew_get_rings_list.sh) verbose 2>&1 | grep -v "TYPE_TRACEBUF" \
 		'
 
-ew_tail_all_logs: check_for_running
+ew_tail_all_logs: _check_for_running
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) /bin/bash -c 'tail -f `find $(DOCKER_EW_RUN_DIR)/log -name "*.log"`'
 
-create_ew_env_from_scratch: check_for_creating
+create_ew_env_from_scratch: _check_for_creating
 	@mkdir -p $(EW_ENV_MAINDIR) \
 		&& cd $(EW_ENV_MAINDIR) \
 		&& mkdir $(EW_ENV_DIR) \
@@ -564,13 +564,13 @@ create_ew_env_from_scratch: check_for_creating
 		&& mkdir data
 
 EW_ENV_FROM_DIR=$(EW_ENV_MAINDIR)/$(EW_ENV_FROM)
-create_ew_env_from_another: check_for_creating
+create_ew_env_from_another: _check_for_creating
 	@if [ -z "$(EW_ENV_FROM)" ]; then echo "ERROR: EW_ENV_FROM must be defined. (example: make create_ew_env_from_another EW_ENV_FROM=$(HELP_EW_ENV) EW_ENV=$(HELP_EW_ENV_2)). Exit."; echo "SUGGESTION: run 'make list_ew_env' to see available Earthworm Environments."; make list_ew_env; exit 1; fi
 	@if [ ! -e $(EW_ENV_FROM_DIR) ]; then echo "ERROR: source directory $(EW_ENV_FROM_DIR) not found. Exit."; exit 9; fi
 	@cp -vR $(EW_ENV_FROM_DIR) $(EW_ENV_DIR) \
 		&& echo "Earthworm Environment \"$(EW_ENV_DIR)\" from \"$(EW_ENV_FROM_DIR)\" has been successfully created."
 
-create_ew_env_from_zip_url: check_for_creating check_zip_url_variables
+create_ew_env_from_zip_url: _check_for_creating _check_zip_url_variables
 	@echo "Trying to get zip file from $(ZIP_URL) ..."
 	@mkdir -p $(EW_ENV_MAINDIR) \
 		&& BASENAME_ZIP_URL="`basename $(ZIP_URL)`" \
@@ -594,7 +594,7 @@ create_ew_env_from_ingv_test:
 		ZIP_URL=http://ads.int.ingv.it/~ads/earthworm/ew_envs/tankplayer_ew_maindir.zip \
 		MAP_EW_ENV_SUBDIRS="tankplayer_ew_maindir/params tankplayer_ew_maindir/log tankplayer_ew_maindir/data"
 
-create_ew_env_from_git_repository: check_for_creating check_git_variables
+create_ew_env_from_git_repository: _check_for_creating _check_git_variables
 	@echo "Trying to create Earthworm Environment \"$(EW_ENV)\" from git repository $(GIT_REP) and branch $(GIT_BRANCH) ..."
 	@cd $(EW_ENV_MAINDIR) \
 		&& git clone --recursive $(GIT_REP) $(EW_ENV_DIR) \
@@ -609,16 +609,16 @@ create_ew_env_from_ingv_runconfig_branch:
 	make EW_ENV=$(EW_ENV) create_ew_env_from_git_repository GIT_REP=git@gitlab.rm.ingv.it:earthworm/run_configs.git GIT_BRANCH=$(GIT_BRANCH) MAP_EW_ENV_SUBDIRS="run_realtime/params log data"
 
 # Copy files to an Earthworm Environment by running or executing a Docker Container
-cp: check_for_copying
+cp: _check_for_copying
 	@CONTAINER_ID=$$(docker ps -q -f name="$(DOCKER_CONTAINER_NAME)") \
 		&& if [ -n "$${CONTAINER_ID}" ]; then make _cp_exec_tar; else make _cp_run_tar; fi
 
 # Copy files based on 'docker cp', useful only on running containers
-_cp: check_for_copying
+_cp: _check_for_copying
 	docker cp $(SRC_PATH) $(DOCKER_CONTAINER_NAME):$(DEST_PATH)
 
 # Copy files based on 'tar' and 'docker run'
-_cp_run_tar: check_for_running
+_cp_run_tar: _check_for_running
 	tar Ccf `dirname $(SRC_PATH)` - `basename $(SRC_PATH)` | \
 		docker run $(DOCKER_USER) --rm -i $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
 		tar Cxf $(DEST_PATH) -
@@ -627,7 +627,7 @@ _cp_run_tar: check_for_running
 	@# tar Ccf . - doc | docker run --user 502:20 --rm -i   --name ew-sandbox.trunk_r8136.hew3_test1 ew-sandbox:trunk_r8136 tar Cxf /opt/ew_env -
 
 # Copy files based on 'tar' and 'docker exec'
-_cp_exec_tar: check_for_executing
+_cp_exec_tar: _check_for_executing
 	tar Ccf `dirname $(SRC_PATH)` - `basename $(SRC_PATH)` | \
 		docker exec -i $(DOCKER_CONTAINER_NAME) \
 		tar Cxf $(DEST_PATH) -
@@ -639,7 +639,7 @@ create_tank:
 	@echo $(ARGS)
 	./create_tank_from_ot_lat_lon_radius/create_tank_from_ot_lat_lon_radius.sh $(DOCKER_IMAGE_NAME_VERSION) $(ARGS)
 
-ew_dangerous_clean_log: check_for_running
+ew_dangerous_clean_log: _check_for_running
 	@echo
 	@find $(EW_ENV_LOG) -type f
 	@read -p "WARNING: Are you sure you want to delete all files in $(EW_ENV_LOG)? [Y/n] " -n 1 -r \
@@ -650,7 +650,7 @@ ew_dangerous_clean_log: check_for_running
 			echo "Nothing has been deleted."; \
 		fi
 
-ew_dangerous_clean_ws: check_for_running
+ew_dangerous_clean_ws: _check_for_running
 	@echo
 	@find $(EW_ENV_WS) -type f
 	@read -p "WARNING: Are you sure you want to delete all files in $(EW_ENV_WS)? [Y/n] " -n 1 -r \
@@ -695,7 +695,7 @@ release: build
 clean:
 	@echo
 
-check: check_for_running
+check: _check_for_running
 	@# TODO: add more commands
 	@echo "$(SEPLONGLINE)"
 	@make ew_run_bash CMD="pwd"
