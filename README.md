@@ -100,7 +100,7 @@ $ make list_images
 ```
 docker images ew-sandbox
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8136            cb78c92612f0        25 hours ago        856MB
+ew-sandbox          trunk_r8141            cb78c92612f0        25 hours ago        856MB
 ```
 
   - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
@@ -181,7 +181,7 @@ a possible output:
 
 ```sh
 CONTAINER ID        IMAGE                    COMMAND                   CREATED             STATUS              PORTS               NAMES
-5c4241577326        ew-sandbox:trunk_r8136   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8136.memphis_test1
+5c4241577326        ew-sandbox:trunk_r8141   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8141.memphis_test1
 ```
 
   - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test1`.
@@ -252,7 +252,7 @@ EW_SVN_BRANCH = trunk
 # You can set custom subversion revision 'NNN' where NNN is the revision number
 # EW_SVN_REVISION =
 # Latest Earthworm Subversion revision tested by this tool
-EW_SVN_REVISION = 8136
+EW_SVN_REVISION = 8141
 ```
 
 Changelog of Earthworm subversion revisions are available from the following URL: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
@@ -279,7 +279,7 @@ $ make build_all
 
 you can create the docker images for the following Earthworm revisions:
 
-  - `EW_SVN_REVISION=8136` Subversion revision @8136, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
+  - `EW_SVN_REVISION=8141` Subversion revision @8141, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION=` (svn revision @8068 - 2019/08/17), 64-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.9_release EW_SVN_REVISION=` (svn revision @6859 - 2016/10/28), 32-bit version.
   - `EW_SVN_BRANCH=tags/ew_7.8_relase EW_SVN_REVISION=` (svn revision @6404 - 2015/06/25), 32-bit version.
@@ -301,7 +301,7 @@ An example of the output is:
 
 ```
 REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8136            57d200416fdc        12 minutes ago      1.13GB
+ew-sandbox          trunk_r8141            57d200416fdc        12 minutes ago      1.13GB
 ew-sandbox          trunk_r8028            c932a0ace575        54 minutes ago      1.13GB
 ew-sandbox          tags_ew_7_10_release   79865ee1affb        About an hour ago   917MB
 ew-sandbox          tags_ew_7_9_release    0f08896bac47        2 hours ago         862MB
