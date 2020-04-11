@@ -24,7 +24,7 @@ Release History
 #########################
 
 * Release 1.2.0-dev (2020/04/10)
-    - ...
+    - Set EW_SVN_REVISION = 8141.
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
