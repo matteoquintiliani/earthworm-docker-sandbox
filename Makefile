@@ -717,26 +717,4 @@ check: _check_for_running
 
 # Remap more used old commands for backward compatibility
 WARN_MSG_DEPRECATED_CMD="WARNING: this command is deprecated. Use the following."
-ew_env_list:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make list_ew_env
 
-image_list:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make list_images
-
-bash:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_run_bash
-
-screen:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_run_screen
-
-run_ew_in_bash:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_startstop_bash
-
-run_ew_in_screen:
-	@echo $(WARN_MSG_DEPRECATED_CMD)
-	make ew_startstop_screen_handling_exit
