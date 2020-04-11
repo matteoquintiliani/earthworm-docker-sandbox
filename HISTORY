@@ -23,7 +23,7 @@
 Release History
 #########################
 
-* Release 1.2.0 (2020/04/11)
+* Release 1.2.1 (2020/04/11)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
     - Add 'make check_required_commands' for checking the availability of all necessary commands.
     - Add 'make EW_ENV=... check_operation' for checking basic functioning within an Earthworm Environment.
@@ -32,6 +32,8 @@ Release History
     - Change default make command to 'make info'.
     - Set EW_SVN_REVISION = 8141.
     - Add references to Github repository.
+    - Hotfix: 1.2.1: change Memphis test git repository to
+      https://github.com/matteoquintiliani/earthworm-memphis-test.git.  (2020/04/11)
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
