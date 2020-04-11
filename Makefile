@@ -123,9 +123,9 @@ DOCKER_ENV_COMPLETE = \
 	ew_dangerous_clean_log \
 	ew_dangerous_clean_ws \
 	help _help \
-	doc \
-	release \
-	clean \
+	_doc \
+	_release \
+	_clean \
 	check
 
 BUILD_SOURCES = \
@@ -661,22 +661,6 @@ ew_dangerous_clean_ws: _check_for_running
 			echo "Nothing has been deleted."; \
 		fi
 
-doc:
-	make version > doc/README_2_version.md
-	echo "" > doc/README_5_make_help.md
-	echo "### Complete Help" >> doc/README_5_make_help.md
-	echo "" >> doc/README_5_make_help.md
-	echo '```' >> doc/README_5_make_help.md
-	make help >> doc/README_5_make_help.md
-	echo '```' >> doc/README_5_make_help.md
-	echo "" >> doc/README_5_make_help.md
-	echo "" > doc/README_7_license.md
-	echo "### License" >> doc/README_7_license.md
-	echo "" >> doc/README_7_license.md
-	make license >> doc/README_7_license.md
-	echo "" >> doc/README_7_license.md
-	cat doc/README_*.md > README.md
-
 build_all:
 	for EW_SVN_BRANCH_BUILD in `echo $(EW_SVN_BRANCH_BUILD_LIST)`; do \
 		echo "Building $${EW_SVN_BRANCH_BUILD} ..."; \
@@ -687,13 +671,6 @@ build_all:
 		echo "Building $${EW_SVN_REVISION_BUILD} ..."; \
 		make EW_SVN_REVISION=$${EW_SVN_REVISION_BUILD} build ; \
 	done
-
-release: build
-	docker tag $(DOCKER_IMAGE_NAME_VERSION) $(NS_DOCKER_IMAGE_NAME_VERSION)
-	docker push $(NS_DOCKER_IMAGE_NAME_VERSION)
-
-clean:
-	@echo
 
 check: _check_for_running
 	@# TODO: add more commands
@@ -714,6 +691,29 @@ check: _check_for_running
 	@echo "$(SEPLONGLINE)"
 	@make ew_run_bash CMD="find ./log/"
 	@echo "$(SEPLONGLINE)"
+
+_doc:
+	make version > doc/README_2_version.md
+	echo "" > doc/README_5_make_help.md
+	echo "### Complete Help" >> doc/README_5_make_help.md
+	echo "" >> doc/README_5_make_help.md
+	echo '```' >> doc/README_5_make_help.md
+	make help >> doc/README_5_make_help.md
+	echo '```' >> doc/README_5_make_help.md
+	echo "" >> doc/README_5_make_help.md
+	echo "" > doc/README_7_license.md
+	echo "### License" >> doc/README_7_license.md
+	echo "" >> doc/README_7_license.md
+	make license >> doc/README_7_license.md
+	echo "" >> doc/README_7_license.md
+	cat doc/README_*.md > README.md
+
+_release: build
+	docker tag $(DOCKER_IMAGE_NAME_VERSION) $(NS_DOCKER_IMAGE_NAME_VERSION)
+	docker push $(NS_DOCKER_IMAGE_NAME_VERSION)
+
+_clean:
+	@echo
 
 # Remap more used old commands for backward compatibility
 WARN_MSG_DEPRECATED_CMD="WARNING: this command is deprecated. Use the following."
