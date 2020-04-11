@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.2.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.2.1 Copyright (C) 2020  Matteo Quintiliani
 
 Available at: [https://github.com/matteoquintiliani/earthworm-docker-sandbox](https://github.com/matteoquintiliani/earthworm-docker-sandbox)
 
@@ -152,7 +152,7 @@ Available Earthworm Environments:
 
 ```sh
 $ make create_ew_env_from_git_repository \
-       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_REP=https://github.com/matteoquintiliani/earthworm-memphis-test.git \
        GIT_BRANCH=master \
        EW_ENV=memphis_test_git
 ```
@@ -430,7 +430,7 @@ Examples for creating an Earthwom Environment from a git repository:
 
 ```sh
 $ make create_ew_env_from_git_repository \
-       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_REP=https://github.com/matteoquintiliani/earthworm-memphis-test.git \
        GIT_BRANCH=master \
        EW_ENV=memphis_test_git
 ```
@@ -621,7 +621,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.2.0 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.2.1 Copyright (C) 2020  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -705,7 +705,7 @@ Creating Earthworm Environments with name EW_ENV:
                    EW_ENV=memphis_test_zip
 
               make create_ew_env_from_git_repository \ 
-                   GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \ 
+                   GIT_REP=https://github.com/matteoquintiliani/earthworm-memphis-test.git \ 
                    GIT_BRANCH=master \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS= \ 

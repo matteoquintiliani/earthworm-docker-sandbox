@@ -144,7 +144,7 @@ Available Earthworm Environments:
 
 ```sh
 $ make create_ew_env_from_git_repository \
-       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_REP=https://github.com/matteoquintiliani/earthworm-memphis-test.git \
        GIT_BRANCH=master \
        EW_ENV=memphis_test_git
 ```
@@ -422,7 +422,7 @@ Examples for creating an Earthwom Environment from a git repository:
 
 ```sh
 $ make create_ew_env_from_git_repository \
-       GIT_REP=https://github.com/matteoquintiliani/memphis_test.git \
+       GIT_REP=https://github.com/matteoquintiliani/earthworm-memphis-test.git \
        GIT_BRANCH=master \
        EW_ENV=memphis_test_git
 ```
