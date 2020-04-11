@@ -85,6 +85,12 @@ $ git clone https://github.com/matteoquintiliani/earthworm-docker-sandbox.git
 $ cd earthworm-docker-sandbox
 ```
 
+  - Check the availability of all necessary commands.
+
+```sh
+$ make check_required_commands
+```
+
   - Build the default Earthworm Docker Sandbox image.
 
 ```sh
@@ -166,7 +172,7 @@ Available Earthworm Environments:
   - Check the Earthworm Environment within an Earthworm Docker Sandbox Container.
 
 ```sh
-$ make EW_ENV=memphis_test_zip check
+$ make EW_ENV=memphis_test_zip check_operation
 ```
 
   - Run `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test_zip` just created.
@@ -222,6 +228,12 @@ Syntax: make  EW_ENV=ew_default  <command>
 ```
 
 The variables passed as arguments override the values defined in the `Makefile.env` file.
+
+##### Check the availability of all necessary commands.
+
+```sh
+$ make check_required_commands
+```
 
 ## Building Docker Image
 
@@ -486,16 +498,16 @@ There are two main groups of commands:
 1. Launching commands and start/stop containers (based on `docker run`, `docker stop` and `docker rm`).
 2. Executing commands inside already running containers (based on `docker exec`).
 
-##### Check execution within an Earthworm Environment by a Docker Sandbox Container
+##### Check operation within an Earthworm Environment by a Docker Sandbox Container
 
 Before starting to use an Earthworm Environment, or if something goes wrong, it may be useful to properly check that the basic functions are working within an Earthworm Docker Sandbox Container.
 
-Launching `make check` a series of general purpose commands is executed within an Earthworm Environment in order to verify the correct basic functioning.
+Launching `make check_operation` a series of general purpose commands is executed within an Earthworm Environment in order to verify the correct basic functioning.
 
 An example:
 
 ```sh
-$ make EW_ENV=my_test_env check
+$ make EW_ENV=my_test_env check_operation
 ```
 
 ##### Start/Stop Earthworm Docker Sandbox Containers
@@ -533,7 +545,7 @@ Start a container by implicitly launching the Earthworm command `startstop`:
   - `ew_startstop_bash`:   run 'startstop' in an interactive bash shell in a new docker container for current EW_ENV.
   - `ew_startstop_screen`: run 'startstop' in an interactive screen shell in a new docker container for current EW_ENV.
   - `ew_startstop_detached`:  run 'startstop' in detached mode in a new docker container for current EW_ENV.
-  - `ew_startstop_screen_handling_exit`: run 'startstop' in detached mode in a new docker container for current EW_ENV. Pass arguments to ew_check_process_status.sh by ARGS variable.
+  - `ew_startstop_screen_handling_exit`: run 'startstop' in detached mode in a new docker container for current EW_ENV. Pass arguments to `ew_check_process_status.sh` by ARGS variable.
 
 Running commands in a `bash` you will have only one shell available for that container at time. To run another shell within the same running container you can use commands in the group based on `docker exec `.
 
@@ -652,7 +664,7 @@ General commands:
     list_containers: list available Earthworm Docker Sandbox containers
                      wrap 'docker ps' containers matching name 'ew-sandbox*'.
 
-    check_required_command: check the availability of all necessary commands.
+    check_required_commands: check the availability of all necessary commands.
 
 ======================================================================
 Creating Earthworm Environments with name EW_ENV:
@@ -725,11 +737,11 @@ Deleting files: (POTENTIALLY DANGEROUS)
                             waveserver directories (~/ew_envs/ew_help/data/waveservers).
 
 ======================================================================
-Check execution within an Earthworm Environment by a Docker Sandbox Container:
+Check operation within an Earthworm Environment by a Docker Sandbox Container:
 ======================================================================
 
-    check:    run a series of general purpose commands within an Earthworm Environment by
-              a Docker Sandbox Container in order to verify the correct basic functioning.
+    check_operation: run a series of general purpose commands within an Earthworm Environment
+                   in order to verify the correct basic functioning.
 
 ======================================================================
 Start/Stop Earthworm Docker Sandbox Containers:
