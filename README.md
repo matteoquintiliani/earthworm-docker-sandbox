@@ -77,15 +77,11 @@ make help
 
 Get ready to get your first Earthworm Environment running in a Docker container by this tool.
 
-To get familiar with this tool we will use the Memphis test configuration available from:
-
-1. URL zip file at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
-2. git repository at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
-
-  - Change directory to Earthworm Docker Sandbox.
+  - Get Earthworm Docker Sandbox and change directory.
 
 ```sh
-$ cd /<somewhere_in_your_disk>/earthworm-docker-sandbox
+$ git clone https://github.com/matteoquintiliani/earthworm-docker-sandbox.git
+$ cd earthworm-docker-sandbox
 ```
 
   - Build the default Earthworm Docker Sandbox image.
@@ -117,7 +113,14 @@ $ mkdir ~/ew_envs
 $ make list_ew_env
 ```
 
-  - Create your first Earthworm Environment (read details in section below) from Memphis test available online. The memphis file zip already contains directory `params`, `log` and `data`, by variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment called `memphis_test_zip`.
+To get familiar with this tool we will use the Memphis test configuration. It already contains the Earthworm configuration directory `params`, the log directory `log` and the directory for reading and writing `data`.
+
+The Memphis test that we will use is available from two different sources:
+
+  1. zip file in the URL [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
+  2. git repository available at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
+
+  - Create your first Earthworm Environment from Memphis test available online in a zip file. By variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment that we will call `memphis_test_zip`.
 
 ```sh
 $ make create_ew_env_from_zip_url \
@@ -138,7 +141,7 @@ Available Earthworm Environments:
   - memphis_test_zip
 ```
 
-  - Create your second Earthworm Environment (read details in section below) called `memphis_test_git`, from Memphis test but in this case download from a git repository.
+  - Create your second Earthworm Environment containing the Memphis test but in this case obtained by a git repository. For that we will give the name of `memphis_test_git`,
 
 ```sh
 $ make create_ew_env_from_git_repository \
