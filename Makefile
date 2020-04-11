@@ -122,7 +122,8 @@ DOCKER_ENV_COMPLETE = \
 	create_tank \
 	ew_dangerous_clean_log \
 	ew_dangerous_clean_ws \
-	help _help \
+	info\
+	help _help_head _help_tail \
 	_doc \
 	_release \
 	_clean \
@@ -149,11 +150,25 @@ SEPLONGLINE="===================================================================
 HELP_EW_ENV="ew_test1"
 HELP_EW_ENV_2="ew_test2"
 
+info:
+	@make _help_head
+	@echo "$(SEPLONGLINE)"
+	@make license
+	@echo "$(SEPLONGLINE)"
+	@echo "\
+\n\
+More detailed help information is reported by running 'make help'\n\
+"
+
 help:
 	@make _help EW_ENV=ew_help \
 		| less
 
 _help:
+	@make _help_head
+	@make _help_tail
+
+_help_head:
 	@echo "$(SEPLONGLINE)"
 	@make version
 	@echo "\
@@ -176,7 +191,10 @@ An Earthworm Environment Directory must contain the following subdirectories:\n\
     - log:    where Earthworm log files are written (EW_LOG variable).\n\
     - data:   where additional files are read and written\n\
               by Earthworm modules (EW_DATA_DIR variable).\n\
-\n\
+"
+
+_help_tail:
+	@echo "\
 $(SEPLINE)\n\
 General commands:\n\
 $(SEPLINE)\n\

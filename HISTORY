@@ -29,6 +29,7 @@ Release History
     - Use command 'shell' in Makefile and break compatibility with 'make' different than 'GNU make'.
     - Add 'make EW_ENV=... check' for checking basic functioning within an Earthworm Environment.
     - Obsfucate some make rules by prefixing the underscore character '_'.
+    - Change default make command to 'make info'.
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
