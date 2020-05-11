@@ -86,13 +86,13 @@ STARTTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z - ${SECS_BEFORE_OT} seconds
 ENDTIME=$(${GNUDATECMD} -c "TZ=UTC date -d '${OT}Z + ${SECS_AFTER_OT} seconds'  +%Y-%m-%dT%H:%M:%S")
 
 if [ "${FLAG_ALREADY_EXISTS}" != "yes" ]; then
-	docker run -it --rm -v ${DIRNAME_COMPLETEPATH}/stationxml.conf:/opt/stationxml.conf -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT fdsnws-fetcher \
+	docker run -t --rm -v ${DIRNAME_COMPLETEPATH}/stationxml.conf:/opt/stationxml.conf -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT fdsnws-fetcher \
 		-u "lat=${LAT}&lon=${LON}&maxradius=${RADIUS}&starttime=${STARTTIME}&endtime=${ENDTIME}" \
 		-t "miniseed" \
 		|| exit
 fi
 
-docker run -it --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT ${NS_IMAGE_NAME_VERSION} /bin/bash -c "\
+docker run -t --rm -v ${DIROUT_COMPLETEPATH}:/opt/OUTPUT ${NS_IMAGE_NAME_VERSION} /bin/bash -c "\
 	. ~/.bashrc \
 	&& cd /opt/OUTPUT/ \
 	&& rm -f miniseed.tmp.tank miniseed.remux_tbuf.tank \
