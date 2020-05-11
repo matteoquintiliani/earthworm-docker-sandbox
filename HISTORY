@@ -23,7 +23,7 @@
 Release History
 #########################
 
-* Release 1.2.1 (2020/04/11)
+* Release 1.2.2 (2020/05/11)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
     - Add 'make check_required_commands' for checking the availability of all necessary commands.
     - Add 'make EW_ENV=... check_operation' for checking basic functioning within an Earthworm Environment.
@@ -34,6 +34,9 @@ Release History
     - Add references to Github repository.
     - Hotfix: 1.2.1: change Memphis test git repository to
       https://github.com/matteoquintiliani/earthworm-memphis-test.git.  (2020/04/11)
+    - Hotfix: 1.2.2: (2020/05/11)
+        - remove -i from docker command in create_tank_from_ot_lat_lon_radius.sh. Issue #11
+        - Set EW_SVN_REVISION = 8145.
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
