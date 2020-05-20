@@ -18,8 +18,9 @@
 # done
 
 SYNTAX="
-Syntax: `basename $0`  <origin_time> <secs_before_ot> <secs_after_ot> <latitude> <longitude> <radius> <output_directory>
+Syntax: `basename $0` <ns_image_name_version> <origin_time> <secs_before_ot> <secs_after_ot> <latitude> <longitude> <radius> <output_directory>
 
+        <ns_image_name_version>: docker image name
         <origin_time>: format like YYYY-MM-DDThh:mm:ss (example 2019-06-23T20:43:47)
         <secs_before_ot>: integer number. Seconds before origin time.
         <secs_after_ot>: integer number. Seconds after origin time.
@@ -39,7 +40,7 @@ RADIUS="$7"
 ROOTDIROUT="$8"
 
 # Set Docker running user
-DOCKER_USER = --user $(id -u):$(id -g)
+DOCKER_USER="--user $(id -u):$(id -g)"
 
 # OT=2019-06-23T20:43:47
 # LAT=41.86
