@@ -23,7 +23,7 @@
 Release History
 #########################
 
-* Release 1.2.4 (2020/05/20)
+* Release 1.2.6 (2020/12/18)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
     - Add 'make check_required_commands' for checking the availability of all necessary commands.
     - Add 'make EW_ENV=... check_operation' for checking basic functioning within an Earthworm Environment.
@@ -41,6 +41,7 @@ Release History
         - Add option --user to docker command in create_tank_from_ot_lat_lon_radius.sh. Issue #12
     - Hotfix: 1.2.4: minor fix for previous 1.2.3. Issue #12 (2020/05/20)
     - Hotfix: 1.2.5: minor fix for previous 1.2.4 and fix help in create_tank_from_ot_lat_lon_radius.sh.. Issue #10, #11 and #12 (2020/05/20)
+    - Hotfix: 1.2.6: Compile ew2openapi 1.12.0 (2020/12/18)
 
 * Release 1.1.2 (2020/04/09)
     - Copy files in a Earthworm Environment by running or executing a Docker Container.
