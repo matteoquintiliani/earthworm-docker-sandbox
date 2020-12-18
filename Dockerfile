@@ -165,19 +165,22 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 
 RUN mkdir -p ${EW_EARTHWORM_DIR}/patches
 COPY ./patches/random_seed.patch ${EW_EARTHWORM_DIR}/patches/
-COPY ./patches/ew2openapi.patch ${EW_EARTHWORM_DIR}/patches/
 
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
-		. ${EW_FILE_ENV} \
+		cd ${EW_EARTHWORM_DIR}/ew2openapi \
+		&& cd ./liblo \
+		&& sh autogen.sh --enable-static \
+		&& make \
+		&& find . -name liblo.a \
+		&& . ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& cp ${EW_EARTHWORM_DIR}/patches/random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/ \
-		&& cp ${EW_EARTHWORM_DIR}/patches/ew2openapi.patch ${EW_EARTHWORM_DIR}/ew2openapi/ \
 		&& cd ./rabbitmq-c \
 		&& mkdir build \
 		&& cd build \
 		&& cmake -DENABLE_SSL_SUPPORT=OFF .. \
 		&& cmake --build . \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
+		&& cp ${EW_EARTHWORM_DIR}/patches/random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/ \
 		&& cd ./json-c \
 		&& patch < random_seed.patch \
 		&& sh autogen.sh \
@@ -185,7 +188,6 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 		&& make \
 		&& make install \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& patch -p1 < ew2openapi.patch \
 		&& make -f makefile.unix static \
 		; fi
 ##########################################################
