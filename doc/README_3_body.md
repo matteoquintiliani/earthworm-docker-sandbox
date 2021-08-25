@@ -195,8 +195,8 @@ docker ps -f name='ew-sandbox*'
 a possible output:
 
 ```sh
-CONTAINER ID        IMAGE                    COMMAND                   CREATED             STATUS              PORTS               NAMES
-5c4241577326        ew-sandbox:trunk_r8141   "/bin/bash -c 'CMD=\"…"   5 seconds ago       Up 5 seconds                            ew-sandbox.trunk_r8141.memphis_test_zip
+CONTAINER ID   IMAGE               COMMAND                  CREATED              STATUS              PORTS     NAMES
+53c4f329a129   ew-sandbox:master   "/bin/bash -c '. ~/.…"   About a minute ago   Up About a minute             ew-sandbox.master.memphis_test_git
 ```
 
   - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test_zip`.
