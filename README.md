@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.2.7 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.0-dev Copyright (C) 2020-2021  Matteo Quintiliani
 
 Available at: [https://github.com/matteoquintiliani/earthworm-docker-sandbox](https://github.com/matteoquintiliani/earthworm-docker-sandbox)
 
@@ -105,8 +105,12 @@ $ make list_images
 
 ```
 docker images ew-sandbox
-REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8141            cb78c92612f0        25 hours ago        856MB
+ew-sandbox   d561670a                                   3eb4215024b1   About a minute ago   881MB
+ew-sandbox   v7.7                                       c38a0b5c94b6   5 minutes ago        812MB
+ew-sandbox   v7.8                                       c3ffdda522f2   7 minutes ago        815MB
+ew-sandbox   v7.9                                       d01d18de2ffe   8 minutes ago        823MB
+ew-sandbox   v7.10                                      bacc3eb93754   10 minutes ago       869MB
+ew-sandbox   master                                     296b153fb2c0   42 minutes ago       1.1GB
 ```
 
   - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
@@ -143,6 +147,8 @@ $ make create_ew_env_from_zip_url \
 $ make list_ew_env
 ```
 
+
+
 ```sh
 Available Earthworm Environments:
   - memphis_test_zip
@@ -162,6 +168,8 @@ $ make create_ew_env_from_git_repository \
 ```sh
 $ make list_ew_env
 ```
+
+
 
 ```sh
 Available Earthworm Environments:
@@ -240,7 +248,7 @@ $ make check_required_commands
 Building the Earthworm Docker Sandbox images is based on:
 
 1. Local files `Dockerfile`, `Makefile`  and `Makefile.env`
-1. Online official Earthworm Subversion Repository `svn://svn.isti.com/earthworm`
+1. Online official Earthworm Git Repository `https://gitlab.com/seismic-software/earthworm.git`
 1. Optional: online `ew2openapi` git repository [https://gitlab.rm.ingv.it/earthworm/ew2openapi/](https://gitlab.rm.ingv.it/earthworm/ew2openapi/)
 
 - Build the image with current variables in `Makefile.env`:
@@ -251,65 +259,94 @@ $ make build
 
 ### Compiling specific Earthworm versions
 
-Default settings get the latest Earthworm Subversion revision tested by this tool from the main branch `svn://svn.isti.com/earthworm/trunk` and compile all Earthworm sources.
+Default settings get the latest Earthworm commit from the master branch `https://gitlab.com/seismic-software/earthworm.git` and compile all Earthworm sources.
 
-Branch and revision involved in the docker image building process are defined in variables `EW_SVN_BRANCH` and `EW_CO_SVN_REVISION`. You can compile a specific Earthworm version changing those values.
+Docker image building process is based on variables `EW_GIT_REP` and `EW_GIT_REF`.
 
-- `EW_SVN_BRANCH`:
-
-```sh
-# Set Earthworm Subversion Branch. Default is 'trunk'
-# EW_SVN_BRANCH must be defined and not empty.
-# You can set custom main directories
-# (e.g. 'tags/ew_7.10_release', 'branches/cosmos', etc.)
-EW_SVN_BRANCH = trunk
-# EW_SVN_BRANCH = tags/ew_7.10_release
-```
-- `EW_CO_SVN_REVISION`:
+`EW_GIT_REP` define the git repository url.
 
 ```sh
-# Set optional Earthworm Revision.
-# If it is empty that stands for last available revision of the EW_SVN_BRANCH
-# You can set custom subversion revision 'NNN' where NNN is the revision number
-# EW_SVN_REVISION =
-# Latest Earthworm Subversion revision tested by this tool
-EW_SVN_REVISION = 8141
+# Change Earthworm Git Repository
+# EW_GIT_REP=https://gitlab.com/seismic-software/earthworm.git
 ```
 
-Changelog of Earthworm subversion revisions are available from the following URL: [http://earthworm.isti.com/trac/earthworm/log/](http://earthworm.isti.com/trac/earthworm/log/)).
-
-If you want to compile a previous version of Earthworm you can set variables `EW_SVN_BRANCH` and/or `EW_SVN_REVISION`. For example:
+`EW_GIT_REF` can define branch names, tags or commit SHA. Default is the 'master' branch.
 
 ```sh
-make EW_SVN_REVISION=8068 build
+# Set branch names, tags or commit SHA.
+# If EW_GIT_REF is empty, then default is 'master'.
+# EW_GIT_REF = master
+```
+
+Logs of Earthworm commits in 'master' branch are available from the following URL: [https://gitlab.com/seismic-software/earthworm/-/commits/master](https://gitlab.com/seismic-software/earthworm/-/commits/master)). You can also see other commits switching on different branches.
+
+If you want to compile a different version of Earthworm than 'master' branch, then you can set variables `EW_GIT_REF` by command line, for example:
+
+```sh
+# different branch name
+make EW_GIT_REF=branch_name build
 ```
 
 or
 
 ```sh
-make EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION= build
+# by tag name
+make EW_GIT_REF=v7.10 build
+```
+
+or
+
+```sh
+# by commit SHA
+make EW_GIT_REF=d561670a build
+```
+
+To obtain a list of possibile value of `EW_GIT_REF` based on git branch or tag names you can run the following command:
+
+```sh
+$ make ls-remote
+```
+
+A possible output:
+
+```
+22691e3	HEAD
+5d5ec26	branch: 7-add-fileplayer-dump-option  url: https://gitlab.com/seismic-software/earthworm/-/tree/7-add-fileplayer-dump-option
+5f2e445	branch: macos_build                   url: https://gitlab.com/seismic-software/earthworm/-/tree/macos_build
+22691e3	branch: master                        url: https://gitlab.com/seismic-software/earthworm/-/tree/master
+53be010	branch: mastersvn                     url: https://gitlab.com/seismic-software/earthworm/-/tree/mastersvn
+16aeb95	tag   : v7.1                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.1
+206e1ec	tag   : v7.2                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.2
+24bfcee	tag   : v7.3                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.3
+69a41e5	tag   : v7.4                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.4
+23fc2d6	tag   : v7.5                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.5
+8ca81f8	tag   : v7.6                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.6
+f79f367	tag   : v7.7                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.7
+b6b4c77	tag   : v7.8                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.8
+7f5a12d	tag   : v7.9                          url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.9
+1eeff33	tag   : v7.10                         url: https://gitlab.com/seismic-software/earthworm/-/tags/v7.10
 ```
 
 Caveat: you might need to change `Doxyfile` in order to fix properly the section where Earthworm is compiled and/or basing your build on a different and/or older docker linux image.
 
-Using the current `Doxyfile` you should be able to successfully compile all major revisions. In particular, by the following command:
+Using the current `Doxyfile` you should be able to successfully compile all Earthworm major versions. In particular, by the following command:
 
 ```sh
 $ make build_all
 ```
 
-you can create the docker images for the following Earthworm revisions:
+you can create the docker images for the following Earthworm commits:
 
-  - `EW_SVN_REVISION=8141` Subversion revision @8141, 64-bit version. (From revision @8068 \[*ew_7.10\_release*\] to the last one, all consistent revisions should be successfully compiled), 64-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.10_release EW_SVN_REVISION=` (svn revision @8068 - 2019/08/17), 64-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.9_release EW_SVN_REVISION=` (svn revision @6859 - 2016/10/28), 32-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.8_relase EW_SVN_REVISION=` (svn revision @6404 - 2015/06/25), 32-bit version.
-  - `EW_SVN_BRANCH=tags/ew_7.7_relase EW_SVN_REVISION=` (svn revision @5961 - 2013/09/19), 32-bit version.
+  - `EW_GIT_REF=d561670a` Git commit SHA *d561670a*, 64-bit version. (From *f2d20702* [*v7.10*\] to the last one, all consistent commits should be successfully compiled), 64-bit version.
+  - `EW_GIT_REF=v7.10` (Git commit SHA *f2d20702* - 2019/08/21), 64-bit version.
+  - `EW_GIT_REF=v7.9` (Git commit SHA *f657ae17* - 2016/10/31), 32-bit version.
+  - `EW_GIT_REF=v7.8` (Git commit SHA *b6b4c774* - 2015/06/25), 32-bit version.
+  - `EW_GIT_REF=v7.7` (Git commit SHA *f79f3675* - 2013/09/19), 32-bit version.
 
-Caveat:  arm architecture is available only since ew 7.10.
+Caveat:  arm architecture is available only since Earthworm v7.10.
 
 
-When you build an Earthworm Docker Sandbox image, default name is `ew-sandbox` and tag is built by the values of `EW_SVN_BRANCH` and `EW_SVN_REVISION` variables.
+When you build an Earthworm Docker Sandbox image, default name is `ew-sandbox` and tag is built by the values of `EW_GIT_REF` variable.
 
 List available Earthworm Docker Sandbox images.
 
@@ -321,13 +358,13 @@ docker images ew-sandbox
 An example of the output is:
 
 ```
-REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
-ew-sandbox          trunk_r8141            57d200416fdc        12 minutes ago      1.13GB
-ew-sandbox          trunk_r8028            c932a0ace575        54 minutes ago      1.13GB
-ew-sandbox          tags_ew_7_10_release   79865ee1affb        About an hour ago   917MB
-ew-sandbox          tags_ew_7_9_release    0f08896bac47        2 hours ago         862MB
-ew-sandbox          tags_ew_7_8_release    5f36eaff12f6        2 hours ago         841MB
-ew-sandbox          tags_ew_7_7_release    59ad5d0b3193        2 hours ago         839MB
+REPOSITORY   TAG                                        IMAGE ID       CREATED              SIZE
+ew-sandbox   d561670a                                   3eb4215024b1   About a minute ago   881MB
+ew-sandbox   v7.7                                       c38a0b5c94b6   5 minutes ago        812MB
+ew-sandbox   v7.8                                       c3ffdda522f2   7 minutes ago        815MB
+ew-sandbox   v7.9                                       d01d18de2ffe   8 minutes ago        823MB
+ew-sandbox   v7.10                                      bacc3eb93754   10 minutes ago       869MB
+ew-sandbox   master                                     296b153fb2c0   42 minutes ago       1.1GB
 ```
 
 ### Compiling Earthworm modules
@@ -484,8 +521,8 @@ Name of the Earthworm Docker Sandbox Container is built by default in the variab
 # Set Docker Image Name
 DOCKER_IMAGE_NAME ?= ew-sandbox
 
-# Docker Image Version depends on EW_SVN_BRANCH and EW_SVN_REVISION
-DOCKER_IMAGE_VERSION = `echo \`echo $(EW_SVN_BRANCH) | sed -e 's/[\.\/\@]/_/g'\`\`echo $(EW_SVN_REVISION) | sed -e 's/\([0-9]\)/_r\1/'\``
+# Docker Image Version depends on EW_GIT_REF
+DOCKER_IMAGE_VERSION = $(shell echo $(EW_GIT_REF))
 
 # Set Default Docker Container Name. It depends on DOCKER_IMAGE_VERSION and EW_ENV.
 DOCKER_CONTAINER_NAME ?= $(DOCKER_IMAGE_NAME).$(DOCKER_IMAGE_VERSION).$(EW_ENV)
@@ -621,7 +658,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.2.7 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.0-dev Copyright (C) 2020-2021  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -647,16 +684,15 @@ General commands:
 ======================================================================
 
     help:       display this help.
+ls-remote:  list references in the Earthworm git remote repository:n                https://gitlab.com/seismic-software/earthworm.git.
     build:      build docker image using 'Dockerfile' and 'Makefile.env'.
     build_all:  build docker images using 'Dockerfile' for:
-                  * branches in EW_SVN_BRANCH_BUILD_LIST=
-                          - tags/ew_7.7_release
-                          - tags/ew_7.8_release
-                          - tags/ew_7.9_release
-                          - tags/ew_7.10_release 
-                  * revisions in EW_SVN_REVISION_BUILD_LIST=
-                          - 8028
-                          - 8136 
+                  * branches in EW_GIT_REF_BUILD_LIST=
+                          - d561670a
+                          - v7.10
+                          - v7.9
+                          - v7.8
+                          - v7.7 
 
     list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR).
     list_images:     list available Earthworm Docker Sandbox images 
@@ -817,7 +853,7 @@ License
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 
-Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
+Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 
 This program is free software: you can redistribute it and/or modify
@@ -840,7 +876,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 
-Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
+Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 
 This program is free software: you can redistribute it and/or modify

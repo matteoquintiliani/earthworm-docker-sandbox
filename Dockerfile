@@ -2,7 +2,7 @@
 # Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 # developing Earthworm System within enclosed environments.
 #
-# Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
+# Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
 # Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 #
 # This program is free software: you can redistribute it and/or modify
@@ -48,11 +48,11 @@ RUN apt-get clean \
 			less \
 			vim \
 			nano \
-			subversion \
 			git \
 			make \
 			gcc \
 			gfortran \
+			libtirpc-dev \
 			screen \
 		&& apt-get clean
 
@@ -84,28 +84,23 @@ RUN echo "" >> /root/.bashrc \
 # Set default working directory
 WORKDIR ${EW_INSTALL_HOME}
 
-# Default Earthworm Subversion Branch is 'trunk'
-ARG EW_SVN_BRANCH=trunk
-# Default Earthworm Subversion Revision is empty, that stands for last revision of EW_SVN_BRANCH
-ARG EW_SVN_REVISION=
+# Default Earthworm reference is the branch 'master'
+ARG EW_GIT_REF=master
 
 # Checkout necessary Earthworm repository directories
 RUN \
-		if [ -z ${EW_SVN_REVISION} ]; \
-		then \
-			EW_CO_SVN_REVISION=; \
-		else \
-			EW_CO_SVN_REVISION=@${EW_SVN_REVISION}; \
-		fi \
-		&& svn checkout svn://svn.isti.com/earthworm/${EW_SVN_BRANCH}${EW_CO_SVN_REVISION} ${EW_EARTHWORM_DIR} \
+		git clone --recursive https://gitlab.com/seismic-software/earthworm.git ${EW_EARTHWORM_DIR} \
+		&& cd ${EW_EARTHWORM_DIR} \
+		&& git checkout ${EW_GIT_REF} \
+		&& cd - \
 		&& cp ${EW_EARTHWORM_DIR}/environment/earthworm.d ${EW_EARTHWORM_DIR}/environment/earthworm_global.d ${EW_EARTHWORM_DIR}/params/
 
 # Set Earthworm Environment Shell Configuration File
 ENV EW_FILE_ENV="${EW_EARTHWORM_DIR}/environment/ew_linux${EW_ARCHITECTURE}.bash"
 
-# Fix for compiling when EW_SVN_BRANCH=tags/ew_7.9_release
+# Fix for compiling when EW_GIT_REF=v7.9
 RUN \
-		if [ "${EW_SVN_BRANCH}" == "tags/ew_7.9_release" ]; then \
+		if [ "${EW_GIT_REF}" == "v7.9" ]; then \
 			sed -i'.bak' -e "s/-Werror=format//g" ${EW_FILE_ENV}; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
@@ -211,7 +206,6 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
 		. ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/src/archiving/mole/ew2moledb \
-		&& svn info --show-item revision \
 		&& sed -i'.bak' -e 's/LINUX_FLAGS=\(.*\)$/LINUX_FLAGS=\1 -lm/' makefile.unix \
 		&& sed -i'.bak' -e 's=^.*\$L/libebloc\.a \$L/libebpick\.a.*$=\$L/complex_math\.o \$L/libebloc\.a \$L/libebpick\.a \\=' makefile.unix \
 		&& make -f makefile.unix MYSQL_CONNECTOR_C_PATH_BUILD=/usr \

@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.2.7 Copyright (C) 2020  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.0-dev Copyright (C) 2020-2021  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -29,16 +29,15 @@ General commands:
 ======================================================================
 
     help:       display this help.
+ls-remote:  list references in the Earthworm git remote repository:n                https://gitlab.com/seismic-software/earthworm.git.
     build:      build docker image using 'Dockerfile' and 'Makefile.env'.
     build_all:  build docker images using 'Dockerfile' for:
-                  * branches in EW_SVN_BRANCH_BUILD_LIST=
-                          - tags/ew_7.7_release
-                          - tags/ew_7.8_release
-                          - tags/ew_7.9_release
-                          - tags/ew_7.10_release 
-                  * revisions in EW_SVN_REVISION_BUILD_LIST=
-                          - 8028
-                          - 8136 
+                  * branches in EW_GIT_REF_BUILD_LIST=
+                          - d561670a
+                          - v7.10
+                          - v7.9
+                          - v7.8
+                          - v7.7 
 
     list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR).
     list_images:     list available Earthworm Docker Sandbox images 
@@ -199,7 +198,7 @@ License
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 
-Copyright (C) 2020  Matteo Quintiliani - INGV - Italy
+Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 
 This program is free software: you can redistribute it and/or modify
