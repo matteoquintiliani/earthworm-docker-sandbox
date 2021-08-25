@@ -145,10 +145,10 @@ EW_ENV_WS = $(EW_ENV_DIR)/data/waveservers
 
 REQUIRED_COMMAND = make bash docker sed grep find tee wget git unzip tar
 
-EW_GIT_REF_BUILD_LIST="d561670a \
-v7.10 \
-v7.9 \
-v7.8 \
+EW_GIT_REF_BUILD_LIST="d561670a\
+v7.10\
+v7.9\
+v7.8\
 v7.7"
 
 
@@ -209,12 +209,12 @@ General commands:\n\
 $(SEPLINE)\n\
 \n\
     help:       display this help.\n\
-	ls-remote:  list references in the Earthworm git remote repository:n\
+    ls-remote:  list references in the Earthworm git remote repository:n\
                 $(EW_GIT_REP).\n\
     build:      build docker image using 'Dockerfile' and 'Makefile.env'.\n\
     build_all:  build docker images using 'Dockerfile' for:\n\
-                  * branches in EW_GIT_REF_BUILD_LIST=\n\
-`for GIT_REF in "$(EW_GIT_REF_BUILD_LIST)"; do echo "                          - $${GIT_REF}"; done` \n\
+                 * branches in EW_GIT_REF_BUILD_LIST=\n\
+`for GIT_REF in "$(EW_GIT_REF_BUILD_LIST)"; do echo "                    - $${GIT_REF}"; done` \n\
 \n\
     list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR).\n\
     list_images:     list available Earthworm Docker Sandbox images \n\

@@ -684,15 +684,15 @@ General commands:
 ======================================================================
 
     help:       display this help.
-ls-remote:  list references in the Earthworm git remote repository:n                https://gitlab.com/seismic-software/earthworm.git.
+    ls-remote:  list references in the Earthworm git remote repository:n                https://gitlab.com/seismic-software/earthworm.git.
     build:      build docker image using 'Dockerfile' and 'Makefile.env'.
     build_all:  build docker images using 'Dockerfile' for:
-                  * branches in EW_GIT_REF_BUILD_LIST=
-                          - d561670a
-                          - v7.10
-                          - v7.9
-                          - v7.8
-                          - v7.7 
+                 * branches in EW_GIT_REF_BUILD_LIST=
+                    - d561670a
+                    - v7.10
+                    - v7.9
+                    - v7.8
+                    - v7.7 
 
     list_ew_env:     list available Earthworm Environments (refer to EW_ENV_MAINDIR).
     list_images:     list available Earthworm Docker Sandbox images 
