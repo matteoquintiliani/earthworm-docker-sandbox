@@ -505,7 +505,7 @@ All commands will be executed within the container for the Earthworm Environment
 An example for running commands within the Earthworm Docker Sandbox Container for a specific Earthworm Environment looks like:
 
 ```sh
-$ make  EW_ENV=<earthworm_environment_name>  <command>
+$ make EW_ENV=... [ EW_GIT_REF=... ] ew_[run|startstop]_[bash|screen|detached]
 ```
 
 Name of the Earthworm Docker Sandbox Container is built by default in the variable `DOCKER_CONTAINER_NAME` in the following way:
@@ -513,13 +513,13 @@ Name of the Earthworm Docker Sandbox Container is built by default in the variab
 ```sh
 # Set Docker Image Name
 DOCKER_IMAGE_NAME ?= ew-sandbox
-
 # Docker Image Version depends on EW_GIT_REF
 DOCKER_IMAGE_VERSION = $(shell echo $(EW_GIT_REF))
-
 # Set Default Docker Container Name. It depends on DOCKER_IMAGE_VERSION and EW_ENV.
 DOCKER_CONTAINER_NAME ?= $(DOCKER_IMAGE_NAME).$(DOCKER_IMAGE_VERSION).$(EW_ENV)
 ```
+
+![ew_sandbox_run_example](./images/ew_sandbox_run_example.png)
 
 This tool prevents launching multiple Earthworm Docker Sandbox Container on the same Earthworm Environment.
 

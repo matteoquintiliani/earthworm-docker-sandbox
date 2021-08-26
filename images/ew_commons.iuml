@@ -1,0 +1,51 @@
+skinparam linetype ortho
+' skinparam linetype polyline
+' skinparam nodesep 50
+' skinparam ranksep 20
+left to right direction
+' top to bottom direction
+' skinparam handwritten true
+' skinparam roundcorner 6
+' skinparam classFontSize 24
+' skinparam defaultFontSize 36
+' skinparam BoxPadding 1000
+' skinparam ParticipantPadding 1000
+' skinparam Padding 6
+' skinparam shadowing false
+
+' center header
+' Earthworm Diagram at I.N.G.V.
+' endheader
+
+'skinparam frame {
+'  BackGroundColor aliceblue
+'  BorderColor transparent
+'}
+'
+'skinparam rectangle {
+'  ' BackGroundColor palegreen
+'    BorderColor<<Software System>> Green
+'    RoundCorner<<Software System>> 25
+'}
+'
+'skinparam storage {
+'  BackGroundColor lightgreen
+'  BorderColor Blue
+'}
+'
+'skinparam database {
+'  BackGroundColor orange
+'  ' LineThickness 1
+'  ' LineColor red
+'}
+'
+'skinparam note {
+'  BackGroundColor azure
+'}
+'
+'skinparam component {
+'  BackGroundColor strategy
+'}
+
+''''''''''''''''''''''''''''''''''
+
