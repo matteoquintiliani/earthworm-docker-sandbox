@@ -1,0 +1,42 @@
+@startuml
+
+!include_once ew_commons.iuml
+
+top to bottom direction
+
+''''''''''''''''''''''''''''''''''
+
+' title Running Earthworm Docker Sandbox Container Example
+caption
+
+Earthworm Docker Sandbox Quick and Start
+//Running Earthworm Docker Sandbox Container//
+
+end caption
+
+(*) --> "make EW_ENV=memphis_test_zip
+\tEW_INSTALL_INSTALLATION=INST_MEMPHIS
+\tew_startstop_bash\l"
+note right
+Run "startstop" in an interactive bash shell within
+the Earthworm Environment "memphis_test_zip" just created.
+end note
+--> "make list_containers"
+note right
+CONTAINER ID  IMAGE                       ... STATUS              NAMES
+82301f4b9733  ew-sandbox:master  ... Up 16 seconds  ew-sandbox.master.memphis_test_zip
+end note
+--> "make EW_ENV=memphis_test_zip ew_exec_bash"
+note right
+Launch a bash shell within the Earthworm Docker Sandbox Container
+previously started on the Earthworm Environment "memphis_test_zip".
+
+From that shell prompt within the docker container,
+you can now browse files and execute Earthworm commands
+(e.g. status, sniffwave, sniffrings, pau, etc.).
+end note
+--> (*)
+
+
+@enduml
+

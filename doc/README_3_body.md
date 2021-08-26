@@ -70,6 +70,8 @@ make help
 
 Get ready to get your first Earthworm Environment running in a Docker container by this tool.
 
+![ew_sandbox_quick_and_start_1](./images/ew_sandbox_quick_and_start_1.png)
+
   - Get Earthworm Docker Sandbox and change directory.
 
 ```sh
@@ -86,7 +88,7 @@ $ make check_required_commands
   - Build the default Earthworm Docker Sandbox image.
 
 ```sh
-$ make build
+$ make [ EW_GIT_REF=... ] build
 ```
 
 If all went well you can list the Earthworm Docker Sandbox image.
@@ -104,6 +106,8 @@ ew-sandbox   v7.9                                       d01d18de2ffe   8 minutes
 ew-sandbox   v7.10                                      bacc3eb93754   10 minutes ago       869MB
 ew-sandbox   master                                     296b153fb2c0   42 minutes ago       1.1GB
 ```
+
+![ew_sandbox_quick_and_start_2](./images/ew_sandbox_quick_and_start_2.png)
 
   - Create if not exists the directory defined in `EW_ENV_MAINDIR`. In that directory will be stored and referenced all Earthworm Environments. Default directory is `~/ew_envs`.
 
@@ -139,8 +143,6 @@ $ make create_ew_env_from_zip_url \
 $ make list_ew_env
 ```
 
-
-
 ```sh
 Available Earthworm Environments:
   - memphis_test_zip
@@ -161,8 +163,6 @@ $ make create_ew_env_from_git_repository \
 $ make list_ew_env
 ```
 
-
-
 ```sh
 Available Earthworm Environments:
   - memphis_test_zip
@@ -174,6 +174,8 @@ Available Earthworm Environments:
 ```sh
 $ make EW_ENV=memphis_test_zip check_operation
 ```
+
+![ew_sandbox_quick_and_start_3](./images/ew_sandbox_quick_and_start_3.png)
 
   - Run `startstop` in an interactive bash shell within the Earthworm Environment `memphis_test_zip` just created.
 
@@ -214,7 +216,6 @@ f74b689cb1ed:/opt/ew_env [ew:memphis_test_zip] $
 ```
 
 From that shell prompt within the docker container,  you can now execute Earthworm commands (e.g. `status`, `sniffwave`, `sniffrings`, `pau`, etc.) and browse files.
-
 
 ## Configuration
 

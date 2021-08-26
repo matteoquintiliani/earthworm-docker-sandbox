@@ -1,0 +1,33 @@
+@startuml
+
+!include_once ew_commons.iuml
+
+top to bottom direction
+
+''''''''''''''''''''''''''''''''''
+
+' title Running Earthworm Docker Sandbox Container Example
+caption
+
+Earthworm Docker Sandbox Quick and Start
+//Create Earthworm Environment from "memphis_test.zip"//
+
+end caption
+
+(*) --> "mkdir \~/ew_envs"
+--> "make create_ew_env_from_zip_url
+\tZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip
+\tCREATE_EW_ENV_SUBDIRS=""
+\tMAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
+\tEW_ENV=memphis_test_zip\l"
+--> "make list_ew_env"
+note right
+Available Earthworm Environments:
+  - memphis_test_zip
+end note
+--> "make EW_ENV=memphis_test_zip check_operation"
+--> (*)
+
+
+@enduml
+
