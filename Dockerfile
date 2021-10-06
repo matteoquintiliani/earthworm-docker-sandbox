@@ -155,6 +155,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR} \
+		&& git config --global http.sslverify false \
 		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		; fi
 
