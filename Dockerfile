@@ -117,7 +117,7 @@ RUN \
 		&& \
 		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
 		then \
-			cd ${EW_EARTHWORM_DIR}/src && make clean_bin_unix && make clean_unix && make unix; \
+			cd ${EW_EARTHWORM_DIR}/src && make clean_bin_unix && make clean_unix && make unix && cd data_sources/nmxptool && make -f makefile.unix; \
 		else \
 			for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
 				echo "=== Compiling required group module ${GROUP_MODULE} ..." && \

@@ -1,0 +1,61 @@
+version: '2'
+
+networks:
+  ew:
+
+services:
+
+  hew3:
+    container_name: hew3
+    image: ew-sandbox:ea6cf701
+    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
+    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    ports:
+      - 16021-16034:16021-16034
+      - 19001-19010:19001-19010
+    volumes:
+      - /home/ew/gitwork/_earthworm/run_configs/run_realtime/params:/opt/ew_env/params:consistent
+      - /home/ew/gitwork/_earthworm/run_configs/run_realtime/log:/opt/ew_env/log:consistent
+      - /data/ew/ewspace/run_realtime:/data/ew/ewspace/run_realtime:consistent
+      - /data/ew/waveservers:/data/ew/waveservers:consistent
+    restart: unless-stopped
+
+    networks:
+      - ew
+
+  hew19:
+    container_name: hew19
+    image: ew-sandbox:ea6cf701
+    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
+    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    # ports:
+    # - ...
+    volumes:
+      - /home/ew/ew_envs/hew19_env/run_realtime/params:/opt/ew_env/params:consistent
+      - /home/ew/ew_envs/hew19_env/log:/opt/ew_env/log:consistent
+      - /home/ew/ew_envs/hew19_env/data:/opt/ew_env/data:consistent
+    restart: unless-stopped
+    depends_on:
+      - hew3
+
+    networks:
+      - ew
+
+  hew29:
+    container_name: hew29
+    image: ew-sandbox:ea6cf701
+    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
+    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    # ports:
+    # - ...
+    volumes:
+      - /home/ew/ew_envs/hew29_env/run_realtime/params:/opt/ew_env/params:consistent
+      - /home/ew/ew_envs/hew29_env/log:/opt/ew_env/log:consistent
+      - /home/ew/ew_envs/hew29_env/data:/opt/ew_env/data:consistent
+    restart: unless-stopped
+    depends_on:
+      - hew3
+
+    networks:
+      - ew
+
