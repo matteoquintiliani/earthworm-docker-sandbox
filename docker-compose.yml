@@ -8,8 +8,7 @@ services:
   hew3:
     container_name: hew3
     image: ew-sandbox:ea6cf701
-    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
-    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
       - 16021-16034:16021-16034
       - 19001-19010:19001-19010
@@ -26,8 +25,7 @@ services:
   hew19:
     container_name: hew19
     image: ew-sandbox:ea6cf701
-    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
-    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
     volumes:
@@ -44,8 +42,7 @@ services:
   hew29:
     container_name: hew29
     image: ew-sandbox:ea6cf701
-    # command: /bin/bash -c ". ~/.bashrc && while true; do sleep 3; done"
-    command: /bin/bash -c ". ~/.bashrc && startstop > /dev/null 2>&1"
+    command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
     volumes:

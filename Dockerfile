@@ -283,9 +283,10 @@ RUN mkdir ${HOMEDIR_USER}
 
 # Copy scripts to container
 RUN mkdir -p ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_get_rings_list.sh ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_check_process_status.sh ${EW_INSTALL_HOME}/scripts
+COPY ./scripts/ew_get_rings_list.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_check_process_status.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_startstop_trap_pau.sh ${EW_INSTALL_HOME}/scripts/
 
 ##########################################################
 # RUN apt-get clean \
