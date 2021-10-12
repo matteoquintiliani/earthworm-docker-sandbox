@@ -1,0 +1,25 @@
+version: '2'
+
+networks:
+  ew:
+
+services:
+
+  hew20:
+    container_name: hew20
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    ports:
+      - 16021-16034:16021-16034
+      - 19001-19010:19001-19010
+    volumes:
+      - $EW_PARAMS:/opt/ew_env/params:consistent
+      - $EW_LOG:/opt/ew_env/log:consistent
+      - $EW_DATA:/data/ew/ewspace/run_realtime:consistent
+      - $EW_WAVESERVERS:/data/ew/waveservers:consistent
+    restart: unless-stopped
+
+    networks:
+      - ew
+
+
