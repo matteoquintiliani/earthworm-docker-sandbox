@@ -5,8 +5,8 @@ networks:
 
 services:
 
-  hew20:
-    container_name: hew20
+  hew:
+    container_name: hew
     image: ew-sandbox:ea6cf701
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
