@@ -11,6 +11,8 @@ echo "Current pid = $$"
 
 # ISGTERM handler
 term_handler () {
+        echo "Run 'pkill snwclient' ..."
+        pkill snwclient
         echo "Run pau ..."
         pau
         echo "Waiting startstop ..."
