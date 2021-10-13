@@ -12,6 +12,8 @@ services:
     ports:
       - 16021-16034:16021-16034
       - 19001-19010:19001-19010
+    environment:
+      - EW_HOSTNAME=hew3
     volumes:
       - /home/ew/gitwork/_earthworm/run_configs/run_realtime/params:/opt/ew_env/params:consistent
       - /home/ew/gitwork/_earthworm/run_configs/run_realtime/log:/opt/ew_env/log:consistent
@@ -28,6 +30,8 @@ services:
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
+    environment:
+      - EW_HOSTNAME=hew19
     volumes:
       - /home/ew/ew_envs/hew19_env/run_realtime/params:/opt/ew_env/params:consistent
       - /home/ew/ew_envs/hew19_env/log:/opt/ew_env/log:consistent
@@ -41,6 +45,8 @@ services:
 
   hew29:
     container_name: hew29
+    environment:
+      - EW_HOSTNAME=hew29
     image: ew-sandbox:ea6cf701
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:

@@ -16,6 +16,8 @@ services:
       - 16021-16034:16021-16034
     # import/export generic ports
       - 19001-19004:19001-19004
+    environment:
+      - EW_HOSTNAME=hew
     volumes:
       - $EW_PARAMS:/opt/ew_env/params:consistent
       - $EW_LOG:/opt/ew_env/log:consistent
