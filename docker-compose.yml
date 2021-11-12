@@ -19,8 +19,9 @@ services:
     environment:
       - EW_HOSTNAME=hew
     volumes:
-      - $EW_PARAMS:/opt/ew_env/params:consistent
-      - $EW_LOG:/opt/ew_env/log:consistent
+      - ${EW_RUN_DIR}:/opt/ew_env:consistent
+      # - $EW_PARAMS:/opt/ew_env/params:consistent
+      # - $EW_LOG:/opt/ew_env/log:consistent
       - $EW_MAINDIREWSPACE:$EW_MAINDIREWSPACE:consistent
       - $EW_MAINDIRWAVESERVER:$EW_MAINDIRWAVESERVER:consistent
       - /home/ew/snwclient:/home/ew/snwclient:consistent
