@@ -16,7 +16,7 @@ end caption
 
 (*) --> "mkdir \~/ew_envs"
 --> "make create_ew_env_from_zip_url
-\tZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip
+\tZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip
 \tCREATE_EW_ENV_SUBDIRS=""
 \tMAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
 \tEW_ENV=memphis_test_zip\l"

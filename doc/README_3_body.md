@@ -124,14 +124,14 @@ To get familiar with this tool we will use the Memphis test configuration. It al
 
 The Memphis test that we will use is available from two different sources:
 
-  1. zip file in the URL [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip)
+  1. zip file in the URL [http://www.earthwormcentral.org/distribution/memphis_test.zip](http://www.earthwormcentral.org/distribution/memphis_test.zip)
   2. git repository available at [https://github.com/matteoquintiliani/memphis_test](https://github.com/matteoquintiliani/memphis_test)
 
   - Create your first Earthworm Environment from Memphis test available online in a zip file. By variable `MAP_EW_ENV_SUBDIRS` we create symbolic links in the main directory of the Earthworm Environment that we will call `memphis_test_zip`.
 
 ```sh
 $ make create_ew_env_from_zip_url \
-       ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+       ZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip \
        CREATE_EW_ENV_SUBDIRS="" \
        MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
        EW_ENV=memphis_test_zip
@@ -392,7 +392,7 @@ An **Earthworm Environment** is a directory that must contain the following subd
   - `log`: where Earthworm log files are written (`EW_LOG` variable)
   - `data`: where additional files are read and written by Earthworm modules (`EW_DATA_DIR` variable)
 
-This directory structure is the same used in Earthworm Memphis Test bundled zip file available at [http://www.isti2.com/ew/distribution/memphis_test.zip](http://www.isti2.com/ew/distribution/memphis_test.zip).
+This directory structure is the same used in Earthworm Memphis Test bundled zip file available at [http://www.earthwormcentral.org/distribution/memphis_test.zip](http://www.earthwormcentral.org/distribution/memphis_test.zip).
 
 You can list all available Earthworm Environments on your machine by:
 
@@ -446,7 +446,7 @@ Example for creating an Earthwom Environment from an online zip file:
 
 ```sh
 $ make create_ew_env_from_zip_url \
-     ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+     ZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip \
      MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \
      EW_ENV=memphis_test_zip
 ```

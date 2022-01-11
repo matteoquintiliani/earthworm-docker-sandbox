@@ -80,7 +80,7 @@ Creating Earthworm Environments with name EW_ENV:
               make EW_ENV=ew_test1  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/
 
               make create_ew_env_from_zip_url \ 
-                   ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ 
+                   ZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip \ 
                    CREATE_EW_ENV_SUBDIRS="" \ 
                    MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data" \ 
                    EW_ENV=memphis_test_zip

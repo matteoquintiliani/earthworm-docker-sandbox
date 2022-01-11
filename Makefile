@@ -257,7 +257,7 @@ $(SEPLINE)\n\
               make EW_ENV=$(HELP_EW_ENV)  cp  SRC_PATH=mymodule.d  DEST_PATH=./params/\n\
 \n\
               make create_ew_env_from_zip_url \ \n\
-                   ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \ \n\
+                   ZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip \ \n\
                    CREATE_EW_ENV_SUBDIRS=\"\" \ \n\
                    MAP_EW_ENV_SUBDIRS=\"memphis/params memphis/log memphis/data\" \ \n\
                    EW_ENV=memphis_test_zip\n\
@@ -624,7 +624,7 @@ create_ew_env_from_zip_url: _check_for_creating _check_zip_url_variables
 # Short cut based on create_ew_env_from_zip_url for creating memphis_test Earthworm Environment
 create_ew_env_from_memphis_test:
 	make EW_ENV=$(EW_ENV) create_ew_env_from_zip_url \
-		ZIP_URL=http://www.isti2.com/ew/distribution/memphis_test.zip \
+		ZIP_URL=http://www.earthwormcentral.org/distribution/memphis_test.zip \
 		MAP_EW_ENV_SUBDIRS="memphis/params memphis/log memphis/data"
 
 # Short cut based on create_ew_env_from_zip_url for creating INGV test Earthworm Environment
