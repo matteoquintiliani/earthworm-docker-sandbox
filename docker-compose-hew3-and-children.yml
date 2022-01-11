@@ -15,8 +15,7 @@ services:
     environment:
       - EW_HOSTNAME=hew3
     volumes:
-      - /home/ew/gitwork/_earthworm/run_configs/run_realtime/params:/opt/ew_env/params:consistent
-      - /home/ew/gitwork/_earthworm/run_configs/run_realtime/log:/opt/ew_env/log:consistent
+      - /home/ew/gitwork/_earthworm/run_configs:/opt/ew_env:consistent
       - /data/ew/ewspace/run_realtime:/data/ew/ewspace/run_realtime:consistent
       - /data/ew/waveservers:/data/ew/waveservers:consistent
     restart: unless-stopped
@@ -33,9 +32,7 @@ services:
     environment:
       - EW_HOSTNAME=hew19
     volumes:
-      - /home/ew/ew_envs/hew19_env/run_realtime/params:/opt/ew_env/params:consistent
-      - /home/ew/ew_envs/hew19_env/log:/opt/ew_env/log:consistent
-      - /home/ew/ew_envs/hew19_env/data:/opt/ew_env/data:consistent
+      - /home/ew/ew_envs/hew19_env:/opt/ew_env:consistent
     restart: unless-stopped
     depends_on:
       - hew3
@@ -52,9 +49,7 @@ services:
     # ports:
     # - ...
     volumes:
-      - /home/ew/ew_envs/hew29_env/run_realtime/params:/opt/ew_env/params:consistent
-      - /home/ew/ew_envs/hew29_env/log:/opt/ew_env/log:consistent
-      - /home/ew/ew_envs/hew29_env/data:/opt/ew_env/data:consistent
+      - /home/ew/ew_envs/hew29_env:/opt/ew_env:consistent
     restart: unless-stopped
     depends_on:
       - hew3
