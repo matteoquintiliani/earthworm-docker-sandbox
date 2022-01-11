@@ -1,0 +1,21 @@
+version: '2'
+
+networks:
+  ew:
+
+services:
+
+  hew-memphis:
+    container_name: hew-memphis
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    environment:
+      - EW_HOSTNAME=hew-memphis
+    volumes:
+      - ~/ew_envs/memphis_test_zip:/opt/ew_env:consistent
+    restart: unless-stopped
+
+    networks:
+      - ew
+
+
