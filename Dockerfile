@@ -117,7 +117,7 @@ RUN \
 		&& \
 		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
 		then \
-			cd ${EW_EARTHWORM_DIR}/src && make clean_bin_unix && make clean_unix && make unix; \
+			cd ${EW_EARTHWORM_DIR}/src && make clean_bin_unix && make clean_unix && make unix && cd data_sources/nmxptool && make -f makefile.unix; \
 		else \
 			for GROUP_MODULE in ${REQUIRED_GROUP_MODULE_LIST}; do \
 				echo "=== Compiling required group module ${GROUP_MODULE} ..." && \
@@ -155,6 +155,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR} \
+		&& git config --global http.sslverify false \
 		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		; fi
 
@@ -282,9 +283,10 @@ RUN mkdir ${HOMEDIR_USER}
 
 # Copy scripts to container
 RUN mkdir -p ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_get_rings_list.sh ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_INSTALL_HOME}/scripts
-COPY ./scripts/ew_check_process_status.sh ${EW_INSTALL_HOME}/scripts
+COPY ./scripts/ew_get_rings_list.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_sniff_all_rings_except_tracebuf_message.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_check_process_status.sh ${EW_INSTALL_HOME}/scripts/
+COPY ./scripts/ew_startstop_trap_pau.sh ${EW_INSTALL_HOME}/scripts/
 
 ##########################################################
 # RUN apt-get clean \
@@ -304,7 +306,7 @@ RUN \
 	 && echo "" >> /root/.bashrc \
 	 && echo ". ${EW_FILE_ENV}" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
-	 && echo "export PS1='\${debian_chroot:+(\$debian_chroot)}\h:\w\${EW_ENV:+ [ew:\${EW_ENV}]} \$ '" >> /root/.bashrc \
+	 && echo "export PS1='\${debian_chroot:+(\$debian_chroot)}\h-\${EW_HOSTNAME}:\w\${EW_ENV:+ [ew:\${EW_ENV}]} \$ '" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc
 
 RUN cp /root/.bashrc ${HOMEDIR_USER}/
