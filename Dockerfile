@@ -51,6 +51,7 @@ RUN apt-get clean \
 			git \
 			make \
 			gcc \
+			g++ \
 			gfortran \
 			libtirpc-dev \
 			screen \
