@@ -31,6 +31,7 @@ Release History
     - Add script ew_startstop_trap_pau.sh for gracefully stopping Earthworm by docker-compose.yml Issue #15
     - Organize serveral docker-compose.yml for different Earthworm instances. Issue #15, uf/reperibile#132
     - Set EW_GIT_REF = d230d73e to compile Earthworm with increased MAX_BYTES_PER_EQ value. Issue earthworm/ew2openapi#54, https://gitlab.com/seismic-software/earthworm/-/issues/47
+    - Add .gitlab-ci.yml for CI. Issue #16
 
 * Release 1.2.7 (2020/12/22)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
