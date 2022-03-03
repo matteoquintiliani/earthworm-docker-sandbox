@@ -17,9 +17,23 @@ variables:
 # Run preliminary commands
 before_script:
   # Display system info
-  - apt-get clean && apt-get update && apt-get install -y make && apt-get clean
+  - apt-get clean && apt-get update && apt-get install -y make curl && apt-get clean
+    ##########################################################
+    # Install docker
+    # https://docs.docker.com/engine/install/debian/
+    ##########################################################
+  - apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+  - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+  - add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io
+    ##########################################################
   - uname -a
   - make --version
+  - docker --version
   - make check_required_commands
 
 build:
