@@ -5,7 +5,7 @@ services:
   - docker:19.03.1-dind
 
 stages:
-- build
+  - build
 
 variables:
   GIT_SUBMODULE_STRATEGY: normal
@@ -14,24 +14,24 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
-    # Run preliminary commands
-  before_script:
-    # Display system info
-    - apt-get clean \
-      && apt-get update \
-      && apt-get install -y \
-      make \
-      && apt-get clean
+# Run preliminary commands
+before_script:
+  # Display system info
+  - apt-get clean \
+    && apt-get update \
+    && apt-get install -y \
+    make \
+    && apt-get clean
   - uname -a
   - make --version
   - make check_required_commands
 
-  build:
-    stage: build
-    script:
-      - make build
+build:
+  stage: build
+  script:
+    - make build
 
-        # cache:
-        # paths:
-        # - dump/
+# cache:
+# paths:
+# - dump/
 
