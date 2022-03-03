@@ -5,7 +5,7 @@ services:
   - docker:19.03.1-dind
 
 stages:
-  - build
+- build
 
 variables:
   GIT_SUBMODULE_STRATEGY: normal
