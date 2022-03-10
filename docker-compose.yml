@@ -1,0 +1,33 @@
+version: '2'
+
+networks:
+  ew:
+
+services:
+
+  hew:
+    container_name: hew
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    ports:
+    # export winston scnl
+      - 16001-16006:16001-16006
+    # wave servers
+      - 16021-16034:16021-16034
+    # import/export generic ports
+      - 19001-19004:19001-19004
+    environment:
+      - EW_HOSTNAME=hew
+    volumes:
+      - ${EW_RUN_DIR}:/opt/ew_env:consistent
+      # - $EW_PARAMS:/opt/ew_env/params:consistent
+      # - $EW_LOG:/opt/ew_env/log:consistent
+      - $EW_MAINDIREWSPACE:$EW_MAINDIREWSPACE:consistent
+      - $EW_MAINDIRWAVESERVER:$EW_MAINDIRWAVESERVER:consistent
+      - /home/ew/snwclient:/home/ew/snwclient:consistent
+    restart: unless-stopped
+
+    networks:
+      - ew
+
+

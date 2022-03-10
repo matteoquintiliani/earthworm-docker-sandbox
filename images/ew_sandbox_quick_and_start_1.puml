@@ -1,0 +1,46 @@
+@startuml
+
+!include_once ew_commons.iuml
+
+top to bottom direction
+
+''''''''''''''''''''''''''''''''''
+
+' title Running Earthworm Docker Sandbox Container Example
+caption
+
+Earthworm Docker Sandbox Quick and Start
+//Clone project and build default Docker image//
+
+end caption
+
+(*) --> "git clone https://github.com/matteoquintiliani/earthworm-docker-sandbox.git"
+--> "cd earthworm-docker-sandbox"
+--> "make check_required_commands"
+note right
+Checking make ...
+/usr/bin/make
+...
+end note
+--> "make [ EW_GIT_REF=... ] build"
+note right
+# Build docker image
+docker build -t ew-sandbox:master
+\t--build-arg EW_GIT_REF=master
+\t--build-arg ...
+\t-f Dockerfile . 2>&1
+\t| tee build_ew-sandbox_master.log
+#1 [internal] load build definition from Dockerfile
+...
+#41 DONE
+end note
+--> "make list_images"
+note right
+docker images ew-sandbox
+ew-sandbox   master     296b153fb2c0   42 minutes ago       1.1GB
+end note
+--> (*)
+
+
+@enduml
+

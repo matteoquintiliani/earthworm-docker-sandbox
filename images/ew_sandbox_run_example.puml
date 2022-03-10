@@ -1,0 +1,85 @@
+@startuml
+
+!include_once ew_commons.iuml
+
+''''''''''''''''''''''''''''''''''
+
+' title Running Earthworm Docker Sandbox Container Example
+caption
+
+Running Earthworm Docker Sandbox Container Example
+
+end caption
+
+
+rectangle make1 [
+make **EW_ENV**=... [ **EW_GIT_REF**=... ] **ew_[run|startstop]_[bash|screen|detached]**
+]
+note bottom
+Create and start an Earthworm Docker Sandbox Container
+running docker image name defined by variable **EW_GIT_REF**
+and mounting //Earthworm Environment// defined by variable **EW_ENV**.
+Docker container name string is built by the previous variables
+in the following way: //"ew-sandbox.${EW_GIT_REF}.${EW_ENV}"//
+
+Possible commands:
+  ew_run_bash:     run interactive bash shell in a new docker container.
+  ew_run_screen:   run interactive screen shell in a new docker container.
+  ew_run_detached: run a new docker container in detached mode.
+
+  ew_startstop_bash:     run 'startstop' in an interactive bash shell
+  ew_startstop_screen:   run 'startstop' in an interactive screen shell
+  ew_startstop_detached: run 'startstop' in detached mode
+
+**Warning**: You can not simultaneously run more than one instance at a time
+of Earthworm Docker Sandbox on the same Earthworm Environment. 
+end note
+
+node "//ew-sandbox.${EW_GIT_REF}.${EW_ENV}//" as node1 {
+
+	artifact "**ew-sandbox:${EW_GIT_REF}**" as art1 {
+	}
+
+	package "${EW_ENV}" as art2 {
+		rectangle r0 [
+			params
+			----
+			log
+			----
+			data
+		]
+	}
+
+
+}
+
+make1 -down-> node1 #line.bold
+' make1 --> art1
+' make1 --> art2
+note as n1
+Docker
+Image
+end note
+
+' n1 .-> art1
+art1 --|> n1
+
+note as n2
+Earthworm
+Environment
+end note
+
+' n2 .-> art2
+art2 --|> n2
+
+note as n3
+Docker
+Container
+end note
+
+' n3 .-> node1
+node1 --|> n3
+
+
+@enduml
+

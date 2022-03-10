@@ -1,0 +1,59 @@
+version: '2'
+
+networks:
+  ew:
+
+services:
+
+  hew3:
+    container_name: hew3
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    ports:
+      - 16021-16034:16021-16034
+      - 19001-19010:19001-19010
+    environment:
+      - EW_HOSTNAME=hew3
+    volumes:
+      - /home/ew/gitwork/_earthworm/run_configs:/opt/ew_env:consistent
+      - /data/ew/ewspace/run_realtime:/data/ew/ewspace/run_realtime:consistent
+      - /data/ew/waveservers:/data/ew/waveservers:consistent
+    restart: unless-stopped
+
+    networks:
+      - ew
+
+  hew19:
+    container_name: hew19
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    # ports:
+    # - ...
+    environment:
+      - EW_HOSTNAME=hew19
+    volumes:
+      - /home/ew/ew_envs/hew19_env:/opt/ew_env:consistent
+    restart: unless-stopped
+    depends_on:
+      - hew3
+
+    networks:
+      - ew
+
+  hew29:
+    container_name: hew29
+    environment:
+      - EW_HOSTNAME=hew29
+    image: ew-sandbox:ea6cf701
+    command: /opt/scripts/ew_startstop_trap_pau.sh
+    # ports:
+    # - ...
+    volumes:
+      - /home/ew/ew_envs/hew29_env:/opt/ew_env:consistent
+    restart: unless-stopped
+    depends_on:
+      - hew3
+
+    networks:
+      - ew
+
