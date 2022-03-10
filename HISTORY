@@ -23,7 +23,7 @@
 Release History
 #########################
 
-* Release 1.3.0 (2022/03/10)
+* Release 1.3.1 (2022/03/10)
     - Update Dockerfile with new official Earthworm git repository. https://gitlab.com/seismic-software/earthworm - Issue #13
     - Substitude EW_SVN_BRANCH and EW_SVN_REVISION with new arguments EW_GIT_REP and EW_GIT_REF. Issue #13
     - Add workflow examples of possible actions by Earthworm Docker Sandbox. Issue #9, #14
@@ -34,6 +34,7 @@ Release History
     - Add .gitlab-ci.yml for CI. Issue #16
     - Set EW_GIT_REF = 6382013f to read amplitude values from ARC message (read_arc.h and read_arc.c). Issue earthworm/ew2openapi#25, https://gitlab.com/seismic-software/earthworm/-/issues/47
     - Set .bash_profile to load default Earthworm variables.
+    - Hotfix: 1.3.1: start interactive bash to automatically load .bash_profile when run commands. (2022/03/10)
 
 * Release 1.2.7 (2020/12/22)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
