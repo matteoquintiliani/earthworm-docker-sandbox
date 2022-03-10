@@ -198,8 +198,8 @@ a possible output:
 
 ```sh
 CONTAINER ID   IMAGE               COMMAND                  CREATED              STATUS              PORTS     NAMES
-82301f4b9733   ew-sandbox:master   "/bin/bash -c '. ~/.…"   17 seconds ago       Up 16 seconds                 ew-sandbox.master.isti_course_1
-c8b3aa55f837   ew-sandbox:v7.10    "/bin/bash -c '. ~/.…"   About a minute ago   Up About a minute             ew-sandbox.v7.10.memphis_test_git
+82301f4b9733   ew-sandbox:master   "/bin/bash -i -c '. ~/.…"   17 seconds ago       Up 16 seconds                 ew-sandbox.master.isti_course_1
+c8b3aa55f837   ew-sandbox:v7.10    "/bin/bash -i -c '. ~/.…"   About a minute ago   Up About a minute             ew-sandbox.v7.10.memphis_test_git
 ```
 
   - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test_zip`.

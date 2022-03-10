@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.3.1 Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.2 Copyright (C) 2020-2021  Matteo Quintiliani
 
 Available at: [https://github.com/matteoquintiliani/earthworm-docker-sandbox](https://github.com/matteoquintiliani/earthworm-docker-sandbox)
 
@@ -206,8 +206,8 @@ a possible output:
 
 ```sh
 CONTAINER ID   IMAGE               COMMAND                  CREATED              STATUS              PORTS     NAMES
-82301f4b9733   ew-sandbox:master   "/bin/bash -c '. ~/.…"   17 seconds ago       Up 16 seconds                 ew-sandbox.master.isti_course_1
-c8b3aa55f837   ew-sandbox:v7.10    "/bin/bash -c '. ~/.…"   About a minute ago   Up About a minute             ew-sandbox.v7.10.memphis_test_git
+82301f4b9733   ew-sandbox:master   "/bin/bash -i -c '. ~/.…"   17 seconds ago       Up 16 seconds                 ew-sandbox.master.isti_course_1
+c8b3aa55f837   ew-sandbox:v7.10    "/bin/bash -i -c '. ~/.…"   About a minute ago   Up About a minute             ew-sandbox.v7.10.memphis_test_git
 ```
 
   - Launch a bash shell within the Earthworm Docker Sandbox Container previously started on the Earthworm Environment `memphis_test_zip`.
@@ -660,7 +660,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.3.1 Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.2 Copyright (C) 2020-2021  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
