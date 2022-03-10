@@ -2,7 +2,7 @@
 
 A Docker tool for learning, testing, running and developing Earthworm System within single or multiple enclosed environments.
 
-Earthworm Docker Sandbox 1.3.0-dev Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.0 Copyright (C) 2020-2021  Matteo Quintiliani
 
 Available at: [https://github.com/matteoquintiliani/earthworm-docker-sandbox](https://github.com/matteoquintiliani/earthworm-docker-sandbox)
 
@@ -660,7 +660,7 @@ $ make EW_ENV=ew_test1 ew_tail_all_logs
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.3.0-dev Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.0 Copyright (C) 2020-2021  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
