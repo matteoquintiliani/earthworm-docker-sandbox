@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.3.0 Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.3.1 Copyright (C) 2020-2021  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
