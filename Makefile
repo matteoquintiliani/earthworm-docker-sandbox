@@ -507,7 +507,7 @@ ew_run_bash: _check_for_running
 	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker run $(DOCKER_USER) --rm $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_NETWORK) --name $(DOCKER_CONTAINER_NAME) $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV_COMPLETE) $(DOCKER_IMAGE_NAME_VERSION) \
-			/bin/bash -c ". ~/.bashrc && $${CMD}"
+			/bin/bash -c "$${CMD}"
 
 ew_run_screen: _check_for_running
 	@echo $(CMD)
@@ -532,7 +532,7 @@ ew_exec_bash: _check_for_executing
 	CMD="$(CMD)" \
 		&& if [ -z "$${CMD}" ]; then CMD=bash; fi \
 		&& docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
-			/bin/bash -c ". ~/.bashrc && $${CMD}"
+			/bin/bash -c "$${CMD}"
 
 ew_exec_screen: _check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) \
@@ -585,8 +585,7 @@ ew_status_tankplayer: _check_for_executing
 
 ew_sniffrings_all: _check_for_executing
 	docker exec $(OPT_RUN_I) $(OPT_RUN_T) $(OPT_RUN_D) $(DOCKER_CONTAINER_NAME) /bin/bash -c '\
-		. ~/.bashrc \
-		&& echo $${RING_LIST} \
+		echo $${RING_LIST} \
 		&& sniffrings $$(/opt/scripts/ew_get_rings_list.sh) verbose 2>&1 | grep -v "TYPE_TRACEBUF" \
 		'
 

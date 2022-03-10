@@ -312,6 +312,7 @@ RUN \
 
 RUN cp /root/.bashrc ${HOMEDIR_USER}/
 RUN cp /root/.screenrc ${HOMEDIR_USER}/
+RUN echo ". ~/.bashrc" > ${HOMEDIR_USER}/.bash_profile
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 

@@ -33,6 +33,7 @@ Release History
     - Set EW_GIT_REF = d230d73e to compile Earthworm with increased MAX_BYTES_PER_EQ value. Issue earthworm/ew2openapi#54, https://gitlab.com/seismic-software/earthworm/-/issues/47
     - Add .gitlab-ci.yml for CI. Issue #16
     - Set EW_GIT_REF = 6382013f to read amplitude values from ARC message (read_arc.h and read_arc.c). Issue earthworm/ew2openapi#25, https://gitlab.com/seismic-software/earthworm/-/issues/47
+    - Set .bash_profile to load default Earthworm variables.
 
 * Release 1.2.7 (2020/12/22)
     - Change variable ARGS to CMD for ew_run_bash, ew_run_screen, ew_exec_bash, ew_exec_screen.
