@@ -103,6 +103,7 @@ ENV EW_FILE_ENV="${EW_EARTHWORM_DIR}/environment/ew_linux${EW_ARCHITECTURE}.bash
 RUN \
 		if [ "${EW_GIT_REF}" == "v7.9" ]; then \
 			sed -i'.bak' -e "s/-Werror=format//g" ${EW_FILE_ENV}; \
+			sed -i'.bak' -e "s/-Wdeclaration-after-statement//" ${EW_FILE_ENV}; \
 			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
 		fi
 
@@ -157,11 +158,8 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR} \
 		&& git config --global http.sslverify false \
-		&& git clone --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
+		&& git clone -b master --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		; fi
-
-RUN mkdir -p ${EW_EARTHWORM_DIR}/patches
-COPY ./patches/random_seed.patch ${EW_EARTHWORM_DIR}/patches/
 
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR}/ew2openapi \
@@ -177,11 +175,10 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 		&& cmake -DENABLE_SSL_SUPPORT=OFF .. \
 		&& cmake --build . \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& cp ${EW_EARTHWORM_DIR}/patches/random_seed.patch ${EW_EARTHWORM_DIR}/ew2openapi/json-c/ \
-		&& cd ./json-c \
-		&& patch < random_seed.patch \
-		&& sh autogen.sh \
-		&& ./configure --prefix=`pwd`/build \
+		&& mkdir json-c-build \
+		&& cd json-c-build \
+		&& cmake --version \
+		&& cmake -DBUILD_SHARED_LIBS=OFF -DDISABLE_WERROR=ON -DCMAKE_INSTALL_PREFIX=./ ../json-c \
 		&& make \
 		&& make install \
 		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
