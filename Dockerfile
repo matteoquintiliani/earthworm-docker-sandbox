@@ -99,14 +99,6 @@ RUN \
 # Set Earthworm Environment Shell Configuration File
 ENV EW_FILE_ENV="${EW_EARTHWORM_DIR}/environment/ew_linux${EW_ARCHITECTURE}.bash"
 
-# Fix for compiling when EW_GIT_REF=v7.9
-RUN \
-		if [ "${EW_GIT_REF}" == "v7.9" ]; then \
-			sed -i'.bak' -e "s/-Werror=format//g" ${EW_FILE_ENV}; \
-			sed -i'.bak' -e "s/-Wdeclaration-after-statement//" ${EW_FILE_ENV}; \
-			sed -i'.bak' -e "s/INT32_MIN/INT_MIN/g" -e "s/INT32_MAX/INT_MAX/g" /opt/earthworm/src/libsrc/util/sudsputaway.c; \
-		fi
-
 # Default ARG_SELECTED_MODULE_LIST is empty. Compile all Earthworm modules.
 ARG ARG_SELECTED_MODULE_LIST=
 
@@ -115,7 +107,7 @@ ARG ARG_SELECTED_MODULE_LIST=
 # Required directories to compile 'libsrc', 'system_control' and 'diagnostic_tools'
 ENV REQUIRED_GROUP_MODULE_LIST="libsrc system_control diagnostic_tools"
 RUN \
-		. ${EW_FILE_ENV} \
+		source ${EW_FILE_ENV} \
 		&& \
 		if [ -z "${ARG_SELECTED_MODULE_LIST}" ]; \
 		then \
@@ -158,30 +150,10 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		cd ${EW_EARTHWORM_DIR} \
 		&& git config --global http.sslverify false \
-		&& git clone -b master --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
-		; fi
-
-RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
-		cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& cd ./liblo \
-		&& sh autogen.sh --enable-static \
-		&& make \
-		&& find . -name liblo.a \
-		&& . ${EW_FILE_ENV} \
-		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& cd ./rabbitmq-c \
-		&& mkdir build \
-		&& cd build \
-		&& cmake -DENABLE_SSL_SUPPORT=OFF .. \
-		&& cmake --build . \
-		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
-		&& mkdir json-c-build \
-		&& cd json-c-build \
-		&& cmake --version \
-		&& cmake -DBUILD_SHARED_LIBS=OFF -DDISABLE_WERROR=ON -DCMAKE_INSTALL_PREFIX=./ ../json-c \
-		&& make \
-		&& make install \
-		&& cd ${EW_EARTHWORM_DIR}/ew2openapi \
+		&& git clone -b develop --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
+		&& cd ew2openapi \
+		&& sed -e "s/WARNFLAGS=\(.*\)$/# WARNFLAGS=\1\nWARNFLAGS=\"-Wall\"/g" ${EW_FILE_ENV} > ew2openapi_env.bash \
+		&& source ew2openapi_env.bash \
 		&& make -f makefile.unix static \
 		; fi
 ##########################################################
@@ -203,7 +175,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew
 #   - http://earthworm.isti.com/trac/earthworm/changeset/8125 (MYSQL_CONNECTOR_C_PATH_BUILD)
 #   - http://earthworm.isti.com/trac/earthworm/changeset/8126 (LINUX_FLAGS=-lpthread -fstack-check -Wall -lm)
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
-		. ${EW_FILE_ENV} \
+		source ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/src/archiving/mole/ew2moledb \
 		&& sed -i'.bak' -e 's/LINUX_FLAGS=\(.*\)$/LINUX_FLAGS=\1 -lm/' makefile.unix \
 		&& sed -i'.bak' -e 's=^.*\$L/libebloc\.a \$L/libebpick\.a.*$=\$L/complex_math\.o \$L/libebloc\.a \$L/libebpick\.a \\=' makefile.unix \
@@ -302,7 +274,7 @@ RUN \
 	 && echo "export EW_INSTALLATION=\"\${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "export EW_INST_ID=\"\${EW_INSTALL_INSTALLATION}\"" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
-	 && echo ". ${EW_FILE_ENV}" >> /root/.bashrc \
+	 && echo "source ${EW_FILE_ENV}" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc \
 	 && echo "export PS1='\${debian_chroot:+(\$debian_chroot)}\h-\${EW_HOSTNAME}:\w\${EW_ENV:+ [ew:\${EW_ENV}]} \$ '" >> /root/.bashrc \
 	 && echo "" >> /root/.bashrc
