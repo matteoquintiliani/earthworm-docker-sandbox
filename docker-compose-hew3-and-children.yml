@@ -7,7 +7,8 @@ services:
 
   hew3:
     container_name: hew3
-    image: ew-sandbox:ea6cf701
+    # image: ew-sandbox:ea6cf701
+    image: ew-sandbox:6382013f
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
       - 16021-16034:16021-16034
@@ -25,7 +26,7 @@ services:
 
   hew19:
     container_name: hew19
-    image: ew-sandbox:ea6cf701
+    image: ew-sandbox:6382013f
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
@@ -44,7 +45,7 @@ services:
     container_name: hew29
     environment:
       - EW_HOSTNAME=hew29
-    image: ew-sandbox:ea6cf701
+    image: ew-sandbox:6382013f
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
