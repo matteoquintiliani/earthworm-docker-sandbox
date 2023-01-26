@@ -144,6 +144,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 			libcurl4-openssl-dev \
 			cmake \
 			dh-autoreconf \
+			pkg-config \
 		&& apt-get clean \
 		; fi
 
