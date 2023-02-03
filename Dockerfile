@@ -145,17 +145,18 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 			cmake \
 			dh-autoreconf \
 			pkg-config \
+			jq \
 		&& apt-get clean \
 		; fi
 
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
-		cd ${EW_EARTHWORM_DIR} \
-		&& git config --global http.sslverify false \
+		git config --global http.sslverify false \
 		&& git clone -b develop --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		&& cd ew2openapi \
 		&& sed -e "s/WARNFLAGS=\(.*\)$/# WARNFLAGS=\1\nWARNFLAGS=\"-Wall\"/g" ${EW_FILE_ENV} > ew2openapi_env.bash \
 		&& source ew2openapi_env.bash \
 		&& make -f makefile.unix static \
+		&& EW_PARAMS=`pwd`/params make -f makefile.unix test \
 		; fi
 ##########################################################
 
