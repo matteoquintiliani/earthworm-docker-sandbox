@@ -2,7 +2,7 @@
 # Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 # developing Earthworm System within enclosed environments.
 #
-# Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
+# Copyright (C) 2020-2023  Matteo Quintiliani - INGV - Italy
 # Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 #
 # This program is free software: you can redistribute it and/or modify
@@ -144,17 +144,24 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 			libcurl4-openssl-dev \
 			cmake \
 			dh-autoreconf \
+			pkg-config \
+			jq \
 		&& apt-get clean \
 		; fi
 
+# Default ew2openapi reference is the branch 'master'
+ARG EW2OPENAPI_GIT_REF=master
+
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
-		cd ${EW_EARTHWORM_DIR} \
-		&& git config --global http.sslverify false \
-		&& git clone -b develop --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
+		git config --global http.sslverify false \
+		&& git clone https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		&& cd ew2openapi \
+		&& git checkout ${EW2OPENAPI_GIT_REF} \
+		&& git submodule update --init \
 		&& sed -e "s/WARNFLAGS=\(.*\)$/# WARNFLAGS=\1\nWARNFLAGS=\"-Wall\"/g" ${EW_FILE_ENV} > ew2openapi_env.bash \
 		&& source ew2openapi_env.bash \
 		&& make -f makefile.unix static \
+		&& EW_PARAMS=`pwd`/params make -f makefile.unix test \
 		; fi
 ##########################################################
 

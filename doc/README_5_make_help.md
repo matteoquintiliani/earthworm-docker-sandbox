@@ -3,7 +3,7 @@
 
 ```
 ===========================================================================
-Earthworm Docker Sandbox 1.3.5 Copyright (C) 2020-2021  Matteo Quintiliani
+Earthworm Docker Sandbox 1.4.0 Copyright (C) 2020-2023  Matteo Quintiliani
 ===========================================================================
 
 Syntax: make  [ EW_ENV=<ew_env_subdir_name> ]  <command>
@@ -198,7 +198,7 @@ License
 Earthworm Docker Sandbox: a Docker tool for learning, testing, running and
 developing Earthworm System within enclosed environments.
 
-Copyright (C) 2020-2021  Matteo Quintiliani - INGV - Italy
+Copyright (C) 2020-2023  Matteo Quintiliani - INGV - Italy
 Mail bug reports and suggestions to matteo.quintiliani [at] ingv.it
 
 This program is free software: you can redistribute it and/or modify
