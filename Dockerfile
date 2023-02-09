@@ -149,10 +149,15 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 		&& apt-get clean \
 		; fi
 
+# Default ew2openapi reference is the branch 'master'
+ARG EW2OPENAPI_GIT_REF=master
+
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: ew2openapi will not be installed."; else \
 		git config --global http.sslverify false \
-		&& git clone -b develop --recursive https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
+		&& git clone https://gitlab.rm.ingv.it/earthworm/ew2openapi.git \
 		&& cd ew2openapi \
+		&& git checkout ${EW2OPENAPI_GIT_REF} \
+		&& git submodule update --init \
 		&& sed -e "s/WARNFLAGS=\(.*\)$/# WARNFLAGS=\1\nWARNFLAGS=\"-Wall\"/g" ${EW_FILE_ENV} > ew2openapi_env.bash \
 		&& source ew2openapi_env.bash \
 		&& make -f makefile.unix static \
