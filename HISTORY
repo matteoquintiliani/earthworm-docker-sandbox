@@ -23,6 +23,9 @@
 Release History
 #########################
 
+* Release 2.0.0 (2023/04/12)
+    - Update docker image to ew-sandbox:a4bb3e30.
+
 * Release 1.4.1 (2023/02/09)
     - Use docker image ew-sandbox:6382013f with incremented value of MAX_BYTES_PER_EQ. Issue earthworm/ew2openapi#62 and https://gitlab.com/seismic-software/earthworm/-/issues/47 earthworm/ew2openapi#54
     - Use docker image ew-sandbox:d59707fc to fix binder_ew nucleates more events in v7.10. Issue https://gitlab.com/seismic-software/earthworm/-/issues/50, earthworm/run_configs#150, uf/allineamento_configurazioni_acquisizione_localizzazione_db#163, uf/allineamento_configurazioni_acquisizione_localizzazione_db#164, uf/allineamento_configurazioni_acquisizione_localizzazione_db#165, uf/allineamento_configurazioni_acquisizione_localizzazione_db#166, uf/allineamento_configurazioni_acquisizione_localizzazione_db#167, uf/allineamento_configurazioni_acquisizione_localizzazione_db#168
