@@ -7,7 +7,8 @@ services:
 
   hew:
     container_name: hew
-    image: ew-sandbox:d59707fc
+    # image: ew-sandbox:d59707fc
+    image: ew-sandbox:a4bb3e30
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
     # export winston scnl
