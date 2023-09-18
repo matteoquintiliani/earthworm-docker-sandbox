@@ -19,7 +19,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ################################################################################
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 LABEL maintainer="Matteo Quintiliani <matteo.quintiliani@ingv.it>"
 
@@ -184,6 +184,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew
 RUN if [ "${ARG_ADDITIONAL_MODULE_EW2MOLEDB}" != "yes" ]; then echo "WARNING: ew2moledb will not be installed."; else \
 		source ${EW_FILE_ENV} \
 		&& cd ${EW_EARTHWORM_DIR}/src/archiving/mole/ew2moledb \
+		&& sed -i'.bak' -e 's/`$(MYSQL_CONFIG_PROG) --libs_r` $(BINARIES)/$(BINARIES) `$(MYSQL_CONFIG_PROG) --libs_r`/g' makefile.unix \
 		&& sed -i'.bak' -e 's/LINUX_FLAGS=\(.*\)$/LINUX_FLAGS=\1 -lm/' makefile.unix \
 		&& sed -i'.bak' -e 's=^.*\$L/libebloc\.a \$L/libebpick\.a.*$=\$L/complex_math\.o \$L/libebloc\.a \$L/libebpick\.a \\=' makefile.unix \
 		&& make -f makefile.unix MYSQL_CONNECTOR_C_PATH_BUILD=/usr \
