@@ -9,10 +9,13 @@ services:
     container_name: hew3
     # image: ew-sandbox:ea6cf701
     # image: ew-sandbox:d59707fc
-    image: ew-sandbox:a4bb3e30
+    # image: ew-sandbox:a4bb3e30
+    image: ew-sandbox:a7e23e8e
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
-      - 16021-16034:16021-16034
+    # export wave server ports
+      - 16021-16044:16021-16044
+    # import/export generic ports
       - 19001-19010:19001-19010
     environment:
       - EW_HOSTNAME=hew3
