@@ -31,7 +31,8 @@ services:
   hew19:
     container_name: hew19
     # image: ew-sandbox:d59707fc
-    image: ew-sandbox:a4bb3e30
+    # image: ew-sandbox:a4bb3e30
+    image: ew-sandbox:a7e23e8e
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
@@ -49,7 +50,8 @@ services:
   hew29:
     container_name: hew29
     # image: ew-sandbox:d59707fc
-    image: ew-sandbox:a4bb3e30
+    # image: ew-sandbox:a4bb3e30
+    image: ew-sandbox:a7e23e8e
     command: /opt/scripts/ew_startstop_trap_pau.sh
     # ports:
     # - ...
