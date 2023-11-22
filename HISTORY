@@ -23,11 +23,12 @@
 Release History
 #########################
 
-* Release 2.1.0-dev (2023/09/20)
+* Release 2.1.0-dev (2023/11/22)
     - Base docker image from debian:buster-slim to debian:bullseye-slim.
     - Update docker image to ew-sandbox:a7e23e8e.
     - Update docker-compose.yml and docker-compose-hew3-and-children.yml with new docker image and new wave_server ports.
     - Update ew2openapi 1.19.0-rc1    (2023/02/10)
+    - Update docker image to ew-sandbox:2cd12b953. (2023-11-22)
 
 * Release 2.0.0 (2023/04/12)
     - Update docker image to ew-sandbox:a4bb3e30.
