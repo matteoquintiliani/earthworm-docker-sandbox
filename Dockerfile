@@ -161,7 +161,7 @@ RUN if [ "${ARG_ADDITIONAL_MODULE_EW2OPENAPI}" != "yes" ]; then echo "WARNING: e
 		&& sed -e "s/WARNFLAGS=\(.*\)$/# WARNFLAGS=\1\nWARNFLAGS=\"-Wall\"/g" ${EW_FILE_ENV} > ew2openapi_env.bash \
 		&& source ew2openapi_env.bash \
 		&& make -f makefile.unix static \
-		&& EW_PARAMS=`pwd`/params make -f makefile.unix test \
+		&& EW_PARAMS=`pwd`/params make -f makefile.unix test_standalone \
 		; fi
 ##########################################################
 
