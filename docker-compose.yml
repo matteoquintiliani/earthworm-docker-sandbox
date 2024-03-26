@@ -8,15 +8,16 @@ services:
   hew:
     container_name: hew
     # image: ew-sandbox:d59707fc
-    image: ew-sandbox:a4bb3e30
+    # image: ew-sandbox:a4bb3e30
+    image: ew-sandbox:a7e23e8e
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
-    # export winston scnl
-      - 16001-16006:16001-16006
-    # wave servers
-      - 16021-16034:16021-16034
+    # export wave server ports
+      - 16021-16044:16021-16044
     # import/export generic ports
-      - 19001-19004:19001-19004
+      - 19001-19010:19001-19010
+    # export winston scnl ports
+      - 16001-16006:16001-16006
     environment:
       - EW_HOSTNAME=hew
     volumes:
