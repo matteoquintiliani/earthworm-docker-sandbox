@@ -23,6 +23,9 @@
 Release History
 #########################
 
+* Release 2.2.0-dev (2024/04/10)
+    - Install EWCONFIG (https://gitlab.com/seismic-software/ewconfig) within docker image. Issue #19
+
 * Release 2.1.0 (2024/03/26)
     - Base docker image from debian:buster-slim to debian:bullseye-slim.
     - Update docker image to ew-sandbox:a7e23e8e.

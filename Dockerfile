@@ -55,6 +55,9 @@ RUN apt-get clean \
 			gfortran \
 			libtirpc-dev \
 			screen \
+			python3 \
+			python3-pip \
+			python3-venv \
 		&& apt-get clean
 
 # Default Earthworm architecture is empty. Otherwise is '_arm'.
@@ -293,4 +296,16 @@ RUN echo ". ~/.bashrc" > ${HOMEDIR_USER}/.bash_profile
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 
+RUN \
+		mkdir -p ${EW_INSTALL_HOME}/ewconfig \
+		&& cd ${EW_INSTALL_HOME}/ewconfig \
+		&& python3 -m venv env \
+		&& source env/bin/activate \
+		&& pip install --upgrade pip \
+		&& git clone https://gitlab.com/seismic-software/ewconfig.git \
+		&& cd ewconfig \
+		&& pip install .
+# && chown -R ${USER_NAME}:${GROUP_NAME} ${EW_INSTALL_HOME}/ewconfig
+
 USER ${USER_NAME}:${GROUP_NAME}
+
