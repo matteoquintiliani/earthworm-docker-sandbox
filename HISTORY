@@ -24,7 +24,7 @@ Release History
 #########################
 
 * Release 2.2.0-dev (2024/04/10)
-    - Install EWCONFIG (https://gitlab.com/seismic-software/ewconfig) within docker image. Issue #19
+    - Install EWCONFIG (https://gitlab.com/seismic-software/ewconfig) within docker image. Issue #19, earthworm/run_configs#166
 
 * Release 2.1.0 (2024/03/26)
     - Base docker image from debian:buster-slim to debian:bullseye-slim.
