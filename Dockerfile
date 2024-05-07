@@ -307,5 +307,17 @@ RUN \
 		&& pip install .
 # && chown -R ${USER_NAME}:${GROUP_NAME} ${EW_INSTALL_HOME}/ewconfig
 
+# Checkout necessary Earthworm Contrib repository directories
+ENV EW_EARTHWORMCONTRIB_DIR="${EW_INSTALL_HOME}/earthwormContrib"
+RUN \
+		git clone --recursive https://gitlab.rm.ingv.it/earthworm/earthwormcontrib.git ${EW_EARTHWORMCONTRIB_DIR}
+
+# Compile snwgetmenu
+RUN \
+	    cd ${EW_EARTHWORMCONTRIB_DIR}/Menlo/src/snwgetmenu \
+	    && sed -i'' -e "s/logit\.o/sema_ew\.o \$L\/logit_mt\.o/" makefile.ux \
+	    && source ${EW_FILE_ENV} \
+	    && make -f makefile.ux
+
 USER ${USER_NAME}:${GROUP_NAME}
 
