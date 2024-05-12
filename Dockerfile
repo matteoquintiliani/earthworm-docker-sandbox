@@ -135,6 +135,19 @@ RUN \
 			done; \
 		fi;
 
+# Checkout necessary Earthworm Contrib repository directories
+ENV EW_EARTHWORMCONTRIB_DIR="${EW_INSTALL_HOME}/earthwormContrib"
+RUN \
+		git clone --recursive https://gitlab.rm.ingv.it/earthworm/earthwormcontrib.git ${EW_EARTHWORMCONTRIB_DIR}
+
+# Compile snwgetmenu
+RUN \
+	    cd ${EW_EARTHWORMCONTRIB_DIR}/Menlo/src/snwgetmenu \
+	    && sed -i'' -e "s/logit\.o/sema_ew\.o \$L\/logit_mt\.o/" makefile.ux \
+	    && source ${EW_FILE_ENV} \
+	    && make -f makefile.ux
+
+
 ##########################################################
 # Optional compilation: ew2openapi
 ##########################################################
@@ -296,28 +309,29 @@ RUN echo ". ~/.bashrc" > ${HOMEDIR_USER}/.bash_profile
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 
+# Packages for Obspy
+# ref: https://github.com/obspy/obspy/wiki/Installation-on-Linux-via-Apt-Repository
+RUN \
+		apt-get install -y \
+		python3-pip python3-numpy python3-scipy python3-matplotlib python3-lxml python3-setuptools python3-sqlalchemy python3-decorator python3-requests \
+		python3-packaging python3-pyproj python3-pytest python3-geographiclib python3-cartopy python3-pyshp
+
+# Install ewconfig and Obspy
+# ARG EWCONFIG_GIT_REP=https://gitlab.com/seismic-software/ewconfig.git
+# ARG EWCONFIG_GIT_BRANCH=master
+ARG EWCONFIG_GIT_REP=https://gitlab.com/matteoquintiliani/ewconfig.git
+ARG EWCONFIG_GIT_BRANCH=pick_ew_config_by_mele_et_al_2010
+
 RUN \
 		mkdir -p ${EW_INSTALL_HOME}/ewconfig \
 		&& cd ${EW_INSTALL_HOME}/ewconfig \
 		&& python3 -m venv env \
 		&& source env/bin/activate \
 		&& pip install --upgrade pip \
-		&& git clone https://gitlab.com/seismic-software/ewconfig.git \
+		&& pip install obspy \
+		&& git clone --single-branch --branch ${EWCONFIG_GIT_BRANCH} ${EWCONFIG_GIT_REP} \
 		&& cd ewconfig \
 		&& pip install .
 # && chown -R ${USER_NAME}:${GROUP_NAME} ${EW_INSTALL_HOME}/ewconfig
-
-# Checkout necessary Earthworm Contrib repository directories
-ENV EW_EARTHWORMCONTRIB_DIR="${EW_INSTALL_HOME}/earthwormContrib"
-RUN \
-		git clone --recursive https://gitlab.rm.ingv.it/earthworm/earthwormcontrib.git ${EW_EARTHWORMCONTRIB_DIR}
-
-# Compile snwgetmenu
-RUN \
-	    cd ${EW_EARTHWORMCONTRIB_DIR}/Menlo/src/snwgetmenu \
-	    && sed -i'' -e "s/logit\.o/sema_ew\.o \$L\/logit_mt\.o/" makefile.ux \
-	    && source ${EW_FILE_ENV} \
-	    && make -f makefile.ux
-
 USER ${USER_NAME}:${GROUP_NAME}
 
