@@ -1,4 +1,4 @@
-version: '2'
+# version: '2'
 
 networks:
   ew:
@@ -9,7 +9,9 @@ services:
     container_name: hew
     # image: ew-sandbox:d59707fc
     # image: ew-sandbox:a4bb3e30
-    image: ew-sandbox:a7e23e8e
+    # image: ew-sandbox:a7e23e8e
+    # image: ew-sandbox:2cd12b953
+    image: ew-sandbox:990b85db
     command: /opt/scripts/ew_startstop_trap_pau.sh
     ports:
     # export wave server ports
