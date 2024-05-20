@@ -333,5 +333,17 @@ RUN \
 		&& cd ewconfig \
 		&& pip install .
 # && chown -R ${USER_NAME}:${GROUP_NAME} ${EW_INSTALL_HOME}/ewconfig
+
+RUN \
+		cd ${EW_INSTALL_HOME} \
+		&& git clone https://gitlab.com/matteoquintiliani/mysql_printf.git \
+		&& cd mysql_printf \
+		&& rm aclocal.m4 \
+		&& aclocal \
+		&& ./bootstrap \
+		&& ./configure \
+		&& make \
+		&& make install
+
 USER ${USER_NAME}:${GROUP_NAME}
 
