@@ -261,9 +261,9 @@ RUN \
 		if [ ${ENV_UID} -eq 0 ]; \
 		then \
 			useradd --system -d ${HOMEDIR_USER} -g ${GROUP_NAME} -s /bin/bash ${USER_NAME}; \
-		elif grep -q -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:.*$" /etc/passwd; \
+		elif grep -q -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:[^:][^:]*:.*$" /etc/passwd; \
 		then \
-			USER_NAME_ALREADY_EXISTS=$(grep  -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:.*$" /etc/passwd | cut -f 1 -d':'); \
+			USER_NAME_ALREADY_EXISTS=$(grep  -e "[^:][^:]*:[^:][^:]*:${ENV_UID}:[^:][^:]*:.*$" /etc/passwd | cut -f 1 -d':'); \
 			echo "UID ${ENV_UID} already exists with user name ${USER_NAME_ALREADY_EXISTS}"; \
 			usermod -d ${HOMEDIR_USER} -g ${ENV_GID} -l ${USER_NAME} ${USER_NAME_ALREADY_EXISTS}; \
 		else \
