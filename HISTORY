@@ -23,13 +23,14 @@
 Release History
 #########################
 
-* Release 2.2.2 (2024/11/05)
+* Release 2.2.3 (2024/11/15)
     - Update ew2openapi 1.19.0-rc1 (36b79d9) (2024/05/09)
     - Set EW_GIT_REF = 990b85db to compile Earthworm with Increase DB_MAX_PHS_PER_EQ from 1000 to 2000. (earthworm_defs.h). Fix handling when maximum number of phases per event trigger exceeds DB_MAX_PHS_PER_EQ. (sacputaway.c). Issue https://gitlab.com/seismic-software/earthworm/-/issues/196, https://gitlab.com/seismic-software/earthworm/-/merge_requests/166
     - Install https://gitlab.rm.ingv.it/earthworm/earthwormcontrib.git for snwgetmenu. Issue earthworm/SNW#10, earthworm/scripts#5, earthworm/SNW#12
     - Install EWCONFIG e ObsPy (https://gitlab.com/seismic-software/ewconfig) within docker image. Issue #19, earthworm/run_configs#166
     - Hotfix 2.2.1 Add mysql_printf compilation (https://gitlab.com/matteoquintiliani/mysql_printf) within Earthworm Docker Sandbox. earthworm/run_configs#49
     - Hotfix 2.2.2 Fix grep expression for checking UID in /etc/passwd. Issue #18
+    - Hotfix 2.2.3 Update repository EWCONFIG https://gitlab.com/seismic-software/ewconfig and install rdseed. Issue #19, #49, #169, earthworm/run_configs#166, https://gitlab.com/seismic-software/ewconfig/-/merge_requests/9 (2024/11/15)
 
 * Release 2.1.0 (2024/03/26)
     - Base docker image from debian:buster-slim to debian:bullseye-slim.

@@ -317,10 +317,11 @@ RUN \
 		python3-packaging python3-pyproj python3-pytest python3-geographiclib python3-cartopy python3-pyshp
 
 # Install ewconfig and Obspy
-# ARG EWCONFIG_GIT_REP=https://gitlab.com/seismic-software/ewconfig.git
+ARG EWCONFIG_GIT_REP=https://gitlab.com/seismic-software/ewconfig.git
 # ARG EWCONFIG_GIT_BRANCH=master
-ARG EWCONFIG_GIT_REP=https://gitlab.com/matteoquintiliani/ewconfig.git
-ARG EWCONFIG_GIT_BRANCH=pick_ew_config_by_mele_et_al_2010
+ARG EWCONFIG_GIT_BRANCH=19-proposal-to-add-pick_ew-configuration-based-on-mele-et-al-2010
+# ARG EWCONFIG_GIT_REP=https://gitlab.com/matteoquintiliani/ewconfig.git
+# ARG EWCONFIG_GIT_BRANCH=pick_ew_config_by_mele_et_al_2010
 
 RUN \
 		mkdir -p ${EW_INSTALL_HOME}/ewconfig \
@@ -344,6 +345,20 @@ RUN \
 		&& ./configure \
 		&& make \
 		&& make install
+
+RUN \
+		cd ${EW_INSTALL_HOME} \
+		&& git clone https://github.com/iris-edu-legacy/rdseed.git \
+		&& cd rdseed \
+		&& git remote add origin_yob https://github.com/yoboujon/rdseed.git \
+		&& git fetch --all \
+		&& git checkout -b master_yob origin_yob/master \
+		&& sed -i'.bak' -e "s/-m64//g" Makefile \
+		&& git diff \
+		&& make clean \
+		&& make CPPFLAGS="-I/usr/include  -I/usr/include/tirpc" \
+		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> /root/.bashrc \
+		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> ${HOMEDIR_USER}/.bashrc
 
 USER ${USER_NAME}:${GROUP_NAME}
 
