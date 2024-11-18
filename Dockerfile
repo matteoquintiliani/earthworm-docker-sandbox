@@ -309,6 +309,31 @@ RUN echo ". ~/.bashrc" > ${HOMEDIR_USER}/.bash_profile
 
 RUN chown -R ${USER_NAME}:${GROUP_NAME} ${HOMEDIR_USER}
 
+RUN \
+		cd ${EW_INSTALL_HOME} \
+		&& git clone https://gitlab.com/matteoquintiliani/mysql_printf.git \
+		&& cd mysql_printf \
+		&& rm aclocal.m4 \
+		&& aclocal \
+		&& ./bootstrap \
+		&& ./configure \
+		&& make \
+		&& make install
+
+RUN \
+		cd ${EW_INSTALL_HOME} \
+		&& git clone https://github.com/iris-edu-legacy/rdseed.git \
+		&& cd rdseed \
+		&& git remote add origin_yob https://github.com/yoboujon/rdseed.git \
+		&& git fetch --all \
+		&& git checkout -b master_yob origin_yob/master \
+		&& sed -i'.bak' -e "s/-m64//g" Makefile \
+		&& git diff \
+		&& make clean \
+		&& make CPPFLAGS="-I/usr/include  -I/usr/include/tirpc" \
+		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> /root/.bashrc \
+		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> ${HOMEDIR_USER}/.bashrc
+
 # Packages for Obspy
 # ref: https://github.com/obspy/obspy/wiki/Installation-on-Linux-via-Apt-Repository
 RUN \
@@ -334,31 +359,6 @@ RUN \
 		&& cd ewconfig \
 		&& pip install .
 # && chown -R ${USER_NAME}:${GROUP_NAME} ${EW_INSTALL_HOME}/ewconfig
-
-RUN \
-		cd ${EW_INSTALL_HOME} \
-		&& git clone https://gitlab.com/matteoquintiliani/mysql_printf.git \
-		&& cd mysql_printf \
-		&& rm aclocal.m4 \
-		&& aclocal \
-		&& ./bootstrap \
-		&& ./configure \
-		&& make \
-		&& make install
-
-RUN \
-		cd ${EW_INSTALL_HOME} \
-		&& git clone https://github.com/iris-edu-legacy/rdseed.git \
-		&& cd rdseed \
-		&& git remote add origin_yob https://github.com/yoboujon/rdseed.git \
-		&& git fetch --all \
-		&& git checkout -b master_yob origin_yob/master \
-		&& sed -i'.bak' -e "s/-m64//g" Makefile \
-		&& git diff \
-		&& make clean \
-		&& make CPPFLAGS="-I/usr/include  -I/usr/include/tirpc" \
-		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> /root/.bashrc \
-		&& echo "export PATH=\${PATH}:${EW_INSTALL_HOME}/rdseed" >> ${HOMEDIR_USER}/.bashrc
 
 USER ${USER_NAME}:${GROUP_NAME}
 
